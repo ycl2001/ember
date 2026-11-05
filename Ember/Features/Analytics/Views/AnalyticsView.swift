@@ -2,6 +2,7 @@ import SwiftUI
 
 /// Member 5 owns this file. Show real SwiftData records in Swift Charts.
 struct AnalyticsView: View {
+    @State private var viewModel = AnalyticsViewModel()
     var body: some View {
         FeaturePlaceholderView(
             title: "Energy insights",

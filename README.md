@@ -16,10 +16,10 @@ This is a **SwiftUI + SwiftData** Xcode project starter based on the uploaded 15
 
 ## Architecture
 
-- `App/`: SwiftUI app entry point, dashboard, centralized route switch.
+- `App/`: SwiftUI app entry point and centralized route switch; dashboard lives in `Features/Dashboard/`.
 - `Core/Models/`: common persistent `@Model` SwiftData types. One owner edits these.
 - `DesignSystem/`: shared colour tokens and an interim placeholder component.
-- `Features/`: each teammate's own SwiftUI views. Replace placeholder bodies without renaming view types.
+- `Features/`: each teammate owns `Views/` and `ViewModels/` under their feature. Replace placeholder bodies without renaming view types.
 - `Assets.xcassets`: accent colour.
 
 SwiftData `.modelContainer(for:)` lives in **EmberApp.swift** and is available to child views via the environment. Feature owners can use `@Environment(\.modelContext)` and `@Query` to read/write records.

@@ -4,12 +4,12 @@ import SwiftData
 /// Integration dashboard: immediately confirms the app and SwiftData load.
 struct DashboardView: View {
     let onNavigate: (AppRoute) -> Void
+    @State private var viewModel = DashboardViewModel()
 
     @Query private var goals: [LearningGoal]
     @Query private var tasks: [LearningTask]
     @Query private var checkIns: [EnergyCheckIn]
 
-    private var completedCount: Int { tasks.filter(\.isCompleted).count }
 
     var body: some View {
         ScrollView {
@@ -29,7 +29,7 @@ struct DashboardView: View {
                 }
                 HStack(spacing: 10) {
                     metric("Goals", value: "\(goals.count)")
-                    metric("Completed", value: "\(completedCount)/\(tasks.count)")
+                    metric("Completed", value: "\(viewModel.completedCount(in: tasks))/\(tasks.count)")
                     metric("Check-ins", value: "\(checkIns.count)")
                 }
                 VStack(alignment: .leading, spacing: 12) {
