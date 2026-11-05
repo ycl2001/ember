@@ -2,6 +2,7 @@ import SwiftUI
 
 /// Member 3 owns this file. Create and complete LearningTask records.
 struct TaskPlannerView: View {
+    @State private var viewModel = TaskPlannerViewModel()
     var body: some View {
         FeaturePlaceholderView(
             title: "Today's checklist",

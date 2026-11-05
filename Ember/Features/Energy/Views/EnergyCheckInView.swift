@@ -2,6 +2,7 @@ import SwiftUI
 
 /// Member 2 owns this file. Save a 1–5 EnergyCheckIn to SwiftData.
 struct EnergyCheckInView: View {
+    @State private var viewModel = EnergyCheckInViewModel()
     var body: some View {
         FeaturePlaceholderView(
             title: "Daily energy",

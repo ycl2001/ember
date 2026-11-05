@@ -24,6 +24,13 @@
 		EE9798606A27751CE15096F1 /* ReflectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED48A368233DEDD7B570F421 /* ReflectionView.swift */; };
 		64C5F0ACA041FB999FE17FFA /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804CF35177FA68E8561AED47 /* AnalyticsView.swift */; };
 		D0ADC22F3C046CC76298F620 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 05529D7BAF9BE1F1AD75AA78 /* Assets.xcassets */; };
+		BCCFCE885EDB49F4BAF5EC3A /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500AE4AB024436C9835FF54 /* OnboardingViewModel.swift */; };
+		166A566D328B43E888207546 /* EnergyCheckInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBC24BB8F8848ED9C90998B /* EnergyCheckInViewModel.swift */; };
+		664540F1C4E24D2D848CB03B /* TaskPlannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E2A8D9E604A79A5CC7357 /* TaskPlannerViewModel.swift */; };
+		07DAF14BB28D4D6184AAB865 /* FocusSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CD8E04D71E4A5EB15B6FF3 /* FocusSessionViewModel.swift */; };
+		E2763AF6B7A944C1879AAA5A /* ReflectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E32AC3B38E4048AF2F2FE6 /* ReflectionViewModel.swift */; };
+		5FF0D710460B4A52B237292B /* AnalyticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D308512CBCF54D90A8EFEEB8 /* AnalyticsViewModel.swift */; };
+		2F27F37ED33D4C5AAEB506F6 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826F757408944AEA99508CE0 /* DashboardViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +53,13 @@
 		804CF35177FA68E8561AED47 /* AnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsView.swift; sourceTree = "<group>"; };
 		05529D7BAF9BE1F1AD75AA78 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		729F2DB930EE548BE49C4A6F /* Ember.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ember.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1500AE4AB024436C9835FF54 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		6CBC24BB8F8848ED9C90998B /* EnergyCheckInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyCheckInViewModel.swift; sourceTree = "<group>"; };
+		8C3E2A8D9E604A79A5CC7357 /* TaskPlannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPlannerViewModel.swift; sourceTree = "<group>"; };
+		D0CD8E04D71E4A5EB15B6FF3 /* FocusSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionViewModel.swift; sourceTree = "<group>"; };
+		00E32AC3B38E4048AF2F2FE6 /* ReflectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionViewModel.swift; sourceTree = "<group>"; };
+		D308512CBCF54D90A8EFEEB8 /* AnalyticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsViewModel.swift; sourceTree = "<group>"; };
+		826F757408944AEA99508CE0 /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -59,7 +73,6 @@
 		); path = Ember; sourceTree = "<group>"; };
 		13C4608B5138EBE9B3A45A55 /* App */ = {isa = PBXGroup; children = (
 			6CCA203ABC6BBC3552918D79 /* AppRoute.swift */,
-			6CF40BEFBD317EDC617F21CE /* DashboardView.swift */,
 			F5F013C355AC82BBF061604F /* EmberApp.swift */,
 			FB6E1E0BFF12AA0D280A4B8A /* RootView.swift */,
 		); path = App; sourceTree = "<group>"; };
@@ -71,6 +84,7 @@
 			D8A7312E9DDCE0B1BBF37264 /* EmberTheme.swift */,
 		); path = DesignSystem; sourceTree = "<group>"; };
 		E64DA6756D6CF253E6CA6FFA /* Features */ = {isa = PBXGroup; children = (
+			29CD8CB236DA4BB4AE341147 /* Dashboard */,
 			B5F8509EFAD5142A3CC518E1 /* Analytics */,
 			CF407529A4894651ED16139A /* Energy */,
 			D9D3BF614690E2BB099383F7 /* Focus */,
@@ -86,24 +100,45 @@
 			8FBA53E3A9A8508DC4E98D6E /* SessionReflection.swift */,
 		); path = Models; sourceTree = "<group>"; };
 		B5F8509EFAD5142A3CC518E1 /* Analytics */ = {isa = PBXGroup; children = (
-			804CF35177FA68E8561AED47 /* AnalyticsView.swift */,
+			92FD7638F2F245488779A78B /* Views */,
+			D3B827B3E43646AA9A36FBA8 /* ViewModels */,
 		); path = Analytics; sourceTree = "<group>"; };
 		CF407529A4894651ED16139A /* Energy */ = {isa = PBXGroup; children = (
-			57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */,
+			CB1719E42CD14EA288D5E380 /* Views */,
+			08BFA2BFE22E4AC6B47767D7 /* ViewModels */,
 		); path = Energy; sourceTree = "<group>"; };
 		D9D3BF614690E2BB099383F7 /* Focus */ = {isa = PBXGroup; children = (
-			41DD23F7C1454731400D4555 /* FocusSessionView.swift */,
+			F696DBBAEFEE4A20899B8FD3 /* Views */,
+			0BD31234E4C644CD87E494F2 /* ViewModels */,
 		); path = Focus; sourceTree = "<group>"; };
 		4D56A3BD9D9394EB18412ED2 /* Onboarding */ = {isa = PBXGroup; children = (
-			95BFC77EE7E502B6A98ACFCB /* OnboardingView.swift */,
+			709EA69BC7514B93B03895BF /* Views */,
+			64223CAF3B4346CA8EBCF105 /* ViewModels */,
 		); path = Onboarding; sourceTree = "<group>"; };
 		8B650F1DF9ED13B8D5EAC199 /* Planner */ = {isa = PBXGroup; children = (
-			5E9FABC339815B0B0344B6FB /* TaskPlannerView.swift */,
+			FA2F3EA9D2CA422CA9474A43 /* Views */,
+			8B9AD4374E984BF08A32CDC1 /* ViewModels */,
 		); path = Planner; sourceTree = "<group>"; };
 		05D79A0D5E98345658B1255C /* Reflection */ = {isa = PBXGroup; children = (
-			ED48A368233DEDD7B570F421 /* ReflectionView.swift */,
+			E1CD6D921C844FC483519893 /* Views */,
+			7618B94A458143BFB0CDDC18 /* ViewModels */,
 		); path = Reflection; sourceTree = "<group>"; };
 		AE7805B56D1DCAFAA071416F /* Products */ = {isa = PBXGroup; children = (729F2DB930EE548BE49C4A6F /* Ember.app */,); name = Products; sourceTree = "<group>"; };
+		709EA69BC7514B93B03895BF /* Views */ = {isa = PBXGroup; children = (95BFC77EE7E502B6A98ACFCB /* OnboardingView.swift */,); path = Views; sourceTree = "<group>"; };
+		64223CAF3B4346CA8EBCF105 /* ViewModels */ = {isa = PBXGroup; children = (1500AE4AB024436C9835FF54 /* OnboardingViewModel.swift */,); path = ViewModels; sourceTree = "<group>"; };
+		CB1719E42CD14EA288D5E380 /* Views */ = {isa = PBXGroup; children = (57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */,); path = Views; sourceTree = "<group>"; };
+		08BFA2BFE22E4AC6B47767D7 /* ViewModels */ = {isa = PBXGroup; children = (6CBC24BB8F8848ED9C90998B /* EnergyCheckInViewModel.swift */,); path = ViewModels; sourceTree = "<group>"; };
+		FA2F3EA9D2CA422CA9474A43 /* Views */ = {isa = PBXGroup; children = (5E9FABC339815B0B0344B6FB /* TaskPlannerView.swift */,); path = Views; sourceTree = "<group>"; };
+		8B9AD4374E984BF08A32CDC1 /* ViewModels */ = {isa = PBXGroup; children = (8C3E2A8D9E604A79A5CC7357 /* TaskPlannerViewModel.swift */,); path = ViewModels; sourceTree = "<group>"; };
+		F696DBBAEFEE4A20899B8FD3 /* Views */ = {isa = PBXGroup; children = (41DD23F7C1454731400D4555 /* FocusSessionView.swift */,); path = Views; sourceTree = "<group>"; };
+		0BD31234E4C644CD87E494F2 /* ViewModels */ = {isa = PBXGroup; children = (D0CD8E04D71E4A5EB15B6FF3 /* FocusSessionViewModel.swift */,); path = ViewModels; sourceTree = "<group>"; };
+		E1CD6D921C844FC483519893 /* Views */ = {isa = PBXGroup; children = (ED48A368233DEDD7B570F421 /* ReflectionView.swift */,); path = Views; sourceTree = "<group>"; };
+		7618B94A458143BFB0CDDC18 /* ViewModels */ = {isa = PBXGroup; children = (00E32AC3B38E4048AF2F2FE6 /* ReflectionViewModel.swift */,); path = ViewModels; sourceTree = "<group>"; };
+		92FD7638F2F245488779A78B /* Views */ = {isa = PBXGroup; children = (804CF35177FA68E8561AED47 /* AnalyticsView.swift */,); path = Views; sourceTree = "<group>"; };
+		D3B827B3E43646AA9A36FBA8 /* ViewModels */ = {isa = PBXGroup; children = (D308512CBCF54D90A8EFEEB8 /* AnalyticsViewModel.swift */,); path = ViewModels; sourceTree = "<group>"; };
+		29CD8CB236DA4BB4AE341147 /* Dashboard */ = {isa = PBXGroup; children = (66FA33825DB841358013DCD2 /* Views */, EB3418EA75C941A2BBE9DF79 /* ViewModels */,); path = Dashboard; sourceTree = "<group>"; };
+		66FA33825DB841358013DCD2 /* Views */ = {isa = PBXGroup; children = (6CF40BEFBD317EDC617F21CE /* DashboardView.swift */,); path = Views; sourceTree = "<group>"; };
+		EB3418EA75C941A2BBE9DF79 /* ViewModels */ = {isa = PBXGroup; children = (826F757408944AEA99508CE0 /* DashboardViewModel.swift */,); path = ViewModels; sourceTree = "<group>"; };
 /* End PBXGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +193,13 @@
 			50468057A090BB81D052F369 /* FocusSessionView.swift in Sources */,
 			EE9798606A27751CE15096F1 /* ReflectionView.swift in Sources */,
 			64C5F0ACA041FB999FE17FFA /* AnalyticsView.swift in Sources */,
+			BCCFCE885EDB49F4BAF5EC3A /* OnboardingViewModel.swift in Sources */,
+			166A566D328B43E888207546 /* EnergyCheckInViewModel.swift in Sources */,
+			664540F1C4E24D2D848CB03B /* TaskPlannerViewModel.swift in Sources */,
+			07DAF14BB28D4D6184AAB865 /* FocusSessionViewModel.swift in Sources */,
+			E2763AF6B7A944C1879AAA5A /* ReflectionViewModel.swift in Sources */,
+			5FF0D710460B4A52B237292B /* AnalyticsViewModel.swift in Sources */,
+			2F27F37ED33D4C5AAEB506F6 /* DashboardViewModel.swift in Sources */,
 		); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXSourcesBuildPhase section */
 
