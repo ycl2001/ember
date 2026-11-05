@@ -30,3 +30,8 @@ The HTML is a visual and interaction reference, not the iOS implementation.
 ## First kickoff message to team
 
 > The Ember SwiftUI foundation is in https://github.com/ycl2001/ember. Please branch from `main`, keep changes inside your assigned `Features/` folder, and use the shared SwiftData models as agreed. First PRs are due Monday 9 Nov; feature freeze Tuesday evening, regression Wednesday, final build Thursday 12 Nov. Please flag any model or route change before modifying the shared files.
+
+
+## Navigation-first change (6 Nov)
+
+The original prototype has **four tabs: Today, Sessions, Analytics, Profile**. Do not recreate the previous six-route debugging dashboard. Each team member builds within their existing feature's `Views/` and `ViewModels/`; routes and the shared bottom bar are frozen under PM/integration ownership. See `NAVIGATION.md`.

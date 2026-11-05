@@ -1,90 +1,142 @@
 import SwiftUI
 import SwiftData
 
-/// Integration dashboard: immediately confirms the app and SwiftData load.
+/// Today's native dashboard, based on the prototype's Today tab (not a developer route list).
 struct DashboardView: View {
     let onNavigate: (AppRoute) -> Void
+    let onSelectTab: (AppTab) -> Void
     @State private var viewModel = DashboardViewModel()
 
     @Query private var goals: [LearningGoal]
     @Query private var tasks: [LearningTask]
-    @Query private var checkIns: [EnergyCheckIn]
+    @Query(sort: \EnergyCheckIn.createdAt, order: .reverse) private var checkIns: [EnergyCheckIn]
 
+    private var latestEnergy: EnergyCheckIn? { checkIns.first }
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("EMBER")
-                        .font(.system(size: 11, weight: .bold, design: .rounded))
-                        .tracking(2.5)
-                        .foregroundStyle(EmberTheme.muted)
-                    Text("Small steps.\nSteady momentum.")
-                        .font(.system(size: 36, weight: .medium, design: .serif))
+                HStack(alignment: .center) {
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("EMBER")
+                            .font(.system(size: 11, weight: .bold))
+                            .tracking(2.6)
+                            .foregroundStyle(EmberTheme.muted)
+                        Text("Your day, your rhythm.")
+                            .font(.system(size: 30, weight: .medium, design: .serif))
+                            .foregroundStyle(EmberTheme.primary)
+                    }
+                    Spacer()
+                    Image(systemName: "flame.fill")
                         .foregroundStyle(EmberTheme.primary)
-                        .fixedSize(horizontal: false, vertical: true)
-                    Text("Learn with your energy, not against it.")
-                        .font(.subheadline)
-                        .foregroundStyle(EmberTheme.muted)
+                        .font(.system(size: 25))
+                        .frame(width: 50, height: 50)
+                        .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 17))
                 }
-                HStack(spacing: 10) {
-                    metric("Goals", value: "\(goals.count)")
-                    metric("Completed", value: "\(viewModel.completedCount(in: tasks))/\(tasks.count)")
-                    metric("Check-ins", value: "\(checkIns.count)")
-                }
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Your learning journey")
-                        .font(.title3.weight(.semibold))
-                        .foregroundStyle(EmberTheme.primary)
-                    ForEach(AppRoute.allCases, id: \.self) { route in
-                        Button {
-                            onNavigate(route)
-                        } label: {
-                            HStack(spacing: 14) {
-                                Image(systemName: route.systemImage)
-                                    .font(.system(size: 19))
-                                    .frame(width: 34)
-                                    .foregroundStyle(EmberTheme.primary)
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(route.title)
-                                        .font(.headline)
-                                        .foregroundStyle(EmberTheme.primary)
-                                    Text(route.subtitle)
-                                        .font(.caption)
-                                        .foregroundStyle(EmberTheme.muted)
-                                }
-                                Spacer()
-                                Image(systemName: "chevron.right")
-                                    .foregroundStyle(EmberTheme.muted)
-                            }
-                            .padding(16)
-                            .background(.white, in: RoundedRectangle(cornerRadius: 16))
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityIdentifier("route_\(route.rawValue)")
+
+                energyCard
+
+                VStack(alignment: .leading, spacing: 11) {
+                    HStack {
+                        Text("Today's momentum")
+                            .font(.system(size: 22, weight: .medium, design: .serif))
+                            .foregroundStyle(EmberTheme.primary)
+                        Spacer()
+                        Button("See tasks") { onSelectTab(.sessions) }
+                            .font(.caption.weight(.semibold))
+                    }
+                    HStack(spacing: 10) {
+                        EmberMetricCard(value: "\(goals.count)", label: "Learning goals")
+                        EmberMetricCard(value: "\(viewModel.completedCount(in: tasks))/\(tasks.count)", label: "Tasks complete")
                     }
                 }
-                Text("Foundation build · The four teammates replace these feature placeholders in their own folders.")
-                    .font(.footnote)
-                    .foregroundStyle(EmberTheme.muted)
+
+                VStack(alignment: .leading, spacing: 11) {
+                    Text("Your next step")
+                        .font(.system(size: 22, weight: .medium, design: .serif))
+                        .foregroundStyle(EmberTheme.primary)
+                    if let firstTask = tasks.first(where: { !$0.isCompleted }) {
+                        VStack(alignment: .leading, spacing: 13) {
+                            Text(firstTask.title)
+                                .font(.headline)
+                                .foregroundStyle(EmberTheme.primary)
+                            Text("One small task is enough to make progress.")
+                                .font(.caption)
+                                .foregroundStyle(EmberTheme.muted)
+                            Button {
+                                onSelectTab(.sessions)
+                            } label: {
+                                Label("Open checklist", systemImage: "arrow.right")
+                                    .font(.subheadline.weight(.semibold))
+                                    .frame(maxWidth: .infinity)
+                                    .padding(13)
+                                    .background(EmberTheme.primary, in: RoundedRectangle(cornerRadius: 12))
+                                    .foregroundStyle(.white)
+                            }
+                        }
+                        .padding(18)
+                        .background(EmberTheme.surface, in: RoundedRectangle(cornerRadius: 19))
+                    } else {
+                        EmberActionRow(
+                            title: goals.isEmpty ? "Choose what you want to learn" : "Plan your next learning task",
+                            subtitle: goals.isEmpty ? "Start with a topic that sparks your curiosity." : "Break a learning goal into small steps.",
+                            symbol: "sparkle"
+                        ) {
+                            goals.isEmpty ? onNavigate(.onboarding) : onSelectTab(.sessions)
+                        }
+                    }
+                }
+
+                EmberActionRow(
+                    title: "Explore your energy insights",
+                    subtitle: "See how learning and energy change over time.",
+                    symbol: "chart.xyaxis.line"
+                ) { onSelectTab(.analytics) }
             }
-            .padding(22)
+            .padding(.horizontal, 20)
+            .padding(.top, 26)
+            .padding(.bottom, 22)
         }
         .background(EmberTheme.canvas.ignoresSafeArea())
-        .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .navigationBar)
     }
 
-    private func metric(_ name: String, value: String) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(value)
-                .font(.system(size: 22, weight: .bold, design: .serif))
+    private var energyCard: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("ENERGY FLOW STATE")
+                        .font(.system(size: 10, weight: .bold))
+                        .tracking(1.6)
+                        .foregroundStyle(EmberTheme.mint)
+                    Text(latestEnergy.map { "Energy \($0.level) / 5" } ?? "How's your energy?")
+                        .font(.system(size: 29, weight: .medium, design: .serif))
+                        .foregroundStyle(.white)
+                    Text(latestEnergy == nil ? "Check in before planning your day." : "Your latest self-reported energy check-in.")
+                        .font(.subheadline)
+                        .foregroundStyle(Color.white.opacity(0.75))
+                }
+                Spacer(minLength: 8)
+                Image(systemName: "battery.75percent")
+                    .font(.system(size: 24))
+                    .foregroundStyle(EmberTheme.amber)
+            }
+            Button {
+                onNavigate(.energyCheckIn)
+            } label: {
+                HStack {
+                    Text(latestEnergy == nil ? "Check in now" : "Update energy")
+                    Spacer()
+                    Image(systemName: "arrow.up.right")
+                }
+                .font(.subheadline.weight(.semibold))
+                .padding(13)
                 .foregroundStyle(EmberTheme.primary)
-            Text(name)
-                .font(.caption2)
-                .foregroundStyle(EmberTheme.muted)
+                .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 12))
+            }
+            .accessibilityIdentifier("today_energy_checkin")
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(14)
-        .background(.white, in: RoundedRectangle(cornerRadius: 14))
+        .padding(20)
+        .background(EmberTheme.primary, in: RoundedRectangle(cornerRadius: 24))
     }
 }
