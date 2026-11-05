@@ -1,0 +1,12 @@
+# Xcode user state / build products
+.DS_Store
+.build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.ipa
+*.dSYM
+*.dSYM.zip
+*.xcresult
+.swiftpm/
+# Do not ignore project.pbxproj: it must be committed.
