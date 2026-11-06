@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Replace a feature placeholder in its owning file; keep the type name unchanged.
+/// Consumer-facing empty state until the assigned teammate replaces the feature View.
 struct FeaturePlaceholderView: View {
     let title: String
     let subtitle: String
@@ -8,25 +8,21 @@ struct FeaturePlaceholderView: View {
     let owner: String
 
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 15) {
             Image(systemName: symbol)
-                .font(.system(size: 44))
+                .font(.system(size: 35))
                 .foregroundStyle(EmberTheme.primary)
-                .padding(26)
-                .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 28))
+                .padding(25)
+                .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 25))
             Text(title)
-                .font(.system(size: 29, weight: .medium, design: .serif))
+                .font(.system(size: 28, weight: .medium, design: .serif))
                 .foregroundStyle(EmberTheme.primary)
             Text(subtitle)
+                .font(.subheadline)
                 .foregroundStyle(EmberTheme.muted)
                 .multilineTextAlignment(.center)
-            Text("Assigned to: \(owner)")
-                .font(.caption)
-                .padding(.horizontal, 14)
-                .padding(.vertical, 8)
-                .background(.white, in: Capsule())
         }
-        .padding(26)
+        .padding(28)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(EmberTheme.canvas.ignoresSafeArea())
         .navigationTitle(title)

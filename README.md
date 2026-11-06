@@ -2,13 +2,13 @@
 
 **Deadline:** Thursday 12 November 2026. **Team:** five people total.
 
-This is a **SwiftUI + SwiftData** Xcode project starter based on the uploaded 15-screen HTML prototype. It is a native app, **not** an HTML wrapper. It intentionally includes a working navigation shell and **six placeholders** so that teammates can replace their own screens independently. The app is not the completed MVP. The SwiftUI views are deliberately placeholders, not finished functionality.
+This is a **SwiftUI + SwiftData** Xcode project starter based on the uploaded 15-screen HTML prototype. It is a native app, **not** an HTML wrapper. It intentionally includes a working navigation shell and **four-tab application shell and feature placeholders** so that teammates can replace their own screens independently. The app is not the completed MVP. The SwiftUI views are deliberately placeholders, not finished functionality.
 
 ## Open and run in Xcode
 
 1. Unzip the archive, then double-click `Ember.xcodeproj` (not individual Swift files).
 2. Select scheme **Ember**, destination **an iOS 17 or newer iPhone Simulator**.
-3. Press **⌘R**. You should see a dashboard titled *Small steps. Steady momentum.* and six tappable destination rows.
+3. Press **⌘R**. You should see a dashboard titled *Small steps. Steady momentum.* and a persistent four-tab navigation bar (Today, Sessions, Analytics, Profile).
 4. If you want to run on your **own iPhone**, open the project target → **Signing & Capabilities**, select your Team and change the bundle identifier to one available to you. Simulator builds typically do not need a signing team.
 5. Commit this folder as the initial `main` baseline **before** teammates create branches.
 
@@ -87,3 +87,12 @@ Open GitHub pull requests into `main` and obtain at least one review. Keep chang
 ## Demo acceptance flow
 
 Create `Learn Python` → log energy 4/5 → check off `Learn variables` after a 10-minute focus session → reflect energy 2/5 → view a *self-reported* 2-point energy drop on Insights. Keep video discovery and AI generation out of the MVP until this works.
+
+
+## Navigation-first foundation (6 November)
+
+The initial developer-facing six-route menu has been replaced with the mobile prototype's four primary tabs. The tab bar is `DesignSystem/EmberTabBar.swift`, the tab metadata is `App/AppTab.swift`, and app-level navigation is `App/AppNavigation.swift` + `RootView.swift`. The real Today screen is now the Dashboard feature, and a new Profile feature exists. Sessions and Analytics have stable native content shells, not six debugging links.
+
+**Feature developers:** Don't modify `App/`, `DesignSystem/EmberTabBar.swift`, or the selected tab routes. To trigger a detail flow from your view, use the existing `onNavigate` callback if present (for example, `onNavigate(.focus)` in `TaskPlannerView`). There is no production service wiring in these shells yet.
+
+Apply the included `Ember-Navigation-MVVM.patch` on top of `chore/mvvm-architecture`, not the old `main` starter. Build in Xcode before merging.

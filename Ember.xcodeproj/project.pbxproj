@@ -31,6 +31,12 @@
 		E2763AF6B7A944C1879AAA5A /* ReflectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E32AC3B38E4048AF2F2FE6 /* ReflectionViewModel.swift */; };
 		5FF0D710460B4A52B237292B /* AnalyticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D308512CBCF54D90A8EFEEB8 /* AnalyticsViewModel.swift */; };
 		2F27F37ED33D4C5AAEB506F6 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826F757408944AEA99508CE0 /* DashboardViewModel.swift */; };
+		C0FFEE000000000000000001 /* AppTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFEE100000000000000001 /* AppTab.swift */; };
+		C0FFEE000000000000000002 /* AppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFEE100000000000000002 /* AppNavigation.swift */; };
+		C0FFEE000000000000000003 /* EmberTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFEE100000000000000003 /* EmberTabBar.swift */; };
+		C0FFEE000000000000000004 /* EmberComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFEE100000000000000004 /* EmberComponents.swift */; };
+		C0FFEE000000000000000005 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFEE100000000000000005 /* ProfileView.swift */; };
+		C0FFEE000000000000000006 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFEE100000000000000006 /* ProfileViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +66,12 @@
 		00E32AC3B38E4048AF2F2FE6 /* ReflectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionViewModel.swift; sourceTree = "<group>"; };
 		D308512CBCF54D90A8EFEEB8 /* AnalyticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsViewModel.swift; sourceTree = "<group>"; };
 		826F757408944AEA99508CE0 /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
+		C0FFEE100000000000000001 /* AppTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTab.swift; sourceTree = "<group>"; };
+		C0FFEE100000000000000002 /* AppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
+		C0FFEE100000000000000003 /* EmberTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberTabBar.swift; sourceTree = "<group>"; };
+		C0FFEE100000000000000004 /* EmberComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberComponents.swift; sourceTree = "<group>"; };
+		C0FFEE100000000000000005 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		C0FFEE100000000000000006 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -72,6 +84,8 @@
 			05529D7BAF9BE1F1AD75AA78 /* Assets.xcassets */,
 		); path = Ember; sourceTree = "<group>"; };
 		13C4608B5138EBE9B3A45A55 /* App */ = {isa = PBXGroup; children = (
+			C0FFEE100000000000000002 /* AppNavigation.swift */,
+			C0FFEE100000000000000001 /* AppTab.swift */,
 			6CCA203ABC6BBC3552918D79 /* AppRoute.swift */,
 			F5F013C355AC82BBF061604F /* EmberApp.swift */,
 			FB6E1E0BFF12AA0D280A4B8A /* RootView.swift */,
@@ -80,10 +94,13 @@
 			20D83567C1ABE1FD275D4733 /* Models */,
 		); path = Core; sourceTree = "<group>"; };
 		534B86DB3CD8DC07892341AB /* DesignSystem */ = {isa = PBXGroup; children = (
+			C0FFEE100000000000000004 /* EmberComponents.swift */,
+			C0FFEE100000000000000003 /* EmberTabBar.swift */,
 			F845D9B8D8888E33518672E5 /* FeaturePlaceholderView.swift */,
 			D8A7312E9DDCE0B1BBF37264 /* EmberTheme.swift */,
 		); path = DesignSystem; sourceTree = "<group>"; };
 		E64DA6756D6CF253E6CA6FFA /* Features */ = {isa = PBXGroup; children = (
+			C0FFEE200000000000000001 /* Profile */,
 			29CD8CB236DA4BB4AE341147 /* Dashboard */,
 			B5F8509EFAD5142A3CC518E1 /* Analytics */,
 			CF407529A4894651ED16139A /* Energy */,
@@ -139,6 +156,12 @@
 		29CD8CB236DA4BB4AE341147 /* Dashboard */ = {isa = PBXGroup; children = (66FA33825DB841358013DCD2 /* Views */, EB3418EA75C941A2BBE9DF79 /* ViewModels */,); path = Dashboard; sourceTree = "<group>"; };
 		66FA33825DB841358013DCD2 /* Views */ = {isa = PBXGroup; children = (6CF40BEFBD317EDC617F21CE /* DashboardView.swift */,); path = Views; sourceTree = "<group>"; };
 		EB3418EA75C941A2BBE9DF79 /* ViewModels */ = {isa = PBXGroup; children = (826F757408944AEA99508CE0 /* DashboardViewModel.swift */,); path = ViewModels; sourceTree = "<group>"; };
+		C0FFEE200000000000000001 /* Profile */ = {isa = PBXGroup; children = (
+			C0FFEE200000000000000002 /* Views */,
+			C0FFEE200000000000000003 /* ViewModels */,
+		); path = Profile; sourceTree = "<group>"; };
+		C0FFEE200000000000000002 /* Views */ = {isa = PBXGroup; children = (C0FFEE100000000000000005 /* ProfileView.swift */,); path = Views; sourceTree = "<group>"; };
+		C0FFEE200000000000000003 /* ViewModels */ = {isa = PBXGroup; children = (C0FFEE100000000000000006 /* ProfileViewModel.swift */,); path = ViewModels; sourceTree = "<group>"; };
 /* End PBXGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +223,12 @@
 			E2763AF6B7A944C1879AAA5A /* ReflectionViewModel.swift in Sources */,
 			5FF0D710460B4A52B237292B /* AnalyticsViewModel.swift in Sources */,
 			2F27F37ED33D4C5AAEB506F6 /* DashboardViewModel.swift in Sources */,
+			C0FFEE000000000000000006 /* ProfileViewModel.swift in Sources */,
+			C0FFEE000000000000000005 /* ProfileView.swift in Sources */,
+			C0FFEE000000000000000004 /* EmberComponents.swift in Sources */,
+			C0FFEE000000000000000003 /* EmberTabBar.swift in Sources */,
+			C0FFEE000000000000000002 /* AppNavigation.swift in Sources */,
+			C0FFEE000000000000000001 /* AppTab.swift in Sources */,
 		); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXSourcesBuildPhase section */
 
