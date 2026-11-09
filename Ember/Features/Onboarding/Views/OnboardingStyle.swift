@@ -306,6 +306,7 @@ struct FlowTopBar: View {
     let title: String
     var leadingSymbol: String = "arrow.left"
     var showsClose = true
+    var showsAvatar = true
     var centersTitle = false
     let onLeading: () -> Void
     var onClose: () -> Void = {}
@@ -337,7 +338,9 @@ struct FlowTopBar: View {
                 .accessibilityLabel("Close")
             }
 
-            FlowAvatar()
+            if showsAvatar {
+                FlowAvatar()
+            }
         }
         .foregroundStyle(FlowPalette.ink)
         .buttonStyle(.plain)

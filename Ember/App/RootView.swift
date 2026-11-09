@@ -15,7 +15,7 @@ struct RootView: View {
                 }
                 .navigationDestination(for: AppRoute.self) { route in
                     destination(for: route)
-                        .toolbar(.visible, for: .navigationBar)
+                        .toolbar(route == .onboarding ? .hidden : .visible, for: .navigationBar)
                 }
                 .toolbar(.hidden, for: .navigationBar)
         }

@@ -18,9 +18,10 @@ struct OnboardingView: View {
     var body: some View {
         VStack(spacing: 0) {
             FlowTopBar(
-                title: viewModel.step.title,
-                onLeading: goBack,
-                onClose: { dismiss() }
+                title: "Learning setup",
+                showsClose: false,
+                showsAvatar: false,
+                onLeading: goBack
             )
             .padding(.horizontal, 16)
             .padding(.top, 8)
