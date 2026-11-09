@@ -90,11 +90,28 @@ final class FocusSessionViewModel {
 
     // MARK: - Setup
 
+    /// True when the task arrived pre-chosen (from a goal's checklist or "Up next").
+    /// The setup screen then shows just that task, with a "Change task" option.
+    var isTaskPreselected = false
+
+    /// Applies a task chosen before Focus opened. Ignored once a session has started.
+    func preselect(taskID: UUID, from tasks: [LearningTask]) {
+        guard phase == .setup, tasks.contains(where: { $0.id == taskID }) else { return }
+        selectedTaskID = taskID
+        isTaskPreselected = true
+    }
+
+    /// Shows the full task list again.
+    func changeTask() {
+        isTaskPreselected = false
+    }
+
     /// Keeps the selection valid: picks the first incomplete task when nothing valid is selected.
     func ensureSelection(from tasks: [LearningTask]) {
         guard phase == .setup else { return }
         if let id = selectedTaskID, tasks.contains(where: { $0.id == id }) { return }
         selectedTaskID = tasks.first?.id
+        isTaskPreselected = false
     }
 
     // MARK: - Timer controls

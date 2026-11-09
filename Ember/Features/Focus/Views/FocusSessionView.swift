@@ -17,6 +17,7 @@ struct FocusSessionView: View {
     @Environment(AppNavigation.self) private var navigation: AppNavigation?
 
     @Query(sort: \LearningTask.createdAt) private var allTasks: [LearningTask]
+    @Query(sort: \LearningGoal.createdAt) private var goals: [LearningGoal]
 
     private var openTasks: [LearningTask] { allTasks.filter { !$0.isCompleted } }
 
@@ -82,7 +83,14 @@ struct FocusSessionView: View {
         .animation(.snappy, value: viewModel.phase)
         .sensoryFeedback(.impact(weight: .light), trigger: viewModel.phase)
         .sensoryFeedback(.success, trigger: viewModel.hasReachedMilestone) { _, reached in reached }
-        .onAppear { viewModel.ensureSelection(from: openTasks) }
+        .onAppear {
+            // A task chosen on the Sessions screen arrives through AppNavigation; use it once.
+            if let taskID = navigation?.pendingFocusTaskID {
+                viewModel.preselect(taskID: taskID, from: openTasks)
+                navigation?.pendingFocusTaskID = nil
+            }
+            viewModel.ensureSelection(from: openTasks)
+        }
         .onChange(of: openTasks.map(\.id)) { viewModel.ensureSelection(from: openTasks) }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active { viewModel.refresh() }
@@ -106,9 +114,12 @@ struct FocusSessionView: View {
 
         if openTasks.isEmpty {
             emptyState
+        } else if viewModel.isTaskPreselected, let task = selectedTask, !task.isCompleted {
+            preselectedTaskCard(task)
+            milestoneToggleCard
         } else {
             VStack(alignment: .leading, spacing: 10) {
-                sectionLabel("Today's tasks")
+                sectionLabel("Choose a task")
                 ForEach(openTasks, id: \.id) { task in
                     taskRow(task)
                 }
@@ -124,16 +135,19 @@ struct FocusSessionView: View {
             viewModel.selectedTaskID = task.id
         } label: {
             HStack(spacing: 13) {
-                Image(systemName: "book.closed")
-                    .font(.system(size: 17, weight: .medium))
-                    .foregroundStyle(EmberTheme.primary)
-                    .frame(width: 40, height: 40)
-                    .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 13))
-                Text(task.title)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(EmberTheme.primary)
-                    .multilineTextAlignment(.leading)
-                    .fixedSize(horizontal: false, vertical: true)
+                LearningGoalTile(style: goalStyle(for: task), size: 40)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(task.title)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(EmberTheme.primary)
+                        .multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                    if let topic = goalTopic(for: task) {
+                        Text(topic)
+                            .font(.caption)
+                            .foregroundStyle(EmberTheme.muted)
+                    }
+                }
                 Spacer(minLength: 4)
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                     .font(.title3)
@@ -149,6 +163,64 @@ struct FocusSessionView: View {
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+
+    /// The task chosen on the Sessions screen, shown on its own with a way to switch.
+    private func preselectedTaskCard(_ task: LearningTask) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            sectionLabel("Your task")
+            VStack(alignment: .leading, spacing: 0) {
+                HStack(spacing: 13) {
+                    LearningGoalTile(style: goalStyle(for: task), size: 42)
+                    VStack(alignment: .leading, spacing: 3) {
+                        if let topic = goalTopic(for: task) {
+                            Text(topic.uppercased())
+                                .font(.system(size: 9, weight: .bold, design: .rounded))
+                                .tracking(1.6)
+                                .foregroundStyle(EmberTheme.muted)
+                        }
+                        Text(task.title)
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(EmberTheme.primary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    Spacer(minLength: 4)
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.title3)
+                        .foregroundStyle(EmberTheme.primary)
+                        .accessibilityHidden(true)
+                }
+                .padding(.bottom, 12)
+
+                Divider().overlay(EmberTheme.separator)
+
+                Button {
+                    withAnimation(.snappy) { viewModel.changeTask() }
+                } label: {
+                    Label("Change task", systemImage: "arrow.left.arrow.right")
+                        .font(.footnote.weight(.semibold))
+                        .foregroundStyle(EmberTheme.muted)
+                        .frame(maxWidth: .infinity, minHeight: 40, alignment: .leading)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .padding(.top, 4)
+            }
+            .padding(14)
+            .background(EmberTheme.surface, in: RoundedRectangle(cornerRadius: 19))
+            .overlay {
+                RoundedRectangle(cornerRadius: 19)
+                    .strokeBorder(EmberTheme.primary, lineWidth: 1.5)
+            }
+        }
+    }
+
+    private func goalTopic(for task: LearningTask) -> String? {
+        goals.first { $0.id == task.goalID }?.topic
+    }
+
+    private func goalStyle(for task: LearningTask) -> LearningGoalStyle {
+        LearningGoalStyle(index: goals.firstIndex { $0.id == task.goalID } ?? 0)
     }
 
     private var milestoneToggleCard: some View {
@@ -523,10 +595,12 @@ struct FocusSessionView: View {
 
 #Preview("With sample tasks") {
     let container = try! ModelContainer(
-        for: LearningTask.self, FocusSession.self,
+        for: LearningGoal.self, LearningTask.self, FocusSession.self,
         configurations: ModelConfiguration(isStoredInMemoryOnly: true)
     )
-    let goalID = UUID()
+    let goal = LearningGoal(topic: "CS & Systems")
+    container.mainContext.insert(goal)
+    let goalID = goal.id
     for title in ["Read chapter 3: Hash tables", "Practice 5 SQL joins", "Watch lecture 4"] {
         container.mainContext.insert(LearningTask(goalID: goalID, title: title))
     }
@@ -540,5 +614,5 @@ struct FocusSessionView: View {
     NavigationStack {
         FocusSessionView()
     }
-    .modelContainer(for: [LearningTask.self, FocusSession.self], inMemory: true)
+    .modelContainer(for: [LearningGoal.self, LearningTask.self, FocusSession.self], inMemory: true)
 }

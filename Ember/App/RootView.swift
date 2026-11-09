@@ -58,6 +58,8 @@ struct RootView: View {
             EnergyCheckInView()
         case .planner:
             TaskPlannerView(onNavigate: { navigation.push($0) })
+        case .goalDetail:
+            LearningGoalDetailView(goalID: navigation.selectedGoalID)
         case .focus:
             FocusSessionView()
         case .reflection:
