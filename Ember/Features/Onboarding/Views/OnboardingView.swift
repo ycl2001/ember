@@ -19,10 +19,9 @@ struct OnboardingView: View {
         VStack(spacing: 0) {
             FlowTopBar(
                 title: viewModel.step.title,
-                onLeading: goBack,
-                onClose: { dismiss() }
+                showsClose: false
             )
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 20)
             .padding(.top, 8)
             .padding(.bottom, 8)
 
@@ -117,12 +116,6 @@ struct OnboardingView: View {
             finish()
         } else {
             viewModel.advance()
-        }
-    }
-
-    private func goBack() {
-        if !viewModel.goBack() {
-            dismiss()
         }
     }
 

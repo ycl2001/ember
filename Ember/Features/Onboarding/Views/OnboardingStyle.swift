@@ -14,6 +14,7 @@ enum FlowPalette {
     static let deep = Color(red: 0.02, green: 0.12, blue: 0.10)
     static let mint = Color(red: 0.745, green: 0.937, blue: 0.839)
     static let mintText = Color(red: 0.05, green: 0.35, blue: 0.24)
+    static let mintSoft = Color(red: 0.82, green: 0.92, blue: 0.86)
     static let peach = Color(red: 1.0, green: 0.85, blue: 0.74)
     static let brown = Color(red: 0.54, green: 0.29, blue: 0.05)
     static let orange = Color(red: 1.0, green: 0.57, blue: 0.16)
@@ -307,17 +308,21 @@ struct FlowTopBar: View {
     var leadingSymbol: String = "arrow.left"
     var showsClose = true
     var centersTitle = false
-    let onLeading: () -> Void
+    var onLeading: (() -> Void)? = nil
     var onClose: () -> Void = {}
 
     var body: some View {
         HStack(spacing: 8) {
-            Button(action: onLeading) {
-                Image(systemName: leadingSymbol)
-                    .font(.body.weight(.semibold))
-                    .frame(width: 36, height: 36)
+            if let onLeading {
+                Button(action: onLeading) {
+                    Image(systemName: leadingSymbol)
+                        .font(.body.weight(.semibold))
+                        .frame(width: 36, height: 36)
+                }
+                .accessibilityLabel(leadingSymbol == "arrow.left" ? "Back" : "Close")
+            } else if centersTitle {
+                Color.clear.frame(width: 40, height: 36)
             }
-            .accessibilityLabel(leadingSymbol == "arrow.left" ? "Back" : "Close")
 
             if centersTitle {
                 Spacer(minLength: 0)

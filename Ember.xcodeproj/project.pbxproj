@@ -24,6 +24,8 @@
 		A6C53055803EE9219DB5DADB /* LearningGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1B132B374277D42A23ACE4 /* LearningGoal.swift */; };
 		A932490930A027420087F57E /* OnboardingSteps.swift in Sources */ = {isa = PBXBuildFile; fileRef = A932490830A027420087F57E /* OnboardingSteps.swift */; };
 		A932490B30A027510087F57E /* OnboardingStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A932490A30A027510087F57E /* OnboardingStyle.swift */; };
+		A968D51D30A2899300EB421D /* EnergyFlowStateCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A968D51C30A2899300EB421D /* EnergyFlowStateCard.swift */; };
+		A968D51F30A289B300EB421D /* FeelingPickerCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A968D51E30A289B300EB421D /* FeelingPickerCard.swift */; };
 		AFA792AD445E288D6023EDFD /* AppRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA203ABC6BBC3552918D79 /* AppRoute.swift */; };
 		BCCFCE885EDB49F4BAF5EC3A /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500AE4AB024436C9835FF54 /* OnboardingViewModel.swift */; };
 		BCD0B6B2C074EE713079B80E /* EnergyCheckInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */; };
@@ -61,6 +63,8 @@
 		95BFC77EE7E502B6A98ACFCB /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		A932490830A027420087F57E /* OnboardingSteps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSteps.swift; sourceTree = "<group>"; };
 		A932490A30A027510087F57E /* OnboardingStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStyle.swift; sourceTree = "<group>"; };
+		A968D51C30A2899300EB421D /* EnergyFlowStateCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyFlowStateCard.swift; sourceTree = "<group>"; };
+		A968D51E30A289B300EB421D /* FeelingPickerCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeelingPickerCard.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000001 /* AppTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTab.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000002 /* AppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000003 /* EmberTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberTabBar.swift; sourceTree = "<group>"; };
@@ -293,6 +297,8 @@
 			isa = PBXGroup;
 			children = (
 				57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */,
+				A968D51C30A2899300EB421D /* EnergyFlowStateCard.swift */,
+				A968D51E30A289B300EB421D /* FeelingPickerCard.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -473,6 +479,8 @@
 				2F27F37ED33D4C5AAEB506F6 /* DashboardViewModel.swift in Sources */,
 				C0FFEE000000000000000006 /* ProfileViewModel.swift in Sources */,
 				A932490930A027420087F57E /* OnboardingSteps.swift in Sources */,
+				A968D51D30A2899300EB421D /* EnergyFlowStateCard.swift in Sources */,
+				A968D51F30A289B300EB421D /* FeelingPickerCard.swift in Sources */,
 				C0FFEE000000000000000005 /* ProfileView.swift in Sources */,
 				C0FFEE000000000000000004 /* EmberComponents.swift in Sources */,
 				C0FFEE000000000000000003 /* EmberTabBar.swift in Sources */,
