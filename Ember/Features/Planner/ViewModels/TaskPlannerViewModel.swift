@@ -53,6 +53,30 @@ final class TaskPlannerViewModel {
         tasks.filter(\.isCompleted).count
     }
 
+    // MARK: - Goal grouping
+
+    /// Tasks that belong to one goal, oldest first so the checklist reads in the order it was planned.
+    func tasks(for goalID: UUID, in tasks: [LearningTask]) -> [LearningTask] {
+        tasks
+            .filter { $0.goalID == goalID }
+            .sorted { $0.createdAt < $1.createdAt }
+    }
+
+    /// The next unfinished task within one goal.
+    func nextTask(for goalID: UUID, in tasks: [LearningTask]) -> LearningTask? {
+        self.tasks(for: goalID, in: tasks).first { !$0.isCompleted }
+    }
+
+    /// The first unfinished task, walking goals in order. Used by the "Up next" card.
+    func nextTask(across goals: [LearningGoal], in tasks: [LearningTask]) -> (goal: LearningGoal, task: LearningTask)? {
+        for goal in goals {
+            if let task = nextTask(for: goal.id, in: tasks) {
+                return (goal, task)
+            }
+        }
+        return nil
+    }
+
     private func persist(in context: ModelContext) throws {
         do {
             try context.save()

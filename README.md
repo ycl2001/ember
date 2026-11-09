@@ -1,6 +1,5 @@
 # Ember — native iOS starter (EMB-01 / EMB-02)
 
-**Deadline:** Thursday 12 November 2026. **Team:** five people total.
 
 This is a **SwiftUI + SwiftData** Xcode project starter based on the uploaded 15-screen HTML prototype. It is a native app, **not** an HTML wrapper. It intentionally includes a working navigation shell and **four-tab application shell and feature placeholders** so that teammates can replace their own screens independently. The app is not the completed MVP. The SwiftUI views are deliberately placeholders, not finished functionality.
 
