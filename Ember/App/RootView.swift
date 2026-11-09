@@ -3,7 +3,16 @@ import SwiftUI
 /// The actual app shell: four bottom tabs with detail flows pushed above them.
 /// Feature developers own the contents of the destination views, not this router.
 struct RootView: View {
-    @State private var navigation = AppNavigation()
+    @AppStorage(OnboardingStorage.completedKey) private var hasCompletedOnboarding = false
+    @State private var navigation: AppNavigation
+
+    init() {
+        let navigation = AppNavigation()
+        if !UserDefaults.standard.bool(forKey: OnboardingStorage.completedKey) {
+            navigation.selectedTab = .sessions
+        }
+        _navigation = State(initialValue: navigation)
+    }
 
     var body: some View {
         NavigationStack(path: $navigation.path) {
@@ -44,7 +53,7 @@ struct RootView: View {
     private func destination(for route: AppRoute) -> some View {
         switch route {
         case .onboarding:
-            OnboardingView()
+            OnboardingView(onFinish: completeOnboarding)
         case .energyCheckIn:
             EnergyCheckInView()
         case .planner:
@@ -56,5 +65,10 @@ struct RootView: View {
         case .analytics:
             AnalyticsView()
         }
+    }
+
+    private func completeOnboarding() {
+        hasCompletedOnboarding = true
+        navigation.selectedTab = .sessions
     }
 }

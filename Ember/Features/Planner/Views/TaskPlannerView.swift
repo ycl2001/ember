@@ -4,6 +4,7 @@ import SwiftData
 struct TaskPlannerView: View {
     var onNavigate: (AppRoute) -> Void = { _ in }
 
+    @AppStorage(OnboardingStorage.completedKey) private var hasCompletedOnboarding = false
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \LearningGoal.createdAt) private var goals: [LearningGoal]
     @Query(sort: \LearningTask.createdAt, order: .reverse) private var tasks: [LearningTask]
@@ -15,14 +16,27 @@ struct TaskPlannerView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
-                EmberPageHeading(
-                    eyebrow: "Sessions",
-                    title: "Let's build momentum.",
-                    subtitle: "Small tasks make learning feel possible."
-                )
+                if hasCompletedOnboarding {
+                    EmberPageHeading(
+                        eyebrow: "Sessions",
+                        title: "Let's build momentum.",
+                        subtitle: "Small tasks make learning feel possible."
+                    )
 
-                learningGoals
-                checklist
+                    learningGoals
+
+                    if goals.isEmpty && tasks.isEmpty {
+                        MissingLearningGoalState {
+                            onNavigate(.onboarding)
+                        }
+                    } else {
+                        checklist
+                    }
+                } else {
+                    SessionsOnboardingSetup {
+                        onNavigate(.onboarding)
+                    }
+                }
             }
             .padding(.horizontal, 20)
             .padding(.top, 26)
@@ -222,6 +236,174 @@ struct TaskPlannerView: View {
     private struct TaskEditor: Identifiable {
         let id = UUID()
         let task: LearningTask?
+    }
+}
+
+private struct SessionsOnboardingSetup: View {
+    let onStart: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 24) {
+            SessionsSetupHeading()
+            SessionsSetupInvitation(onStart: onStart)
+        }
+    }
+}
+
+private struct SessionsSetupHeading: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 10) {
+                Text("SESSIONS")
+                    .font(.system(size: 10, weight: .bold, design: .rounded))
+                    .tracking(2)
+                    .foregroundStyle(EmberTheme.muted)
+
+                Text("Setup required")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(EmberTheme.primary)
+                    .padding(.horizontal, 9)
+                    .padding(.vertical, 5)
+                    .background(EmberTheme.mint, in: Capsule())
+            }
+
+            Text("Let's build momentum.")
+                .font(.system(size: 33, weight: .medium, design: .serif))
+                .tracking(-0.6)
+                .foregroundStyle(EmberTheme.primary)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Text("A few quick choices will shape a learning checklist that fits you.")
+                .font(.subheadline)
+                .foregroundStyle(EmberTheme.muted)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+private struct SessionsSetupInvitation: View {
+    let onStart: () -> Void
+
+    var body: some View {
+        VStack(spacing: 22) {
+            Image(systemName: "book.pages")
+                .font(.system(size: 30, weight: .medium))
+                .foregroundStyle(EmberTheme.primary)
+                .frame(width: 72, height: 72)
+                .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 22))
+                .accessibilityHidden(true)
+
+            VStack(spacing: 8) {
+                Text("What would you like to learn?")
+                    .font(.system(size: 24, weight: .medium, design: .serif))
+                    .foregroundStyle(EmberTheme.primary)
+                    .multilineTextAlignment(.center)
+
+                Text("Set up your first learning session in three simple steps.")
+                    .font(.subheadline)
+                    .foregroundStyle(EmberTheme.muted)
+                    .multilineTextAlignment(.center)
+            }
+
+            VStack(spacing: 14) {
+                SessionsSetupStep(
+                    number: 1,
+                    title: "Learning goals",
+                    detail: "Choose a topic you want to make progress on."
+                )
+                SessionsSetupStep(
+                    number: 2,
+                    title: "Energy rhythm",
+                    detail: "Share when focused learning feels most natural."
+                )
+                SessionsSetupStep(
+                    number: 3,
+                    title: "Learning plan",
+                    detail: "Review a practical starting plan, then build your checklist."
+                )
+            }
+
+            Button(action: onStart) {
+                HStack {
+                    Text("Start my learning setup")
+                    Spacer()
+                    Image(systemName: "arrow.right")
+                }
+                .font(.headline)
+                .foregroundStyle(.white)
+                .padding(.horizontal, 18)
+                .frame(minHeight: 54)
+                .background(EmberTheme.primary, in: RoundedRectangle(cornerRadius: 15))
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(22)
+        .frame(maxWidth: .infinity)
+        .background(EmberTheme.surface, in: RoundedRectangle(cornerRadius: 22))
+    }
+}
+
+private struct SessionsSetupStep: View {
+    let number: Int
+    let title: String
+    let detail: String
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 13) {
+            Text("\(number)")
+                .font(.caption.weight(.bold))
+                .foregroundStyle(EmberTheme.primary)
+                .frame(width: 30, height: 30)
+                .background(EmberTheme.mint, in: Circle())
+
+            VStack(alignment: .leading, spacing: 3) {
+                Text(title)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(EmberTheme.primary)
+                Text(detail)
+                    .font(.caption)
+                    .foregroundStyle(EmberTheme.muted)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+}
+
+private struct MissingLearningGoalState: View {
+    let onAddTopic: () -> Void
+
+    var body: some View {
+        VStack(spacing: 14) {
+            Image(systemName: "book.closed")
+                .font(.system(size: 28))
+                .foregroundStyle(EmberTheme.primary)
+                .frame(width: 64, height: 64)
+                .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 18))
+                .accessibilityHidden(true)
+
+            Text("Add a learning goal first")
+                .font(.headline)
+                .foregroundStyle(EmberTheme.primary)
+
+            Text("Choose a topic before creating your first checklist task.")
+                .font(.subheadline)
+                .foregroundStyle(EmberTheme.muted)
+                .multilineTextAlignment(.center)
+
+            Button(action: onAddTopic) {
+                Label("Add learning topic", systemImage: "plus")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity, minHeight: 48)
+                    .background(EmberTheme.primary, in: RoundedRectangle(cornerRadius: 13))
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity)
+        .background(EmberTheme.surface, in: RoundedRectangle(cornerRadius: 19))
     }
 }
 
