@@ -11,6 +11,7 @@ struct TaskPlannerView: View {
     @Query(sort: \LearningGoal.createdAt) private var goals: [LearningGoal]
     @Query(sort: \LearningTask.createdAt) private var tasks: [LearningTask]
     @State private var viewModel = TaskPlannerViewModel()
+    @State private var goalToDelete: LearningGoal?
 
     var body: some View {
         ScrollView {
@@ -42,6 +43,12 @@ struct TaskPlannerView: View {
         }
         .background(EmberTheme.canvas.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
+        .modifier(GoalEditing(
+            viewModel: viewModel,
+            deleting: $goalToDelete,
+            goals: goals,
+            tasks: tasks
+        ))
     }
 
     // MARK: - Up next
@@ -98,6 +105,11 @@ struct TaskPlannerView: View {
                 ) {
                     navigation?.openGoal(goal.id)
                 }
+                .contextMenu {
+                    Button(role: .destructive) { goalToDelete = goal } label: {
+                        Label("Delete goal", systemImage: "trash")
+                    }
+                }
             }
         }
     }
@@ -110,6 +122,7 @@ struct TaskPlannerView: View {
 struct LearningGoalDetailView: View {
     let goalID: UUID?
 
+    @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @Environment(AppNavigation.self) private var navigation: AppNavigation?
     @Query(sort: \LearningGoal.createdAt) private var goals: [LearningGoal]
@@ -119,6 +132,7 @@ struct LearningGoalDetailView: View {
     @State private var taskToDelete: LearningTask?
     @State private var showingUpdateError = false
     @State private var showDone = false
+    @State private var goalToDelete: LearningGoal?
 
     private var goalIndex: Int? { goals.firstIndex { $0.id == goalID } }
     private var goal: LearningGoal? { goalIndex.map { goals[$0] } }
@@ -144,6 +158,28 @@ struct LearningGoalDetailView: View {
         .background(EmberTheme.canvas.ignoresSafeArea())
         .navigationTitle(goal?.topic ?? "Learning goal")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            if let goal {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        Button(role: .destructive) { goalToDelete = goal } label: {
+                            Label("Delete goal", systemImage: "trash")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                            .foregroundStyle(EmberTheme.primary)
+                    }
+                    .accessibilityLabel("Goal options")
+                }
+            }
+        }
+        .modifier(GoalEditing(
+            viewModel: viewModel,
+            deleting: $goalToDelete,
+            goals: goals,
+            tasks: allTasks,
+            onDeleted: { dismiss() }
+        ))
         .sheet(item: $editor) { editor in
             TaskEditorView(viewModel: viewModel, task: editor.task)
         }
@@ -215,6 +251,13 @@ struct LearningGoalDetailView: View {
         .padding(.horizontal, 14)
         .background(EmberTheme.surface, in: RoundedRectangle(cornerRadius: 19))
 
+        if !tasks.isEmpty {
+            Label("Tap a task to rename it. Press and hold to delete.", systemImage: "hand.tap")
+                .font(.caption)
+                .foregroundStyle(EmberTheme.muted)
+                .padding(.horizontal, 4)
+        }
+
         if !done.isEmpty {
             VStack(alignment: .leading, spacing: 0) {
                 Button {
@@ -263,19 +306,25 @@ struct LearningGoalDetailView: View {
     private func todoRow(_ task: LearningTask) -> some View {
         HStack(spacing: 11) {
             checkButton(for: task, onDark: false)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(task.title)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(EmberTheme.primary)
-                if !task.notes.isEmpty {
-                    Label(task.notes, systemImage: "note.text")
-                        .font(.caption)
-                        .foregroundStyle(EmberTheme.muted)
-                        .lineLimit(1)
-                        .labelStyle(NoteLabelStyle())
+            Button { openEditor(for: task) } label: {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(task.title)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(EmberTheme.primary)
+                        .multilineTextAlignment(.leading)
+                    if !task.notes.isEmpty {
+                        Label(task.notes, systemImage: "note.text")
+                            .font(.caption)
+                            .foregroundStyle(EmberTheme.muted)
+                            .lineLimit(1)
+                            .labelStyle(NoteLabelStyle())
+                    }
                 }
+                .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                .contentShape(Rectangle())
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .buttonStyle(.plain)
+            .accessibilityHint("Rename or delete this task")
             Button {
                 navigation?.startFocus(taskID: task.id)
             } label: {
@@ -297,11 +346,17 @@ struct LearningGoalDetailView: View {
     private func doneRow(_ task: LearningTask) -> some View {
         HStack(spacing: 11) {
             checkButton(for: task, onDark: false)
-            Text(task.title)
-                .font(.subheadline)
-                .foregroundStyle(EmberTheme.muted)
-                .strikethrough(true, color: EmberTheme.muted)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            Button { openEditor(for: task) } label: {
+                Text(task.title)
+                    .font(.subheadline)
+                    .foregroundStyle(EmberTheme.muted)
+                    .strikethrough(true, color: EmberTheme.muted)
+                    .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityHint("Rename or delete this task")
         }
         .frame(minHeight: 48)
         .contextMenu { taskMenu(for: task) }
@@ -358,15 +413,18 @@ struct LearningGoalDetailView: View {
 
     @ViewBuilder
     private func taskMenu(for task: LearningTask) -> some View {
-        Button {
-            viewModel.prepareEditor(for: task, goals: goals)
-            editor = TaskEditor(task: task)
-        } label: {
-            Label("Edit task", systemImage: "pencil")
+        Button { openEditor(for: task) } label: {
+            Label("Rename task", systemImage: "pencil")
         }
         Button(role: .destructive) { taskToDelete = task } label: {
             Label("Delete task", systemImage: "trash")
         }
+    }
+
+    /// Opens the task sheet to rename the task (it also edits notes and the goal).
+    private func openEditor(for task: LearningTask) {
+        viewModel.prepareEditor(for: task, goals: goals)
+        editor = TaskEditor(task: task)
     }
 
     private func sectionLabel(_ text: String) -> some View {
@@ -387,6 +445,69 @@ struct LearningGoalDetailView: View {
     private struct TaskEditor: Identifiable {
         let id = UUID()
         let task: LearningTask?
+    }
+}
+
+// MARK: - Delete goal
+
+/// Shared delete confirmation for a learning goal.
+private struct GoalEditing: ViewModifier {
+    @Bindable var viewModel: TaskPlannerViewModel
+    @Binding var deleting: LearningGoal?
+    let goals: [LearningGoal]
+    let tasks: [LearningTask]
+    var onDeleted: () -> Void = {}
+
+    @Environment(\.modelContext) private var modelContext
+    @State private var errorMessage: String?
+
+    func body(content: Content) -> some View {
+        content
+            .confirmationDialog(
+                deleting.map { "Delete “\($0.topic)”?" } ?? "Delete goal?",
+                isPresented: Binding(
+                    get: { deleting != nil },
+                    set: { if !$0 { deleting = nil } }
+                ),
+                titleVisibility: .visible,
+                presenting: deleting
+            ) { goal in
+                let count = taskCount(for: goal)
+                Button(count == 0 ? "Delete goal" : "Delete goal and \(count) \(count == 1 ? "task" : "tasks")",
+                       role: .destructive) {
+                    delete(goal)
+                }
+                Button("Keep it", role: .cancel) {}
+            } message: { goal in
+                let count = taskCount(for: goal)
+                Text(count == 0
+                     ? "This can't be undone."
+                     : "Its \(count) \(count == 1 ? "task" : "tasks") will be deleted too. Past focus sessions stay in your insights. This can't be undone.")
+            }
+            .alert(
+                "Couldn't update goal",
+                isPresented: Binding(
+                    get: { errorMessage != nil },
+                    set: { if !$0 { errorMessage = nil } }
+                )
+            ) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(errorMessage ?? "")
+            }
+    }
+
+    private func taskCount(for goal: LearningGoal) -> Int {
+        tasks.filter { $0.goalID == goal.id }.count
+    }
+
+    private func delete(_ goal: LearningGoal) {
+        do {
+            try viewModel.deleteGoal(goal, tasks: tasks, in: modelContext)
+            onDeleted()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
     }
 }
 
@@ -827,6 +948,7 @@ private struct TaskEditorView: View {
     @State private var justAdded: [String] = []
     @State private var errorMessage: String?
     @State private var addedCount = 0
+    @State private var showDeleteConfirm = false
 
     private enum Field { case title, notes }
 
@@ -877,6 +999,16 @@ private struct TaskEditorView: View {
                 }
                 .buttonStyle(.plain)
 
+                if isEditing {
+                    Button(role: .destructive) { showDeleteConfirm = true } label: {
+                        Label("Delete task", systemImage: "trash")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(.red)
+                            .frame(maxWidth: .infinity, minHeight: 44)
+                    }
+                    .buttonStyle(.plain)
+                }
+
                 if let errorMessage {
                     Text(errorMessage)
                         .font(.caption.weight(.medium))
@@ -898,6 +1030,12 @@ private struct TaskEditorView: View {
         .presentationCornerRadius(28)
         .presentationBackground(EmberTheme.surface)
         .sensoryFeedback(.success, trigger: addedCount)
+        .confirmationDialog("Delete this task?", isPresented: $showDeleteConfirm, titleVisibility: .visible) {
+            Button("Delete task", role: .destructive) { deleteTask() }
+            Button("Keep it", role: .cancel) {}
+        } message: {
+            Text("Past focus sessions stay in your insights. This can't be undone.")
+        }
         .task {
             // Focusing during the sheet's slide-in can be ignored, so wait for it to settle.
             try? await Task.sleep(for: .milliseconds(350))
@@ -1073,6 +1211,16 @@ private struct TaskEditorView: View {
     }
 
     // MARK: - Actions
+
+    private func deleteTask() {
+        guard let task else { return }
+        do {
+            try viewModel.deleteTask(task, in: modelContext)
+            dismiss()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
 
     private func submit() {
         guard viewModel.canSaveTask else {

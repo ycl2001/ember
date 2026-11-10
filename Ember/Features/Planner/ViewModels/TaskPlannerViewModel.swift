@@ -53,6 +53,17 @@ final class TaskPlannerViewModel {
         try persist(in: context)
     }
 
+    // MARK: - Goals
+
+    /// Deletes a goal and every task in it. Past focus sessions are kept for insights.
+    func deleteGoal(_ goal: LearningGoal, tasks: [LearningTask], in context: ModelContext) throws {
+        for task in tasks where task.goalID == goal.id {
+            context.delete(task)
+        }
+        context.delete(goal)
+        try persist(in: context)
+    }
+
     func completedCount(in tasks: [LearningTask]) -> Int {
         tasks.filter(\.isCompleted).count
     }
