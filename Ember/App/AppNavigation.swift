@@ -12,6 +12,8 @@ final class AppNavigation {
     var selectedGoalID: UUID?
     /// A task chosen before opening Focus. `FocusSessionView` reads it once, then clears it.
     var pendingFocusTaskID: UUID?
+    /// The exact completed session Reflection should load.
+    var pendingReflectionSessionID: UUID?
 
     func select(_ tab: AppTab) {
         path.removeAll()
@@ -36,5 +38,11 @@ final class AppNavigation {
     func startFocus(taskID: UUID?) {
         pendingFocusTaskID = taskID
         push(.focus)
+    }
+
+    /// Opens Reflection for the completed session that was just persisted.
+    func openReflection(sessionID: UUID) {
+        pendingReflectionSessionID = sessionID
+        push(.reflection)
     }
 }

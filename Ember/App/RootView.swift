@@ -63,7 +63,12 @@ struct RootView: View {
         case .focus:
             FocusSessionView()
         case .reflection:
-            ReflectionView()
+            ReflectionView(
+                sessionID: navigation.pendingReflectionSessionID,
+                onSaveReturn: { finishReflection(on: .today) },
+                onRestorativeBreak: { finishReflection(on: .sessions) },
+                onContinueLearning: { finishReflection(on: .sessions) }
+            )
         case .analytics:
             AnalyticsView()
         }
@@ -72,5 +77,10 @@ struct RootView: View {
     private func completeOnboarding() {
         hasCompletedOnboarding = true
         navigation.selectedTab = .sessions
+    }
+
+    private func finishReflection(on tab: AppTab) {
+        navigation.pendingReflectionSessionID = nil
+        navigation.popToTab(tab)
     }
 }
