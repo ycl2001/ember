@@ -32,7 +32,6 @@ enum FeelingOption: String, CaseIterable, Identifiable {
         }
     }
 
-    /// Level saved when the learner taps this option. Change the mapping here if needed.
     var level: Int {
         switch self {
         case .gentle: return 2
@@ -89,16 +88,14 @@ enum CognitiveLoad: String, CaseIterable, Identifiable {
     }
 }
 
-/// Member 2: state and saving for the Today picker and the full energy check-in screen.
+/// State and saving for the Today picker and the full energy check-in screen.
 @MainActor
 @Observable
 final class EnergyCheckInViewModel {
-    var errorMessage: String?
-    private(set) var savedMessage: String?
-
-    // Full check-in screen
     var selectedLevel = 3
     var didSave = false
+    var errorMessage: String?
+    private(set) var savedMessage: String?
 
     /// Display only for now. EnergyCheckIn has no field for these, so they are not saved.
     var cognitiveLoad: CognitiveLoad?
@@ -108,9 +105,10 @@ final class EnergyCheckInViewModel {
         "Clear examples", "Quiet study space", "Interactive sandbox", "25-min interval"
     ]
 
-    /// The latest saved level from before the screen opened, used for the Before and After card.
     private(set) var previousLevel: Int?
     private var hasLoadedPrevious = false
+
+    var isValidLevel: Bool { (1...5).contains(selectedLevel) }
 
     static func label(for level: Int) -> String {
         switch level {
@@ -134,9 +132,7 @@ final class EnergyCheckInViewModel {
 
     // MARK: Today picker
 
-    /// Saves a check-in for the tapped option. Tapping the option that is already
-    /// active today does nothing, so double taps don't create duplicate entries.
-    /// Returns true when a new check-in was saved.
+    /// Saves a check-in for the tapped option. Returns true only after a successful save.
     @discardableResult
     func record(_ option: FeelingOption, latest: EnergyCheckIn?, in context: ModelContext) -> Bool {
         if let latest,
@@ -145,8 +141,9 @@ final class EnergyCheckInViewModel {
             return false
         }
 
+        let checkIn = EnergyCheckIn(level: option.level)
         let message = "Saved. " + Self.describeChange(from: latest?.level, to: option.level)
-        context.insert(EnergyCheckIn(level: option.level))
+        context.insert(checkIn)
 
         do {
             try context.save()
@@ -154,6 +151,7 @@ final class EnergyCheckInViewModel {
             errorMessage = nil
             return true
         } catch {
+            context.delete(checkIn)
             savedMessage = nil
             errorMessage = "Couldn't save your check-in. Please try again."
             return false
@@ -166,6 +164,10 @@ final class EnergyCheckInViewModel {
         selectedLevel = level
         didSave = false
         errorMessage = nil
+    }
+
+    func select(_ level: Int) {
+        selectLevel(level)
     }
 
     func toggleHelper(_ helper: String) {
@@ -181,12 +183,11 @@ final class EnergyCheckInViewModel {
         guard !hasLoadedPrevious else { return }
         hasLoadedPrevious = true
         previousLevel = checkIns.max { $0.createdAt < $1.createdAt }?.level
-        if let previousLevel {
+        if let previousLevel, (1...5).contains(previousLevel) {
             selectedLevel = previousLevel
         }
     }
 
-    /// Shown next to "Focus Rhythm" on the top card, based on the selected level.
     var cadenceLabel: String {
         switch selectedLevel {
         case 1, 2: return "Gentle Cadence"
@@ -195,31 +196,45 @@ final class EnergyCheckInViewModel {
         }
     }
 
+    var change: Int? {
+        guard let previousLevel else { return nil }
+        return selectedLevel - previousLevel
+    }
+
     var changeLabel: String {
-        guard let previousLevel else { return "First check-in" }
-        let change = selectedLevel - previousLevel
+        guard let change else { return "First check-in" }
         let unit = abs(change) == 1 ? "level" : "levels"
-        if change < 0 { return "Energy used: \(change) \(unit)" }
-        if change > 0 { return "Energy gained: +\(change) \(unit)" }
-        return "Energy steady"
+        let sign = change > 0 ? "+" : ""
+        return "Energy change: \(sign)\(change) \(unit)"
     }
 
     var changeMessage: String {
         Self.describeChange(from: previousLevel, to: selectedLevel)
     }
 
-    /// Saves a new EnergyCheckIn for the selected level.
     func saveSelectedLevel(in context: ModelContext) {
-        context.insert(EnergyCheckIn(level: selectedLevel))
+        guard isValidLevel else {
+            didSave = false
+            errorMessage = "Choose an energy level from 1 to 5."
+            return
+        }
+
+        let checkIn = EnergyCheckIn(level: selectedLevel)
+        context.insert(checkIn)
 
         do {
             try context.save()
             didSave = true
             errorMessage = nil
         } catch {
+            context.delete(checkIn)
             didSave = false
             errorMessage = "Couldn't save your check-in. Please try again."
         }
+    }
+
+    func save(in context: ModelContext) {
+        saveSelectedLevel(in: context)
     }
 
     // MARK: Shared

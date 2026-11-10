@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftData
 
 /// Member 2 owns this file. Saves a 1-5 EnergyCheckIn to SwiftData.
-/// Layout follows the Post Session Reflection design. Opened from Profile "Update energy".
+/// Layout follows the Post Session Reflection design.
 struct EnergyCheckInView: View {
     private let onContinueLearning: () -> Void
     private let onTakeBreak: () -> Void
@@ -29,8 +29,10 @@ struct EnergyCheckInView: View {
         VStack(spacing: 0) {
             FlowTopBar(
                 title: "Energy Check-In",
+                leadingSymbol: "xmark",
                 showsClose: false,
-                centersTitle: true
+                centersTitle: true,
+                onLeading: { dismiss() }
             )
             .padding(.horizontal, 16)
             .padding(.top, 8)
@@ -119,7 +121,7 @@ struct EnergyCheckInView: View {
     private func loadCard(_ load: CognitiveLoad) -> some View {
         let isSelected = viewModel.cognitiveLoad == load
         let iconBackground: Color = isSelected ? FlowPalette.orange : FlowPalette.chip
-        let colors = badgeColors(for: load)
+        let badgeColors = badgeColors(for: load)
 
         return Button {
             viewModel.cognitiveLoad = load
@@ -138,8 +140,8 @@ struct EnergyCheckInView: View {
                             .foregroundStyle(FlowPalette.ink)
                         Spacer(minLength: 8)
                         FlowPill(text: load.badge,
-                                 background: colors.background,
-                                 foreground: colors.foreground)
+                                 background: badgeColors.background,
+                                 foreground: badgeColors.foreground)
                     }
                     Text(load.detail)
                         .font(.subheadline)
@@ -147,11 +149,7 @@ struct EnergyCheckInView: View {
                         .multilineTextAlignment(.leading)
                 }
             }
-            .padding(16)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(isSelected ? FlowPalette.surface : FlowPalette.card,
-                        in: RoundedRectangle(cornerRadius: 16))
-            .shadow(color: Color.black.opacity(isSelected ? 0 : 0.05), radius: 6, y: 2)
+            .flowSelectableInverted(selected: isSelected)
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
@@ -193,7 +191,7 @@ struct EnergyCheckInView: View {
         let label = EnergyCheckInViewModel.label(for: level)
 
         return Button {
-            viewModel.selectLevel(level)
+            viewModel.select(level)
         } label: {
             VStack(spacing: 8) {
                 Text("\(level)")
@@ -382,10 +380,22 @@ struct EnergyCheckInView: View {
 
     /// Saves the check-in, then runs the chosen action and closes the screen.
     private func complete(_ action: () -> Void) {
-        viewModel.saveSelectedLevel(in: modelContext)
+        viewModel.save(in: modelContext)
         guard viewModel.didSave else { return }
         action()
         dismiss()
+    }
+}
+
+private extension View {
+    /// Post Session Reflection style: the selected card is grey, the others are white.
+    func flowSelectableInverted(selected: Bool) -> some View {
+        self
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(selected ? FlowPalette.surface : FlowPalette.card,
+                        in: RoundedRectangle(cornerRadius: 16))
+            .shadow(color: Color.black.opacity(selected ? 0 : 0.05), radius: 6, y: 2)
     }
 }
 
