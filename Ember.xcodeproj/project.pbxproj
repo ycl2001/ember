@@ -22,6 +22,13 @@
 		64C5F0ACA041FB999FE17FFA /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804CF35177FA68E8561AED47 /* AnalyticsView.swift */; };
 		664540F1C4E24D2D848CB03B /* TaskPlannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E2A8D9E604A79A5CC7357 /* TaskPlannerViewModel.swift */; };
 		95B7C90A30A1379B0046BDC5 /* EnergyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B7C90930A1378D0046BDC5 /* EnergyRecord.swift */; };
+		95B7C91030A15F410046BDC5 /* AnalyticsActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B7C90E30A15F410046BDC5 /* AnalyticsActions.swift */; };
+		95B7C91130A15F410046BDC5 /* BioRhythmReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B7C90F30A15F410046BDC5 /* BioRhythmReport.swift */; };
+		95B7C91330A28D510046BDC5 /* DailyAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B7C91230A28D3E0046BDC5 /* DailyAnalysis.swift */; };
+		95B7C91530A28D660046BDC5 /* MonthlyAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B7C91430A28D5B0046BDC5 /* MonthlyAnalysis.swift */; };
+		95B7C91730A28D8D0046BDC5 /* DailyAnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B7C91630A28D7C0046BDC5 /* DailyAnalysisView.swift */; };
+		95B7C91930A28E3D0046BDC5 /* WeeklyAnalysusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B7C91830A28D920046BDC5 /* WeeklyAnalysusView.swift */; };
+		95B7C91B30A28E570046BDC5 /* MonthlyAnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B7C91A30A28E470046BDC5 /* MonthlyAnalysisView.swift */; };
 		A6C53055803EE9219DB5DADB /* LearningGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1B132B374277D42A23ACE4 /* LearningGoal.swift */; };
 		AFA792AD445E288D6023EDFD /* AppRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA203ABC6BBC3552918D79 /* AppRoute.swift */; };
 		BCCFCE885EDB49F4BAF5EC3A /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500AE4AB024436C9835FF54 /* OnboardingViewModel.swift */; };
@@ -58,6 +65,13 @@
 		8C3E2A8D9E604A79A5CC7357 /* TaskPlannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPlannerViewModel.swift; sourceTree = "<group>"; };
 		8FBA53E3A9A8508DC4E98D6E /* SessionReflection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionReflection.swift; sourceTree = "<group>"; };
 		95B7C90930A1378D0046BDC5 /* EnergyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyRecord.swift; sourceTree = "<group>"; };
+		95B7C90E30A15F410046BDC5 /* AnalyticsActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsActions.swift; sourceTree = "<group>"; };
+		95B7C90F30A15F410046BDC5 /* BioRhythmReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioRhythmReport.swift; sourceTree = "<group>"; };
+		95B7C91230A28D3E0046BDC5 /* DailyAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyAnalysis.swift; sourceTree = "<group>"; };
+		95B7C91430A28D5B0046BDC5 /* MonthlyAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyAnalysis.swift; sourceTree = "<group>"; };
+		95B7C91630A28D7C0046BDC5 /* DailyAnalysisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyAnalysisView.swift; sourceTree = "<group>"; };
+		95B7C91830A28D920046BDC5 /* WeeklyAnalysusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyAnalysusView.swift; sourceTree = "<group>"; };
+		95B7C91A30A28E470046BDC5 /* MonthlyAnalysisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyAnalysisView.swift; sourceTree = "<group>"; };
 		95BFC77EE7E502B6A98ACFCB /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000001 /* AppTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTab.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000002 /* AppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
@@ -240,6 +254,11 @@
 			isa = PBXGroup;
 			children = (
 				804CF35177FA68E8561AED47 /* AnalyticsView.swift */,
+				95B7C90E30A15F410046BDC5 /* AnalyticsActions.swift */,
+				95B7C90F30A15F410046BDC5 /* BioRhythmReport.swift */,
+				95B7C91630A28D7C0046BDC5 /* DailyAnalysisView.swift */,
+				95B7C91830A28D920046BDC5 /* WeeklyAnalysusView.swift */,
+				95B7C91A30A28E470046BDC5 /* MonthlyAnalysisView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -315,6 +334,8 @@
 			isa = PBXGroup;
 			children = (
 				D308512CBCF54D90A8EFEEB8 /* AnalyticsViewModel.swift */,
+				95B7C91230A28D3E0046BDC5 /* DailyAnalysis.swift */,
+				95B7C91430A28D5B0046BDC5 /* MonthlyAnalysis.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -451,13 +472,17 @@
 				4390AE37765858854E6B379E /* LearningTask.swift in Sources */,
 				37D2A246680D1D44581171FB /* EnergyCheckIn.swift in Sources */,
 				4481F7391F8374B087C65363 /* FocusSession.swift in Sources */,
+				95B7C91B30A28E570046BDC5 /* MonthlyAnalysisView.swift in Sources */,
 				FF6570AD9396EE23464BDE76 /* SessionReflection.swift in Sources */,
 				D667026D5A4010BBF2C32BF9 /* EmberTheme.swift in Sources */,
 				46A5B6F37818992C3C4BFDF1 /* FeaturePlaceholderView.swift in Sources */,
 				F0D6FA0EC211A2D98EB1E55E /* OnboardingView.swift in Sources */,
+				95B7C91030A15F410046BDC5 /* AnalyticsActions.swift in Sources */,
+				95B7C91130A15F410046BDC5 /* BioRhythmReport.swift in Sources */,
 				BCD0B6B2C074EE713079B80E /* EnergyCheckInView.swift in Sources */,
 				EC5D369EAA4D9C383152A697 /* TaskPlannerView.swift in Sources */,
 				50468057A090BB81D052F369 /* FocusSessionView.swift in Sources */,
+				95B7C91930A28E3D0046BDC5 /* WeeklyAnalysusView.swift in Sources */,
 				EE9798606A27751CE15096F1 /* ReflectionView.swift in Sources */,
 				64C5F0ACA041FB999FE17FFA /* AnalyticsView.swift in Sources */,
 				BCCFCE885EDB49F4BAF5EC3A /* OnboardingViewModel.swift in Sources */,
@@ -465,6 +490,7 @@
 				664540F1C4E24D2D848CB03B /* TaskPlannerViewModel.swift in Sources */,
 				07DAF14BB28D4D6184AAB865 /* FocusSessionViewModel.swift in Sources */,
 				E2763AF6B7A944C1879AAA5A /* ReflectionViewModel.swift in Sources */,
+				95B7C91730A28D8D0046BDC5 /* DailyAnalysisView.swift in Sources */,
 				5FF0D710460B4A52B237292B /* AnalyticsViewModel.swift in Sources */,
 				2F27F37ED33D4C5AAEB506F6 /* DashboardViewModel.swift in Sources */,
 				95B7C90A30A1379B0046BDC5 /* EnergyRecord.swift in Sources */,
@@ -472,8 +498,10 @@
 				C0FFEE000000000000000005 /* ProfileView.swift in Sources */,
 				C0FFEE000000000000000004 /* EmberComponents.swift in Sources */,
 				C0FFEE000000000000000003 /* EmberTabBar.swift in Sources */,
+				95B7C91330A28D510046BDC5 /* DailyAnalysis.swift in Sources */,
 				C0FFEE000000000000000002 /* AppNavigation.swift in Sources */,
 				C0FFEE000000000000000001 /* AppTab.swift in Sources */,
+				95B7C91530A28D660046BDC5 /* MonthlyAnalysis.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

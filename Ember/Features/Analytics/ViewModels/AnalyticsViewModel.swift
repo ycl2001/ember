@@ -1,3 +1,4 @@
+///AnalyticsViewModel
 
 import Foundation
 import Observation
@@ -43,20 +44,23 @@ final class AnalyticsViewModel {
     }
 
     // MARK: - Metrics
+    // Dates come from DailyModelAdapter (see DailyAnalysis.swift) so you only map
+    // your model's property names in one place.
+
     func completedTaskCount(in tasks: [LearningTask], during range: DateInterval) -> Int {
         tasks.filter { task in
             guard task.isCompleted else { return false }
-            if let finished = (task as AnyObject).value(forKey: "completedAt") as? Date {
+            if let finished = DailyModelAdapter.completionDate(task) {
                 return range.contains(finished)
             }
-            // If you don’t track completedAt, fallback to included for now:
+            // If completion dates aren't mapped yet, count the task as included for now.
             return true
         }.count
     }
 
     func sessionsCount(in sessions: [FocusSession], during range: DateInterval) -> Int {
         sessions.filter { s in
-            if let end = (s as AnyObject).value(forKey: "endedAt") as? Date {
+            if let end = DailyModelAdapter.endDate(s) {
                 return range.contains(end)
             }
             return false
@@ -86,7 +90,7 @@ final class AnalyticsViewModel {
         let tasksCompleted: Int
     }
 
-    // Build smoothed day-level points over the selected range
+    // Build day-level points over the selected range
     func chartPoints(tasks: [LearningTask], reflections: [EnergyRecord], during range: DateInterval) -> [ChartPoint] {
         let cal = Calendar.current
         // Group reflections per day avg energy delta
@@ -101,7 +105,7 @@ final class AnalyticsViewModel {
         // Group tasks completed per day
         let completedTasks = tasks.filter { $0.isCompleted }
         let tasksByDay = Dictionary(grouping: completedTasks) { task -> Date in
-            if let finished = (task as AnyObject).value(forKey: "completedAt") as? Date {
+            if let finished = DailyModelAdapter.completionDate(task) {
                 return cal.startOfDay(for: finished)
             }
             return Date.distantPast
@@ -123,11 +127,23 @@ final class AnalyticsViewModel {
     // MARK: - Formatting Helpers
     func rangeTitle(_ range: DateInterval) -> String {
         let df = DateFormatter()
-        df.dateFormat = "MMM d"
-        return "\(df.string(from: range.start)) – \(df.string(from: range.end.addingTimeInterval(-1)))"
+        switch period {
+        case .daily:
+            df.dateFormat = "MMM d"
+            return df.string(from: range.start)
+        case .weekly:
+            df.dateFormat = "MMM d"
+            return "\(df.string(from: range.start)) – \(df.string(from: range.end.addingTimeInterval(-1)))"
+        case .monthly:
+            df.dateFormat = "MMMM yyyy"
+            return df.string(from: range.start)
+        }
     }
 
     func calibrationBadgeText() -> String { "Calibrated" }
-    func termText() -> String { "Fall Sem Wk 6" } // replace with your term logic
-}
 
+    func termText() -> String {
+        // replace with your term logic
+        period == .monthly ? "Fall Semester Month 2" : "Fall Sem Wk 6"
+    }
+}
