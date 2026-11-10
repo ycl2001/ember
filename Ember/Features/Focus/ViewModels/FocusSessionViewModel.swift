@@ -1,6 +1,39 @@
 import Foundation
 import Observation
 import SwiftData
+import UserNotifications
+
+/// A focus session that was still running or paused when the app closed.
+/// Kept on the device only (not in SwiftData), so Analytics never sees half-finished sessions.
+struct FocusSessionDraft: Codable, Equatable {
+    var taskID: UUID
+    var taskTitle: String
+    var startedAt: Date
+    /// Focused time up to `savedAt`, excluding paused time.
+    var focusedSeconds: TimeInterval
+    var hasReachedMilestone: Bool
+    var milestoneReminderEnabled: Bool
+    var savedAt: Date
+}
+
+/// Reads and writes the single in-progress `FocusSessionDraft` in UserDefaults.
+enum FocusDraftStore {
+    private static let key = "focus.inProgressSession"
+
+    static func load() -> FocusSessionDraft? {
+        guard let data = UserDefaults.standard.data(forKey: key) else { return nil }
+        return try? JSONDecoder().decode(FocusSessionDraft.self, from: data)
+    }
+
+    static func save(_ draft: FocusSessionDraft) {
+        guard let data = try? JSONEncoder().encode(draft) else { return }
+        UserDefaults.standard.set(data, forKey: key)
+    }
+
+    static func clear() {
+        UserDefaults.standard.removeObject(forKey: key)
+    }
+}
 
 /// Member 4: focus timer state machine.
 ///
@@ -32,6 +65,17 @@ final class FocusSessionViewModel {
     var milestoneReminderEnabled = true
     var showMilestoneSheet = false
     private(set) var hasReachedMilestone = false
+
+    /// Sends a notification at the 20-min milestone if the phone is locked or the app is
+    /// in the background. Remembered between launches.
+    private(set) var lockReminderEnabled = UserDefaults.standard.bool(forKey: FocusSessionViewModel.lockReminderKey) {
+        didSet { UserDefaults.standard.set(lockReminderEnabled, forKey: Self.lockReminderKey) }
+    }
+    /// Shown under the reminder toggle when notifications are turned off for Ember.
+    private(set) var reminderNotice: String?
+
+    /// A session left unfinished when the app closed, waiting for Resume / Save / Discard.
+    private(set) var unfinishedDraft: FocusSessionDraft?
 
     private(set) var savedSession: FocusSession?
     var errorMessage: String?
@@ -88,6 +132,11 @@ final class FocusSessionViewModel {
     private var accumulatedSeconds: TimeInterval = 0
     private var ticker: Task<Void, Never>?
 
+    private static let lockReminderKey = "focus.lockReminderEnabled"
+    private static let milestoneNotificationID = "ember.focus.milestone"
+    /// How often (in seconds) a running session is snapshotted to the device.
+    private static let draftSaveInterval = 15
+
     // MARK: - Setup
 
     /// True when the task arrived pre-chosen (from a goal's checklist or "Up next").
@@ -129,6 +178,8 @@ final class FocusSessionViewModel {
         errorMessage = nil
         phase = .running
         startTicker()
+        saveDraft()
+        scheduleMilestoneReminder()
     }
 
     func pause() {
@@ -140,6 +191,8 @@ final class FocusSessionViewModel {
         stopTicker()
         phase = .paused
         refresh()
+        saveDraft()
+        cancelMilestoneReminder()
     }
 
     func resume() {
@@ -147,6 +200,8 @@ final class FocusSessionViewModel {
         segmentStartedAt = .now
         phase = .running
         startTicker()
+        saveDraft()
+        scheduleMilestoneReminder()
     }
 
     func togglePause() {
@@ -204,6 +259,8 @@ final class FocusSessionViewModel {
             try context.save()
             savedSession = session
             phase = .finished
+            FocusDraftStore.clear()
+            cancelMilestoneReminder()
         } catch {
             context.delete(session)
             errorMessage = "Couldn't save this session. Try again."
@@ -213,6 +270,8 @@ final class FocusSessionViewModel {
     /// Throws away the current run without saving anything.
     func discard() {
         stopTicker()
+        cancelMilestoneReminder()
+        FocusDraftStore.clear()
         resetTiming()
         showMilestoneSheet = false
         phase = .setup
@@ -221,10 +280,175 @@ final class FocusSessionViewModel {
     /// Returns to the setup screen after a finished session.
     func startAnother() {
         stopTicker()
+        cancelMilestoneReminder()
+        FocusDraftStore.clear()
         resetTiming()
         savedSession = nil
         errorMessage = nil
         phase = .setup
+    }
+
+    // MARK: - Unfinished session (app was closed mid-session)
+
+    /// Looks for a session left unfinished last time. Drops it if its task no longer exists.
+    func checkForUnfinishedSession(tasks: [LearningTask]) {
+        guard phase == .setup else { return }
+        guard let draft = FocusDraftStore.load() else {
+            unfinishedDraft = nil
+            return
+        }
+        // The session isn't running while it waits for a choice, so no reminder should fire.
+        cancelMilestoneReminder()
+        if tasks.contains(where: { $0.id == draft.taskID }) {
+            unfinishedDraft = draft
+        } else {
+            FocusDraftStore.clear()
+            unfinishedDraft = nil
+        }
+    }
+
+    /// Continues the unfinished session. Time while the app was closed isn't counted.
+    func resumeUnfinished() {
+        guard phase == .setup, let draft = unfinishedDraft else { return }
+        selectedTaskID = draft.taskID
+        activeTaskTitle = draft.taskTitle
+        sessionStartedAt = draft.startedAt
+        accumulatedSeconds = draft.focusedSeconds
+        segmentStartedAt = nil
+        hasReachedMilestone = draft.hasReachedMilestone
+        milestoneReminderEnabled = draft.milestoneReminderEnabled
+        savedSession = nil
+        errorMessage = nil
+        unfinishedDraft = nil
+        isTaskPreselected = false
+        phase = .paused
+        refresh()
+        resume()
+    }
+
+    /// Saves the unfinished session as it was when the app closed, then shows the summary.
+    func finishUnfinished(in context: ModelContext) {
+        guard phase == .setup, let draft = unfinishedDraft else { return }
+        let duration = max(0, Int(draft.focusedSeconds))
+        let session = FocusSession(
+            taskID: draft.taskID,
+            startedAt: draft.startedAt,
+            endedAt: draft.savedAt,
+            durationSeconds: duration
+        )
+        context.insert(session)
+        do {
+            try context.save()
+            cancelMilestoneReminder()
+            FocusDraftStore.clear()
+            unfinishedDraft = nil
+            selectedTaskID = draft.taskID
+            activeTaskTitle = draft.taskTitle
+            elapsedSeconds = duration
+            hasReachedMilestone = draft.hasReachedMilestone
+            savedSession = session
+            errorMessage = nil
+            phase = .finished
+        } catch {
+            context.delete(session)
+            errorMessage = "Couldn't save this session. Try again."
+        }
+    }
+
+    func discardUnfinished() {
+        cancelMilestoneReminder()
+        FocusDraftStore.clear()
+        unfinishedDraft = nil
+    }
+
+    /// Call when the app goes to the background, so the latest focused time is kept.
+    func appWillLeaveForeground() {
+        saveDraft()
+    }
+
+    private func saveDraft() {
+        guard isActive, let taskID = selectedTaskID, let startedAt = sessionStartedAt else { return }
+        var focused = accumulatedSeconds
+        if let segmentStartedAt {
+            focused += Date.now.timeIntervalSince(segmentStartedAt)
+        }
+        FocusDraftStore.save(FocusSessionDraft(
+            taskID: taskID,
+            taskTitle: activeTaskTitle,
+            startedAt: startedAt,
+            focusedSeconds: focused,
+            hasReachedMilestone: hasReachedMilestone,
+            milestoneReminderEnabled: milestoneReminderEnabled,
+            savedAt: .now
+        ))
+    }
+
+    // MARK: - Lock-screen milestone reminder
+
+    /// Turns the lock-screen reminder on or off. Asks for notification permission the first time.
+    func setLockReminder(_ enabled: Bool) async {
+        reminderNotice = nil
+        guard enabled else {
+            lockReminderEnabled = false
+            cancelMilestoneReminder()
+            return
+        }
+        let granted = (try? await UNUserNotificationCenter.current()
+            .requestAuthorization(options: [.alert])) ?? false
+        lockReminderEnabled = granted
+        if granted {
+            scheduleMilestoneReminder()
+        } else {
+            reminderNotice = "Notifications are off for Ember. Turn them on in Settings to use this."
+        }
+    }
+
+    /// Turns the reminder off if notifications were disabled in iPhone Settings since it was enabled.
+    /// Call when Focus opens and whenever the app comes back to the foreground.
+    func refreshReminderPermission() async {
+        guard lockReminderEnabled else { return }
+        let settings = await UNUserNotificationCenter.current().notificationSettings()
+        switch settings.authorizationStatus {
+        case .authorized, .provisional, .ephemeral:
+            return
+        default:
+            lockReminderEnabled = false
+            cancelMilestoneReminder()
+            reminderNotice = "Notifications are off for Ember. Turn them on in Settings to use this."
+        }
+    }
+
+    /// Schedules one quiet notification for the moment focused time reaches 20 minutes.
+    /// Rescheduled on every resume, so it follows focused time rather than clock time.
+    private func scheduleMilestoneReminder() {
+        cancelMilestoneReminder()
+        guard lockReminderEnabled, milestoneReminderEnabled, phase == .running, !hasReachedMilestone else { return }
+
+        var focused = accumulatedSeconds
+        if let segmentStartedAt {
+            focused += Date.now.timeIntervalSince(segmentStartedAt)
+        }
+        let remaining = Double(Self.milestoneSeconds) - focused
+        guard remaining > 1 else { return }
+
+        let content = UNMutableNotificationContent()
+        content.title = "20 minutes of focus"
+        content.body = activeTaskTitle.isEmpty
+            ? "Time for a gentle pacing check in Ember."
+            : "Time for a gentle pacing check on “\(activeTaskTitle)”."
+        content.sound = nil
+
+        let request = UNNotificationRequest(
+            identifier: Self.milestoneNotificationID,
+            content: content,
+            trigger: UNTimeIntervalNotificationTrigger(timeInterval: remaining, repeats: false)
+        )
+        UNUserNotificationCenter.current().add(request) { _ in }
+    }
+
+    private func cancelMilestoneReminder() {
+        UNUserNotificationCenter.current()
+            .removePendingNotificationRequests(withIdentifiers: [Self.milestoneNotificationID])
     }
 
     // MARK: - Task completion
@@ -253,10 +477,16 @@ final class FocusSessionViewModel {
         stopTicker()
         refresh()
         ticker = Task { [weak self] in
+            var ticks = 0
             while !Task.isCancelled {
                 try? await Task.sleep(for: .seconds(1))
                 guard !Task.isCancelled else { return }
                 self?.refresh()
+                ticks += 1
+                // Snapshot now and then, in case the app is closed without warning.
+                if ticks % Self.draftSaveInterval == 0 {
+                    self?.saveDraft()
+                }
             }
         }
     }

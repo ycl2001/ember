@@ -7,6 +7,7 @@ import SwiftData
 final class TaskPlannerViewModel {
     var draftTaskTitle = ""
     var draftGoalID: UUID?
+    var draftNotes = ""
 
     var canSaveTask: Bool {
         !trimmedTitle.isEmpty && draftGoalID != nil
@@ -18,6 +19,7 @@ final class TaskPlannerViewModel {
 
     func prepareEditor(for task: LearningTask?, goals: [LearningGoal]) {
         draftTaskTitle = task?.title ?? ""
+        draftNotes = task?.notes ?? ""
         draftGoalID = task?.goalID ?? goals.first?.id
     }
 
@@ -29,11 +31,13 @@ final class TaskPlannerViewModel {
             throw SaveError.unavailableGoal
         }
 
+        let notes = draftNotes.trimmingCharacters(in: .whitespacesAndNewlines)
         if let task {
             task.title = title
             task.goalID = goalID
+            task.notes = notes
         } else {
-            context.insert(LearningTask(goalID: goalID, title: title))
+            context.insert(LearningTask(goalID: goalID, title: title, notes: notes))
         }
         try persist(in: context)
     }
@@ -46,6 +50,17 @@ final class TaskPlannerViewModel {
 
     func deleteTask(_ task: LearningTask, in context: ModelContext) throws {
         context.delete(task)
+        try persist(in: context)
+    }
+
+    // MARK: - Goals
+
+    /// Deletes a goal and every task in it. Past focus sessions are kept for insights.
+    func deleteGoal(_ goal: LearningGoal, tasks: [LearningTask], in context: ModelContext) throws {
+        for task in tasks where task.goalID == goal.id {
+            context.delete(task)
+        }
+        context.delete(goal)
         try persist(in: context)
     }
 
