@@ -44,6 +44,16 @@
 		FF6570AD9396EE23464BDE76 /* SessionReflection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA53E3A9A8508DC4E98D6E /* SessionReflection.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		3A77CB3730A2B66D00BE31FF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE57CBD6DF21BD0D904B24DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E1BC4332F1B95F6F821DED73;
+			remoteInfo = Ember;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		00E32AC3B38E4048AF2F2FE6 /* ReflectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionViewModel.swift; sourceTree = "<group>"; };
 		05529D7BAF9BE1F1AD75AA78 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -412,6 +422,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				3A77CB3830A2B66D00BE31FF /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				3A9626E930A299AD000A62F7 /* EmberTests */,
@@ -545,6 +556,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3A77CB3830A2B66D00BE31FF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E1BC4332F1B95F6F821DED73 /* Ember */;
+			targetProxy = 3A77CB3730A2B66D00BE31FF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		3A9626EC30A299AD000A62F7 /* Debug */ = {
