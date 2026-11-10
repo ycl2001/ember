@@ -12,6 +12,8 @@ struct TaskPlannerView: View {
     @Query(sort: \LearningTask.createdAt) private var tasks: [LearningTask]
     @State private var viewModel = TaskPlannerViewModel()
     @State private var goalToDelete: LearningGoal?
+    /// A focus session left open when the app closed (read from Focus's on-device store).
+    @State private var unfinishedSession: FocusSessionDraft?
 
     var body: some View {
         ScrollView {
@@ -49,13 +51,32 @@ struct TaskPlannerView: View {
             goals: goals,
             tasks: tasks
         ))
+        .onAppear { refreshUnfinishedSession() }
+    }
+
+    private func refreshUnfinishedSession() {
+        guard let draft = FocusDraftStore.load(),
+              tasks.contains(where: { $0.id == draft.taskID }) else {
+            unfinishedSession = nil
+            return
+        }
+        unfinishedSession = draft
     }
 
     // MARK: - Up next
 
     @ViewBuilder
     private var upNext: some View {
-        if let next = viewModel.nextTask(across: goals, in: tasks) {
+        if let draft = unfinishedSession {
+            // An open session comes first, so it isn't forgotten.
+            UpNextCard(
+                eyebrow: "Unfinished · \(FocusSessionViewModel.format(Int(draft.focusedSeconds))) focused",
+                title: draft.taskTitle,
+                actionTitle: "Resume session"
+            ) {
+                navigation?.startFocus(taskID: nil)
+            }
+        } else if let next = viewModel.nextTask(across: goals, in: tasks) {
             UpNextCard(
                 eyebrow: "Up next · \(next.goal.topic)",
                 title: next.task.title,
@@ -663,15 +684,17 @@ private struct UpNextCard<Leading: View>: View {
     let eyebrow: String
     let title: String
     var note: String = ""
+    var actionTitle: String = "Start focus"
     let leading: Leading
     let onStart: () -> Void
 
-    init(eyebrow: String, title: String, note: String = "",
+    init(eyebrow: String, title: String, note: String = "", actionTitle: String = "Start focus",
          @ViewBuilder leading: () -> Leading,
          onStart: @escaping () -> Void) {
         self.eyebrow = eyebrow
         self.title = title
         self.note = note
+        self.actionTitle = actionTitle
         self.leading = leading()
         self.onStart = onStart
     }
@@ -704,14 +727,14 @@ private struct UpNextCard<Leading: View>: View {
                     .labelStyle(NoteLabelStyle())
             }
             Button(action: onStart) {
-                Label("Start focus", systemImage: "play.fill")
+                Label(actionTitle, systemImage: "play.fill")
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(EmberTheme.primary)
                     .frame(maxWidth: .infinity, minHeight: 48)
                     .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 13))
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Start focus on \(title)")
+            .accessibilityLabel("\(actionTitle): \(title)")
         }
         .padding(17)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -720,8 +743,10 @@ private struct UpNextCard<Leading: View>: View {
 }
 
 private extension UpNextCard where Leading == EmptyView {
-    init(eyebrow: String, title: String, note: String = "", onStart: @escaping () -> Void) {
-        self.init(eyebrow: eyebrow, title: title, note: note, leading: { EmptyView() }, onStart: onStart)
+    init(eyebrow: String, title: String, note: String = "", actionTitle: String = "Start focus",
+         onStart: @escaping () -> Void) {
+        self.init(eyebrow: eyebrow, title: title, note: note, actionTitle: actionTitle,
+                  leading: { EmptyView() }, onStart: onStart)
     }
 }
 
@@ -982,7 +1007,9 @@ private struct TaskEditorView: View {
 
                 titleField
 
-                if !isEditing && viewModel.draftTaskTitle.isEmpty {
+                // Always shown for new tasks, so the Notes box and button never jump
+                // under the learner's finger while they type.
+                if !isEditing {
                     starterIdeas
                 }
 
@@ -1038,8 +1065,9 @@ private struct TaskEditorView: View {
         }
         .task {
             // Focusing during the sheet's slide-in can be ignored, so wait for it to settle.
-            try? await Task.sleep(for: .milliseconds(350))
-            focusedField = .title
+            // 350ms was too early in testing; the sheet was still animating in.
+            try? await Task.sleep(for: .milliseconds(650))
+            if focusedField == nil { focusedField = .title }
         }
     }
 
@@ -1109,14 +1137,24 @@ private struct TaskEditorView: View {
 
     private var titleField: some View {
         VStack(alignment: .leading, spacing: 7) {
-            TextField("What's one small step?", text: $viewModel.draftTaskTitle)
+            // Vertical axis so long titles wrap instead of scrolling sideways.
+            TextField("What's one small step?", text: $viewModel.draftTaskTitle, axis: .vertical)
                 .font(.system(size: 23, weight: .medium, design: .serif))
                 .foregroundStyle(EmberTheme.primary)
+                .lineLimit(1...3)
                 .textInputAutocapitalization(.sentences)
                 .submitLabel(isEditing ? .done : .next)
                 .focused($focusedField, equals: .title)
+                // Return usually arrives as a submit…
                 .onSubmit(submit)
-                .onChange(of: viewModel.draftTaskTitle) { errorMessage = nil }
+                // …but some keyboards insert a line break instead; treat that as submit too.
+                .onChange(of: viewModel.draftTaskTitle) { _, newValue in
+                    errorMessage = nil
+                    if newValue.contains("\n") {
+                        viewModel.draftTaskTitle = newValue.replacingOccurrences(of: "\n", with: "")
+                        submit()
+                    }
+                }
             Rectangle()
                 .fill(isTitleFocused ? EmberTheme.primary : EmberTheme.separator)
                 .frame(height: 1.5)

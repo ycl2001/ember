@@ -129,7 +129,9 @@ struct FocusSessionView: View {
         EmberPageHeading(
             eyebrow: "Ready when you are",
             title: "One task, full attention.",
-            subtitle: "Pick what you'll work on. Paused time isn't counted."
+            subtitle: viewModel.isTaskPreselected
+                ? "Your task is ready. Paused time isn't counted."
+                : "Pick what you'll work on. Paused time isn't counted."
         )
 
         if openTasks.isEmpty {
@@ -632,7 +634,8 @@ struct FocusSessionView: View {
         .padding(.horizontal, 20)
         .padding(.top, 10)
         .padding(.bottom, 8)
-        .background(EmberTheme.canvas)
+        // Extend the paper texture under the home indicator so there's no flat strip.
+        .background(EmberTheme.canvas.ignoresSafeArea(edges: .bottom))
     }
 
     // MARK: - Milestone sheet
