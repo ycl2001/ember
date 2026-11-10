@@ -110,6 +110,7 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3A9626E930A299AD000A62F7 /* EmberTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = EmberTests; sourceTree = "<group>"; };
+		3AB1361930A3433500F383EB /* LearningResources */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = LearningResources; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -401,6 +402,7 @@
 				4D56A3BD9D9394EB18412ED2 /* Onboarding */,
 				8B650F1DF9ED13B8D5EAC199 /* Planner */,
 				05D79A0D5E98345658B1255C /* Reflection */,
+				3AB1361930A3433500F383EB /* LearningResources */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -466,6 +468,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				3AB1361930A3433500F383EB /* LearningResources */,
 			);
 			name = Ember;
 			productName = Ember;
