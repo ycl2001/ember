@@ -1,313 +1,206 @@
-///WeeklyAnalysisView
-
-import SwiftUI
 import Charts
+import SwiftUI
 
-// MARK: - Chart styling
-
-private enum ChartStyle {
-    static let eyebrow = Color(red: 0.55, green: 0.33, blue: 0.12)
+private enum WeeklyChartStyle {
     static let line = Color(red: 0.11, green: 0.18, blue: 0.15)
-
-    static let barGradient = LinearGradient(
-        colors: [Color(red: 0.93, green: 0.64, blue: 0.34), Color(red: 0.95, green: 0.70, blue: 0.42)],
-        startPoint: .top, endPoint: .bottom
-    )
-    static let peakBarGradient = LinearGradient(
-        colors: [Color(red: 0.80, green: 0.47, blue: 0.20), Color(red: 0.49, green: 0.28, blue: 0.10)],
-        startPoint: .top, endPoint: .bottom
-    )
-    static let peakBand = LinearGradient(
-        colors: [Color(red: 0.98, green: 0.88, blue: 0.80), Color(red: 0.98, green: 0.88, blue: 0.80).opacity(0)],
-        startPoint: .top, endPoint: .bottom
-    )
-    static let areaGradient = LinearGradient(
-        colors: [line.opacity(0.16), line.opacity(0)],
-        startPoint: .top, endPoint: .bottom
-    )
-    static let dayPill = Color(red: 0.90, green: 0.94, blue: 0.91)
+    static let bar = Color(red: 0.93, green: 0.64, blue: 0.34)
+    static let highlight = Color(red: 0.85, green: 0.93, blue: 0.87)
 }
-
-/// Chart-ready day: values normalised to 0...1 so energy and tasks can share one axis.
-private struct ChartDay: Identifiable {
+private struct WeeklyChartDay: Identifiable {
     let date: Date
-    let energy: Double
+    let energy: Double?
     let tasks: Double
     let rawTasks: Int
-    var isPeak = false
+    let isHighlighted: Bool
+
     var id: Date { date }
 }
-
-// MARK: - Weekly tab
 
 struct WeeklyAnalysisView: View {
     let viewModel: AnalyticsViewModel
     let tasks: [LearningTask]
-    let reflections: [EnergyRecord]
+    let sessions: [FocusSession]
+    let reflections: [SessionReflection]
+
+    private var points: [AnalyticsViewModel.ChartPoint] {
+        viewModel.chartPoints(
+            tasks: tasks,
+            sessions: sessions,
+            reflections: reflections,
+            during: viewModel.selectedRange
+        )
+    }
+
+    private var inRangeReflections: [SessionReflection] {
+        viewModel.reflectionsInRange(
+            reflections,
+            sessions: sessions,
+            during: viewModel.selectedRange
+        )
+    }
+
+    private var hasObservedActivity: Bool {
+        points.contains { $0.tasksCompleted > 0 || $0.energy != nil }
+            || viewModel.sessionsCount(in: sessions, during: viewModel.selectedRange) > 0
+    }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 23) {
-            featuredInsightCard
-            chartCard
-            tipCard
+        if hasObservedActivity {
+            VStack(alignment: .leading, spacing: 23) {
+                observedSummaryCard
+                chartCard
+                patternCard
+            }
+        } else {
+            ContentUnavailableView {
+                Label("No analytics for this week", systemImage: "chart.xyaxis.line")
+            } description: {
+                Text("Complete tasks, finish focus sessions, and save reflections to build an observed weekly chart.")
+            }
+            .frame(maxWidth: .infinity)
         }
     }
 
-    // MARK: Featured insight
-
-    private var featuredInsightCard: some View {
+    private var observedSummaryCard: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Circadian Resonance")
+            Text("Observed Weekly Data")
                 .font(.caption.smallCaps())
                 .foregroundStyle(EmberTheme.muted)
-            Text("Mindful Cadence Peak")
-                .font(.headline)
-                .foregroundStyle(EmberTheme.primary)
-            Text("Your synthesis endurance peaked Tue & Thu during the 9:30 morning block.")
-                .font(.subheadline)
-                .foregroundStyle(EmberTheme.muted)
-        }
-        .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(EmberTheme.surface, in: RoundedRectangle(cornerRadius: 16))
-    }
 
-    // MARK: Chart
-
-    /// Normalises the view model's points and flags the strongest days as "peak".
-    private func makeChartDays(from points: [AnalyticsViewModel.ChartPoint]) -> [ChartDay] {
-        guard !points.isEmpty else { return [] }
-
-        let energies = points.map(\.energy)
-        let minE = energies.min() ?? 0
-        let maxE = energies.max() ?? 0
-        let maxT = Double(points.map(\.tasksCompleted).max() ?? 0)
-
-        var days = points.map { p in
-            ChartDay(
-                date: p.date,
-                energy: maxE > minE ? 0.2 + 0.75 * (p.energy - minE) / (maxE - minE) : 0.5,
-                tasks: maxT > 0 ? 0.8 * Double(p.tasksCompleted) / maxT : 0,
-                rawTasks: p.tasksCompleted
-            )
-        }
-
-        // Peak = top two days by combined energy + tasks, ignoring days with no tasks.
-        let peakDates = Set(
-            days.filter { $0.rawTasks > 0 }
-                .sorted { ($0.tasks + $0.energy) > ($1.tasks + $1.energy) }
-                .prefix(2)
-                .map(\.date)
-        )
-        for i in days.indices where peakDates.contains(days[i].date) {
-            days[i].isPeak = true
-        }
-        return days
-    }
-
-    private func weekday(_ date: Date) -> String {
-        date.formatted(.dateTime.weekday(.abbreviated))
-    }
-
-    private var chartCard: some View {
-        let points = viewModel.chartPoints(tasks: tasks, reflections: reflections, during: viewModel.selectedRange)
-        let days = makeChartDays(from: points)
-        let hasEnergy = points.contains { $0.energy != 0 }
-        let peaks = days.filter(\.isPeak)
-        let peakDates = Set(peaks.map(\.date))
-        let totalTasks = days.reduce(0) { $0 + $1.rawTasks }
-        let peakTasks = peaks.reduce(0) { $0 + $1.rawTasks }
-
-        return VStack(alignment: .leading, spacing: 14) {
-            // Header
-            HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Biorhythm overlay")
-                        .font(.caption.weight(.semibold))
-                        .tracking(1.2)
-                        .textCase(.uppercase)
-                        .foregroundStyle(ChartStyle.eyebrow)
-                    Text("Energy Curve vs Tasks Finished")
-                        .font(.system(.title3, design: .serif).weight(.semibold))
-                        .foregroundStyle(EmberTheme.primary)
-                }
-                Spacer()
-                Image(systemName: "chart.xyaxis.line")
-                    .font(.title3)
-                    .foregroundStyle(EmberTheme.muted)
-            }
-
-            // Summary line
-            if totalTasks > 0, !peaks.isEmpty {
-                let names = peaks.map { weekday($0.date) }.joined(separator: " & ")
-                Text("\(names) Peak Windows: ")
-                    .font(.subheadline.weight(.semibold))
+            if let average = viewModel.averageAfterSessionEnergy(in: inRangeReflections) {
+                Text("After-Session Energy")
+                    .font(.headline)
                     .foregroundStyle(EmberTheme.primary)
-                + Text("\(peakTasks) of \(totalTasks) tasks were finished on your highest-energy days.")
+                Text("\(inRangeReflections.count) reflection\(inRangeReflections.count == 1 ? "" : "s") averaged \(average.formatted(.number.precision(.fractionLength(1)))) out of 5 after focus sessions.")
                     .font(.subheadline)
                     .foregroundStyle(EmberTheme.muted)
             } else {
-                Text("Finish tasks and log reflections to see how your energy lines up with your output.")
+                Text("Energy Pattern Needs Reflections")
+                    .font(.headline)
+                    .foregroundStyle(EmberTheme.primary)
+                Text("Task and session activity is available, but no saved energy reflections fall in this week.")
                     .font(.subheadline)
                     .foregroundStyle(EmberTheme.muted)
             }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(EmberTheme.surface, in: .rect(cornerRadius: 16))
+    }
 
-            // Chart
+    private var chartDays: [WeeklyChartDay] {
+        let maximumTasks = Double(points.map(\.tasksCompleted).max() ?? 0)
+        let rankedEnergyDates = Set(
+            points.compactMap { point -> (Date, Double)? in
+                guard let energy = point.energy else { return nil }
+                return (point.date, energy)
+            }
+            .sorted { $0.1 > $1.1 }
+            .prefix(2)
+            .map(\.0)
+        )
+
+        return points.map { point in
+            WeeklyChartDay(
+                date: point.date,
+                energy: point.energy.map { $0 / 5 },
+                tasks: maximumTasks > 0 ? Double(point.tasksCompleted) / maximumTasks : 0,
+                rawTasks: point.tasksCompleted,
+                isHighlighted: rankedEnergyDates.contains(point.date)
+            )
+        }
+    }
+
+    private var chartCard: some View {
+        let days = chartDays
+        return VStack(alignment: .leading, spacing: 14) {
+            Text("Energy and Completed Tasks")
+                .font(.system(.title3, design: .serif).weight(.semibold))
+                .foregroundStyle(EmberTheme.primary)
+
+            Text("Energy uses the average after-session rating for each day. Task bars are scaled to the busiest day in this range.")
+                .font(.subheadline)
+                .foregroundStyle(EmberTheme.muted)
+
             Chart {
-                // Highlight bands behind peak days
-                ForEach(days.filter(\.isPeak)) { d in
-                    RectangleMark(
-                        x: .value("Day", d.date),
-                        yStart: .value("Base", 0),
-                        yEnd: .value("Top", 1.08),
-                        width: .fixed(38)
-                    )
-                    .foregroundStyle(ChartStyle.peakBand)
-                    .cornerRadius(10)
-                }
-
-                // Task bars
-                ForEach(days) { d in
+                ForEach(days) { day in
                     BarMark(
-                        x: .value("Day", d.date),
-                        y: .value("Tasks", d.tasks),
+                        x: .value("Day", day.date),
+                        y: .value("Completed tasks", day.tasks),
                         width: .fixed(14)
                     )
-                    .foregroundStyle(d.isPeak ? ChartStyle.peakBarGradient : ChartStyle.barGradient)
+                    .foregroundStyle(WeeklyChartStyle.bar)
                     .cornerRadius(5)
                 }
 
-                // Energy curve (only when there are reflections)
-                if hasEnergy {
-                    ForEach(days) { d in
-                        AreaMark(
-                            x: .value("Day", d.date),
-                            y: .value("Energy", d.energy),
-                            series: .value("Series", "Area")
-                        )
-                        .interpolationMethod(.catmullRom)
-                        .foregroundStyle(ChartStyle.areaGradient)
-                    }
+                ForEach(days.filter { $0.energy != nil }) { day in
+                    LineMark(
+                        x: .value("Day", day.date),
+                        y: .value("After-session energy", day.energy ?? 0)
+                    )
+                    .interpolationMethod(.catmullRom)
+                    .lineStyle(.init(lineWidth: 3, lineCap: .round))
+                    .foregroundStyle(WeeklyChartStyle.line)
 
-                    ForEach(days) { d in
-                        LineMark(
-                            x: .value("Day", d.date),
-                            y: .value("Energy", d.energy),
-                            series: .value("Series", "Line")
-                        )
-                        .interpolationMethod(.catmullRom)
-                        .lineStyle(StrokeStyle(lineWidth: 3, lineCap: .round))
-                        .foregroundStyle(ChartStyle.line)
-                    }
-
-                    ForEach(days) { d in
-                        PointMark(
-                            x: .value("Day", d.date),
-                            y: .value("Energy", d.energy)
-                        )
-                        .symbol {
-                            Circle()
-                                .fill(d.isPeak ? ChartStyle.line : Color.white)
-                                .overlay(
-                                    Circle().stroke(d.isPeak ? Color.white : ChartStyle.line, lineWidth: 2.5)
-                                )
-                                .frame(width: 12, height: 12)
-                        }
-                    }
+                    PointMark(
+                        x: .value("Day", day.date),
+                        y: .value("After-session energy", day.energy ?? 0)
+                    )
+                    .foregroundStyle(day.isHighlighted ? WeeklyChartStyle.line : WeeklyChartStyle.highlight)
                 }
             }
             .frame(height: 240)
-            .chartYScale(domain: 0...1.1)
-            .chartXScale(range: .plotDimension(padding: 22))
+            .chartYScale(domain: 0...1)
             .chartYAxis {
-                AxisMarks(values: [0.3, 0.6, 0.9]) { _ in
-                    AxisGridLine(stroke: StrokeStyle(lineWidth: 1, dash: [3, 4]))
-                        .foregroundStyle(EmberTheme.muted.opacity(0.25))
+                AxisMarks(values: [0, 0.5, 1]) { value in
+                    AxisGridLine()
+                    AxisValueLabel {
+                        if let fraction = value.as(Double.self) {
+                            Text(fraction * 5, format: .number.precision(.fractionLength(1)))
+                        }
+                    }
                 }
             }
             .chartXAxis {
                 AxisMarks(values: days.map(\.date)) { value in
                     AxisValueLabel {
                         if let date = value.as(Date.self) {
-                            let isPeak = peakDates.contains(date)
-                            Text(weekday(date))
-                                .font(.subheadline.weight(isPeak ? .bold : .regular))
-                                .foregroundStyle(EmberTheme.primary)
-                                .padding(.vertical, 4)
-                                .padding(.horizontal, 10)
-                                .background(isPeak ? ChartStyle.dayPill : Color.clear, in: Capsule())
+                            Text(date, format: .dateTime.weekday(.abbreviated))
                         }
                     }
                 }
             }
 
-            // Legend
             HStack(spacing: 20) {
-                HStack(spacing: 8) {
-                    Circle()
-                        .fill(ChartStyle.line)
-                        .frame(width: 12, height: 12)
-                    Text("Cognitive Energy")
-                }
-                HStack(spacing: 8) {
-                    RoundedRectangle(cornerRadius: 4)
-                        .fill(ChartStyle.barGradient)
-                        .frame(width: 12, height: 12)
-                    Text("Tasks Completed")
-                }
+                Label("After-session energy", systemImage: "circle.fill")
+                    .foregroundStyle(WeeklyChartStyle.line)
+                Label("Completed tasks", systemImage: "square.fill")
+                    .foregroundStyle(WeeklyChartStyle.bar)
             }
             .font(.footnote)
-            .foregroundStyle(EmberTheme.muted)
         }
         .padding(20)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(EmberTheme.surface, in: RoundedRectangle(cornerRadius: 24))
+        .background(EmberTheme.surface, in: .rect(cornerRadius: 24))
     }
 
-    // MARK: Tip
-
-    private var tipCard: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            // Top section: icon + title + body
-            HStack(alignment: .top, spacing: 14) {
-                Image(systemName: "brain")
-                    .font(.title3)
-                    .foregroundStyle(EmberTheme.primary)
-                    .frame(width: 44, height: 44)
-                    .background(Color(red: 0.85, green: 0.93, blue: 0.87), in: RoundedRectangle(cornerRadius: 12))
-
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Pacing Protection Works")
-                        .font(.system(.title3, design: .serif).weight(.semibold))
-                        .foregroundStyle(EmberTheme.primary)
-                    Text("When you take a 5–10 min restorative pause after 25 mins of deep focus, your afternoon completion rate climbs by **34%** without cognitive depletion.")
-                        .font(.subheadline)
-                        .foregroundStyle(EmberTheme.muted)
-                }
-            }
-
-            // Suggested adjustment box
-            VStack(alignment: .leading, spacing: 8) {
-                Label {
-                    Text("Suggested Adjustment")
-                        .font(.caption.weight(.semibold))
-                        .tracking(0.8)
-                        .textCase(.uppercase)
-                } icon: {
-                    Image(systemName: "slider.horizontal.3")
-                }
-                .foregroundStyle(ChartStyle.eyebrow)
-
-                Text("Shift high-complexity **CS240 Problem Sets** to Wednesday 9:00 AM (Projected Energy: 94%).")
-                    .font(.subheadline)
-                    .foregroundStyle(EmberTheme.primary)
-            }
-            .padding(16)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.white, in: RoundedRectangle(cornerRadius: 14))
+    private var patternCard: some View {
+        let pattern = viewModel.observedPattern(
+            sessions: sessions,
+            reflections: reflections,
+            lookbackDays: 28
+        )
+        return VStack(alignment: .leading, spacing: 8) {
+            Label(pattern.title, systemImage: pattern.hasEnoughData ? "chart.line.uptrend.xyaxis" : "info.circle")
+                .font(.headline)
+                .foregroundStyle(EmberTheme.primary)
+            Text(pattern.message)
+                .font(.subheadline)
+                .foregroundStyle(EmberTheme.muted)
+                .fixedSize(horizontal: false, vertical: true)
         }
         .padding(20)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(EmberTheme.muted.opacity(0.1), in: RoundedRectangle(cornerRadius: 24))
+        .background(EmberTheme.muted.opacity(0.1), in: .rect(cornerRadius: 24))
     }
 }

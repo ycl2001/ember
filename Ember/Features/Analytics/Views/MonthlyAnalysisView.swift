@@ -47,7 +47,7 @@ struct MonthlyAnalysisView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            if analysis.isSample {
+            if analysis.state == .sample {
                 Label("Showing sample data", systemImage: "sparkles")
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(MonthlyPalette.brown)
@@ -56,17 +56,25 @@ struct MonthlyAnalysisView: View {
                     .background(MonthlyPalette.peach.opacity(0.6), in: Capsule())
             }
 
-            HStack(alignment: .top, spacing: 12) {
-                MonthlyStatCardView(eyebrow: "Monthly Streak", card: analysis.streak)
-                MonthlyStatCardView(eyebrow: "Avg Energy", card: analysis.energy)
-            }
+            if analysis.state == .insufficient {
+                ContentUnavailableView {
+                    Label("No analytics for this month", systemImage: "chart.bar.xaxis")
+                } description: {
+                    Text("Complete a task, finish a focus session, or save a reflection to create an observed result.")
+                }
+                .frame(maxWidth: .infinity)
+            } else {
+                HStack(alignment: .top, spacing: 12) {
+                    MonthlyStatCardView(eyebrow: "Monthly Activity", card: analysis.streak)
+                    MonthlyStatCardView(eyebrow: "Avg Energy", card: analysis.energy)
+                }
 
-            ReflectiveCadenceCard(eyebrow: analysis.cadenceEyebrow, title: analysis.cadenceTitle)
+                ReflectiveCadenceCard(eyebrow: analysis.cadenceEyebrow, title: analysis.cadenceTitle)
+                SpotMatrixCard(analysis: analysis)
 
-            SpotMatrixCard(analysis: analysis)
-
-            if !analysis.insights.isEmpty {
-                RhythmSynthesisCard(insights: analysis.insights)
+                if !analysis.insights.isEmpty {
+                    RhythmSynthesisCard(insights: analysis.insights)
+                }
             }
         }
     }
@@ -217,7 +225,7 @@ private struct SpotMatrixCard: View {
                     .font(.system(.title2, design: .serif).weight(.semibold))
                     .foregroundStyle(MonthlyPalette.ink)
                 Spacer()
-                Text("4 Weeks Logged")
+                Text("Last 4 Weeks")
                     .font(.footnote)
                     .foregroundStyle(EmberTheme.muted)
                     .padding(.vertical, 5)
@@ -256,7 +264,7 @@ private struct SpotMatrixCard: View {
                                 Circle()
                                     .fill(MonthlyPalette.levelColor(cell.level))
                                     .frame(width: 30, height: 30)
-                                Text(String(format: "%02d", cell.day))
+                                Text(cell.day, format: .number.precision(.integerLength(2)))
                                     .font(.footnote)
                                     .foregroundStyle(EmberTheme.muted)
                             }

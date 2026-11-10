@@ -1,113 +1,40 @@
 import SwiftUI
 import SwiftData
 
-/// Sessions tab layout shell. Member 3 will implement task CRUD within this stable tab.
+/// Sessions tab: an "Up next" task, then one card per learning goal.
+/// Tapping a goal opens `LearningGoalDetailView` with that goal's checklist.
 struct TaskPlannerView: View {
     var onNavigate: (AppRoute) -> Void = { _ in }
+
+    @AppStorage(OnboardingStorage.completedKey) private var hasCompletedOnboarding = false
+    @Environment(AppNavigation.self) private var navigation: AppNavigation?
+    @Query(sort: \LearningGoal.createdAt) private var goals: [LearningGoal]
+    @Query(sort: \LearningTask.createdAt) private var tasks: [LearningTask]
     @State private var viewModel = TaskPlannerViewModel()
-    @Query private var goals: [LearningGoal]
-    @Query private var tasks: [LearningTask]
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
-                EmberPageHeading(
-                    eyebrow: "Sessions",
-                    title: "Let's build momentum.",
-                    subtitle: "Small tasks make learning feel possible."
-                )
-
-                VStack(alignment: .leading, spacing: 12) {
-                    HStack {
-                        Text("Learning goals")
-                            .font(.headline)
-                            .foregroundStyle(EmberTheme.primary)
-                        Spacer()
-                        Button { onNavigate(.onboarding) } label: {
-                            Label("Add topic", systemImage: "plus")
-                                .font(.caption.weight(.semibold))
-                        }
-                    }
-                    if goals.isEmpty {
-                        Text("No topics yet. Choose something you'd enjoy learning.")
-                            .font(.subheadline)
-                            .foregroundStyle(EmberTheme.muted)
-                    } else {
-                        ForEach(goals, id: \.id) { goal in
-                            Label(goal.topic, systemImage: "book.closed")
-                                .font(.subheadline)
-                                .foregroundStyle(EmberTheme.primary)
-                                .padding(.vertical, 4)
-                        }
-                    }
-                }
-                .padding(18)
-                .background(EmberTheme.surface, in: RoundedRectangle(cornerRadius: 19))
-
-                VStack(alignment: .leading, spacing: 13) {
-                    HStack {
-                        Text("Today's small tasks")
-                            .font(.system(size: 22, weight: .medium, design: .serif))
-                            .foregroundStyle(EmberTheme.primary)
-                        Spacer()
-                        Text("\(viewModel.completedCount(in: tasks))/\(tasks.count)")
-                            .font(.caption.weight(.semibold))
-                            .foregroundStyle(EmberTheme.muted)
-                    }
-                    ProgressView(
-                        value: Double(viewModel.completedCount(in: tasks)),
-                        total: Double(max(tasks.count, 1))
+                if hasCompletedOnboarding {
+                    EmberPageHeading(
+                        eyebrow: "Sessions",
+                        title: "Let's build momentum.",
+                        subtitle: "Small tasks make learning feel possible."
                     )
-                    .tint(EmberTheme.primary)
 
-                    if tasks.isEmpty {
-                        VStack(spacing: 12) {
-                            Image(systemName: "checklist")
-                                .font(.system(size: 30))
-                                .foregroundStyle(EmberTheme.primary)
-                                .frame(width: 68, height: 68)
-                                .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 19))
-                            Text("Your checklist starts here")
-                                .font(.headline)
-                                .foregroundStyle(EmberTheme.primary)
-                            Text("Add a learning goal first. Your task-planning tools will live in this space.")
-                                .font(.subheadline)
-                                .foregroundStyle(EmberTheme.muted)
-                                .multilineTextAlignment(.center)
-                            Button("Choose a learning goal") { onNavigate(.onboarding) }
-                                .font(.subheadline.weight(.semibold))
-                                .foregroundStyle(EmberTheme.primary)
+                    if goals.isEmpty {
+                        MissingLearningGoalState {
+                            onNavigate(.onboarding)
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 32)
                     } else {
-                        ForEach(tasks, id: \.id) { task in
-                            HStack(spacing: 11) {
-                                Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
-                                    .foregroundStyle(task.isCompleted ? EmberTheme.primary : EmberTheme.muted)
-                                Text(task.title)
-                                    .font(.subheadline)
-                                    .foregroundStyle(EmberTheme.primary)
-                                Spacer()
-                            }
-                            .padding(.vertical, 10)
-                            Divider().overlay(EmberTheme.separator)
-                        }
-                        Button { onNavigate(.focus) } label: {
-                            HStack {
-                                Text("Start a focus session")
-                                Spacer()
-                                Image(systemName: "arrow.right")
-                            }
-                            .font(.subheadline.weight(.semibold))
-                            .padding(15)
-                            .foregroundStyle(.white)
-                            .background(EmberTheme.primary, in: RoundedRectangle(cornerRadius: 13))
-                        }
+                        upNext
+                        learningGoals
+                    }
+                } else {
+                    SessionsOnboardingSetup {
+                        onNavigate(.onboarding)
                     }
                 }
-                .padding(18)
-                .background(EmberTheme.surface, in: RoundedRectangle(cornerRadius: 19))
             }
             .padding(.horizontal, 20)
             .padding(.top, 26)
@@ -115,5 +42,802 @@ struct TaskPlannerView: View {
         }
         .background(EmberTheme.canvas.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
+    }
+
+    // MARK: - Up next
+
+    @ViewBuilder
+    private var upNext: some View {
+        if let next = viewModel.nextTask(across: goals, in: tasks) {
+            UpNextCard(
+                eyebrow: "Up next · \(next.goal.topic)",
+                title: next.task.title
+            ) {
+                navigation?.startFocus(taskID: next.task.id)
+            }
+        } else if tasks.isEmpty {
+            CalmNoteCard(
+                symbol: "sparkle",
+                title: "Plan your first small step",
+                detail: "Open a learning goal below and add one task."
+            )
+        } else {
+            CalmNoteCard(
+                symbol: "flame.fill",
+                title: "Everything's done",
+                detail: "Rest is progress too. Add a new task when you're ready."
+            )
+        }
+    }
+
+    // MARK: - Learning goals
+
+    private var learningGoals: some View {
+        VStack(alignment: .leading, spacing: 11) {
+            HStack(alignment: .firstTextBaseline) {
+                Text("Learning goals")
+                    .font(.system(size: 22, weight: .medium, design: .serif))
+                    .foregroundStyle(EmberTheme.primary)
+                    .accessibilityAddTraits(.isHeader)
+                Spacer()
+                Button { onNavigate(.onboarding) } label: {
+                    Label("New goal", systemImage: "plus")
+                        .font(.subheadline.weight(.semibold))
+                        .frame(minHeight: 44)
+                }
+            }
+
+            ForEach(Array(goals.enumerated()), id: \.element.id) { index, goal in
+                let goalTasks = viewModel.tasks(for: goal.id, in: tasks)
+                LearningGoalCard(
+                    goal: goal,
+                    style: LearningGoalStyle(index: index),
+                    tasks: goalTasks,
+                    nextTask: goalTasks.first { !$0.isCompleted }
+                ) {
+                    navigation?.openGoal(goal.id)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Goal detail
+
+/// One learning goal's checklist: an "Up next" task, remaining tasks with a Focus button each,
+/// and a collapsible list of finished tasks.
+struct LearningGoalDetailView: View {
+    let goalID: UUID?
+
+    @Environment(\.modelContext) private var modelContext
+    @Environment(AppNavigation.self) private var navigation: AppNavigation?
+    @Query(sort: \LearningGoal.createdAt) private var goals: [LearningGoal]
+    @Query(sort: \LearningTask.createdAt) private var allTasks: [LearningTask]
+    @State private var viewModel = TaskPlannerViewModel()
+    @State private var editor: TaskEditor?
+    @State private var taskToDelete: LearningTask?
+    @State private var showingUpdateError = false
+    @State private var showDone = false
+
+    private var goalIndex: Int? { goals.firstIndex { $0.id == goalID } }
+    private var goal: LearningGoal? { goalIndex.map { goals[$0] } }
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 18) {
+                if let goal, let goalIndex {
+                    content(goal: goal, index: goalIndex)
+                } else {
+                    CalmNoteCard(
+                        symbol: "questionmark.folder",
+                        title: "This goal isn't available",
+                        detail: "It may have been removed. Go back to see your learning goals."
+                    )
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 12)
+            .padding(.bottom, 24)
+        }
+        .scrollIndicators(.hidden)
+        .background(EmberTheme.canvas.ignoresSafeArea())
+        .navigationTitle(goal?.topic ?? "Learning goal")
+        .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: $editor) { editor in
+            TaskEditorView(viewModel: viewModel, task: editor.task)
+        }
+        .alert(
+            "Delete task?",
+            isPresented: Binding(
+                get: { taskToDelete != nil },
+                set: { if !$0 { taskToDelete = nil } }
+            ),
+            presenting: taskToDelete
+        ) { task in
+            Button("Cancel", role: .cancel) {}
+            Button("Delete", role: .destructive) {
+                updateChecklist { try viewModel.deleteTask(task, in: modelContext) }
+            }
+        } message: { task in
+            Text("“\(task.title)” will be removed from your checklist.")
+        }
+        .alert("Couldn't update checklist", isPresented: $showingUpdateError) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Your changes couldn't be saved. Please try again.")
+        }
+        .sensoryFeedback(.selection, trigger: allTasks.filter(\.isCompleted).count)
+    }
+
+    @ViewBuilder
+    private func content(goal: LearningGoal, index: Int) -> some View {
+        let style = LearningGoalStyle(index: index)
+        let tasks = viewModel.tasks(for: goal.id, in: allTasks)
+        let todo = tasks.filter { !$0.isCompleted }
+        let done = tasks.filter(\.isCompleted)
+
+        header(goal: goal, index: index, style: style, done: done.count, total: tasks.count)
+
+        if let upNext = todo.first {
+            UpNextCard(eyebrow: "Up next", title: upNext.title, leading: {
+                checkButton(for: upNext, onDark: true)
+            }) {
+                navigation?.startFocus(taskID: upNext.id)
+            }
+            .contextMenu { taskMenu(for: upNext) }
+        } else if tasks.isEmpty {
+            CalmNoteCard(
+                symbol: "sparkle",
+                title: "Add your first task",
+                detail: "One small, concrete step toward \(goal.topic)."
+            )
+        } else {
+            CalmNoteCard(
+                symbol: "flame.fill",
+                title: "Goal complete",
+                detail: "Every task here is done. Add a new one when you're ready."
+            )
+        }
+
+        VStack(alignment: .leading, spacing: 0) {
+            if todo.count > 1 {
+                sectionLabel("To do")
+                    .padding(.top, 12)
+                    .padding(.bottom, 2)
+                ForEach(todo.dropFirst(), id: \.id) { task in
+                    todoRow(task)
+                    Divider().overlay(EmberTheme.separator)
+                }
+            }
+            addTaskRow(goalID: goal.id)
+        }
+        .padding(.horizontal, 14)
+        .background(EmberTheme.surface, in: RoundedRectangle(cornerRadius: 19))
+
+        if !done.isEmpty {
+            VStack(alignment: .leading, spacing: 0) {
+                Button {
+                    withAnimation(.snappy) { showDone.toggle() }
+                } label: {
+                    HStack {
+                        sectionLabel("Done (\(done.count))")
+                        Spacer()
+                        Image(systemName: "chevron.down")
+                            .font(.footnote.weight(.semibold))
+                            .foregroundStyle(EmberTheme.muted)
+                            .rotationEffect(.degrees(showDone ? 180 : 0))
+                    }
+                    .frame(minHeight: 48)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(showDone ? "Hide done tasks" : "Show \(done.count) done tasks")
+
+                if showDone {
+                    ForEach(done, id: \.id) { task in
+                        doneRow(task)
+                    }
+                }
+            }
+            .padding(.horizontal, 14)
+            .background(EmberTheme.surface, in: RoundedRectangle(cornerRadius: 19))
+        }
+    }
+
+    private func header(goal: LearningGoal, index: Int, style: LearningGoalStyle, done: Int, total: Int) -> some View {
+        HStack(alignment: .center, spacing: 13) {
+            LearningGoalTile(style: style, size: 50)
+            VStack(alignment: .leading, spacing: 4) {
+                sectionLabel("Learning goal \(index + 1)")
+                Text(goal.topic)
+                    .font(.system(size: 28, weight: .medium, design: .serif))
+                    .foregroundStyle(EmberTheme.primary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 8)
+            GoalProgressRing(done: done, total: total)
+        }
+    }
+
+    private func todoRow(_ task: LearningTask) -> some View {
+        HStack(spacing: 11) {
+            checkButton(for: task, onDark: false)
+            Text(task.title)
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(EmberTheme.primary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Button {
+                navigation?.startFocus(taskID: task.id)
+            } label: {
+                Image(systemName: "play.fill")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(EmberTheme.primary)
+                    .frame(width: 36, height: 36)
+                    .background(EmberTheme.mint, in: Circle())
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Start focus on \(task.title)")
+        }
+        .frame(minHeight: 52)
+        .contextMenu { taskMenu(for: task) }
+    }
+
+    private func doneRow(_ task: LearningTask) -> some View {
+        HStack(spacing: 11) {
+            checkButton(for: task, onDark: false)
+            Text(task.title)
+                .font(.subheadline)
+                .foregroundStyle(EmberTheme.muted)
+                .strikethrough(true, color: EmberTheme.muted)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .frame(minHeight: 48)
+        .contextMenu { taskMenu(for: task) }
+    }
+
+    private func addTaskRow(goalID: UUID) -> some View {
+        Button {
+            viewModel.prepareEditor(for: nil, goals: goals)
+            viewModel.draftGoalID = goalID
+            editor = TaskEditor(task: nil)
+        } label: {
+            HStack(spacing: 11) {
+                Image(systemName: "plus")
+                    .font(.system(size: 11, weight: .bold))
+                    .foregroundStyle(EmberTheme.muted)
+                    .frame(width: 26, height: 26)
+                    .overlay(Circle().strokeBorder(EmberTheme.muted, style: StrokeStyle(lineWidth: 1.5, dash: [3, 3])))
+                    .frame(width: 44, height: 44)
+                Text("Add a task")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(EmberTheme.muted)
+                Spacer()
+            }
+            .frame(minHeight: 52)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func checkButton(for task: LearningTask, onDark: Bool) -> some View {
+        Button {
+            updateChecklist { try viewModel.toggleCompletion(of: task, in: modelContext) }
+        } label: {
+            ZStack {
+                Circle()
+                    .strokeBorder(onDark ? EmberTheme.mint : EmberTheme.muted, lineWidth: 1.5)
+                    .opacity(task.isCompleted ? 0 : 1)
+                if task.isCompleted {
+                    Circle().fill(EmberTheme.primary)
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundStyle(.white)
+                }
+            }
+            .frame(width: 26, height: 26)
+            .frame(width: 44, height: 44)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(task.title)
+        .accessibilityValue(task.isCompleted ? "Completed" : "Incomplete")
+        .accessibilityHint(task.isCompleted ? "Marks task incomplete" : "Marks task complete")
+    }
+
+    @ViewBuilder
+    private func taskMenu(for task: LearningTask) -> some View {
+        Button {
+            viewModel.prepareEditor(for: task, goals: goals)
+            editor = TaskEditor(task: task)
+        } label: {
+            Label("Edit task", systemImage: "pencil")
+        }
+        Button(role: .destructive) { taskToDelete = task } label: {
+            Label("Delete task", systemImage: "trash")
+        }
+    }
+
+    private func sectionLabel(_ text: String) -> some View {
+        Text(text.uppercased())
+            .font(.system(size: 10, weight: .bold, design: .rounded))
+            .tracking(1.8)
+            .foregroundStyle(EmberTheme.muted)
+    }
+
+    private func updateChecklist(_ action: () throws -> Void) {
+        do {
+            try action()
+        } catch {
+            showingUpdateError = true
+        }
+    }
+
+    private struct TaskEditor: Identifiable {
+        let id = UUID()
+        let task: LearningTask?
+    }
+}
+
+// MARK: - Goal styling and shared pieces
+
+/// Icon and tint for a goal, assigned by its position so no extra data needs storing.
+struct LearningGoalStyle {
+    let symbol: String
+    let tint: Color
+
+    private static let palette: [(String, Color)] = [
+        ("graduationcap", EmberTheme.mint),
+        ("briefcase", EmberTheme.amber.opacity(0.32)),
+        ("leaf", EmberTheme.separator),
+        ("sparkles", EmberTheme.amber.opacity(0.18)),
+        ("book.closed", EmberTheme.mint.opacity(0.6)),
+        ("paintpalette", EmberTheme.separator.opacity(0.7))
+    ]
+
+    init(index: Int) {
+        let entry = Self.palette[((index % Self.palette.count) + Self.palette.count) % Self.palette.count]
+        symbol = entry.0
+        tint = entry.1
+    }
+}
+
+struct LearningGoalTile: View {
+    let style: LearningGoalStyle
+    var size: CGFloat = 42
+
+    var body: some View {
+        Image(systemName: style.symbol)
+            .font(.system(size: size * 0.42, weight: .medium))
+            .foregroundStyle(EmberTheme.primary)
+            .frame(width: size, height: size)
+            .background(style.tint, in: RoundedRectangle(cornerRadius: size * 0.31))
+            .accessibilityHidden(true)
+    }
+}
+
+private struct LearningGoalCard: View {
+    let goal: LearningGoal
+    let style: LearningGoalStyle
+    let tasks: [LearningTask]
+    let nextTask: LearningTask?
+    let onOpen: () -> Void
+
+    private var doneCount: Int { tasks.filter(\.isCompleted).count }
+
+    var body: some View {
+        Button(action: onOpen) {
+            HStack(spacing: 13) {
+                LearningGoalTile(style: style)
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack(alignment: .firstTextBaseline) {
+                        Text(goal.topic)
+                            .font(.system(size: 18, weight: .medium, design: .serif))
+                            .foregroundStyle(EmberTheme.primary)
+                            .lineLimit(1)
+                        Spacer(minLength: 6)
+                        Text("\(doneCount)/\(tasks.count)")
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(EmberTheme.muted)
+                            .monospacedDigit()
+                    }
+                    Text(subtitle)
+                        .font(.caption)
+                        .foregroundStyle(EmberTheme.muted)
+                        .lineLimit(1)
+                    SegmentedProgress(done: doneCount, total: tasks.count)
+                        .padding(.top, 4)
+                }
+                Image(systemName: "chevron.right")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(EmberTheme.muted)
+            }
+            .padding(14)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(EmberTheme.surface, in: RoundedRectangle(cornerRadius: 19))
+            .contentShape(RoundedRectangle(cornerRadius: 19))
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(goal.topic)
+        .accessibilityValue("\(doneCount) of \(tasks.count) tasks done. \(subtitle)")
+        .accessibilityHint("Opens this goal's checklist")
+        .accessibilityAddTraits(.isButton)
+    }
+
+    private var subtitle: String {
+        if let nextTask { return "Next: \(nextTask.title)" }
+        return tasks.isEmpty ? "No tasks yet" : "All tasks done"
+    }
+}
+
+/// One segment per task for small checklists; a plain bar once there are too many to count.
+private struct SegmentedProgress: View {
+    let done: Int
+    let total: Int
+
+    var body: some View {
+        Group {
+            if total == 0 {
+                Capsule().fill(EmberTheme.separator)
+            } else if total <= 10 {
+                HStack(spacing: 3) {
+                    ForEach(0..<total, id: \.self) { index in
+                        Capsule().fill(index < done ? EmberTheme.primary : EmberTheme.separator)
+                    }
+                }
+            } else {
+                GeometryReader { proxy in
+                    ZStack(alignment: .leading) {
+                        Capsule().fill(EmberTheme.separator)
+                        Capsule()
+                            .fill(EmberTheme.primary)
+                            .frame(width: proxy.size.width * CGFloat(done) / CGFloat(total))
+                    }
+                }
+            }
+        }
+        .frame(height: 4)
+        .animation(.easeInOut(duration: 0.4), value: done)
+        .accessibilityHidden(true)
+    }
+}
+
+private struct GoalProgressRing: View {
+    let done: Int
+    let total: Int
+
+    var body: some View {
+        ZStack {
+            Circle().stroke(EmberTheme.separator, lineWidth: 4)
+            Circle()
+                .trim(from: 0, to: total == 0 ? 0 : CGFloat(done) / CGFloat(total))
+                .stroke(EmberTheme.primary, style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                .rotationEffect(.degrees(-90))
+            Text("\(done)/\(total)")
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(EmberTheme.primary)
+                .monospacedDigit()
+        }
+        .frame(width: 46, height: 46)
+        .animation(.easeInOut(duration: 0.4), value: done)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(done) of \(total) tasks done")
+    }
+}
+
+/// The dark "Up next" card with one Start focus action.
+private struct UpNextCard<Leading: View>: View {
+    let eyebrow: String
+    let title: String
+    let leading: Leading
+    let onStart: () -> Void
+
+    init(eyebrow: String, title: String,
+         @ViewBuilder leading: () -> Leading,
+         onStart: @escaping () -> Void) {
+        self.eyebrow = eyebrow
+        self.title = title
+        self.leading = leading()
+        self.onStart = onStart
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text(eyebrow.uppercased())
+                    .font(.system(size: 10, weight: .bold, design: .rounded))
+                    .tracking(1.6)
+                    .foregroundStyle(EmberTheme.mint)
+                    .lineLimit(1)
+                Spacer()
+                Image(systemName: "flame.fill")
+                    .foregroundStyle(EmberTheme.amber)
+                    .accessibilityHidden(true)
+            }
+            HStack(spacing: 8) {
+                leading
+                Text(title)
+                    .font(.system(size: 22, weight: .medium, design: .serif))
+                    .foregroundStyle(.white)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Button(action: onStart) {
+                Label("Start focus", systemImage: "play.fill")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(EmberTheme.primary)
+                    .frame(maxWidth: .infinity, minHeight: 48)
+                    .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 13))
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Start focus on \(title)")
+        }
+        .padding(17)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(EmberTheme.primary, in: RoundedRectangle(cornerRadius: 22))
+    }
+}
+
+private extension UpNextCard where Leading == EmptyView {
+    init(eyebrow: String, title: String, onStart: @escaping () -> Void) {
+        self.init(eyebrow: eyebrow, title: title, leading: { EmptyView() }, onStart: onStart)
+    }
+}
+
+private struct CalmNoteCard: View {
+    let symbol: String
+    let title: String
+    let detail: String
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 13) {
+            Image(systemName: symbol)
+                .font(.system(size: 18, weight: .medium))
+                .foregroundStyle(symbol == "flame.fill" ? EmberTheme.amber : EmberTheme.primary)
+                .frame(width: 42, height: 42)
+                .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 13))
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.system(size: 19, weight: .medium, design: .serif))
+                    .foregroundStyle(EmberTheme.primary)
+                Text(detail)
+                    .font(.caption)
+                    .foregroundStyle(EmberTheme.muted)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(EmberTheme.surface, in: RoundedRectangle(cornerRadius: 19))
+    }
+}
+
+private struct SessionsOnboardingSetup: View {
+    let onStart: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 24) {
+            SessionsSetupHeading()
+            SessionsSetupInvitation(onStart: onStart)
+        }
+    }
+}
+
+private struct SessionsSetupHeading: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 10) {
+                Text("SESSIONS")
+                    .font(.system(size: 10, weight: .bold, design: .rounded))
+                    .tracking(2)
+                    .foregroundStyle(EmberTheme.muted)
+
+                Text("Setup required")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(EmberTheme.primary)
+                    .padding(.horizontal, 9)
+                    .padding(.vertical, 5)
+                    .background(EmberTheme.mint, in: Capsule())
+            }
+
+            Text("Let's build momentum.")
+                .font(.system(size: 33, weight: .medium, design: .serif))
+                .tracking(-0.6)
+                .foregroundStyle(EmberTheme.primary)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Text("A few quick choices will shape a learning checklist that fits you.")
+                .font(.subheadline)
+                .foregroundStyle(EmberTheme.muted)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+private struct SessionsSetupInvitation: View {
+    let onStart: () -> Void
+
+    var body: some View {
+        VStack(spacing: 22) {
+            Image(systemName: "book.pages")
+                .font(.system(size: 30, weight: .medium))
+                .foregroundStyle(EmberTheme.primary)
+                .frame(width: 72, height: 72)
+                .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 22))
+                .accessibilityHidden(true)
+
+            VStack(spacing: 8) {
+                Text("What would you like to learn?")
+                    .font(.system(size: 24, weight: .medium, design: .serif))
+                    .foregroundStyle(EmberTheme.primary)
+                    .multilineTextAlignment(.center)
+
+                Text("Set up your first learning session in three simple steps.")
+                    .font(.subheadline)
+                    .foregroundStyle(EmberTheme.muted)
+                    .multilineTextAlignment(.center)
+            }
+
+            VStack(spacing: 14) {
+                SessionsSetupStep(
+                    number: 1,
+                    title: "Learning goals",
+                    detail: "Choose a topic you want to make progress on."
+                )
+                SessionsSetupStep(
+                    number: 2,
+                    title: "Energy rhythm",
+                    detail: "Share when focused learning feels most natural."
+                )
+                SessionsSetupStep(
+                    number: 3,
+                    title: "Learning plan",
+                    detail: "Review a practical starting plan, then build your checklist."
+                )
+            }
+
+            Button(action: onStart) {
+                HStack {
+                    Text("Start my learning setup")
+                    Spacer()
+                    Image(systemName: "arrow.right")
+                }
+                .font(.headline)
+                .foregroundStyle(.white)
+                .padding(.horizontal, 18)
+                .frame(minHeight: 54)
+                .background(EmberTheme.primary, in: RoundedRectangle(cornerRadius: 15))
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(22)
+        .frame(maxWidth: .infinity)
+        .background(EmberTheme.surface, in: RoundedRectangle(cornerRadius: 22))
+    }
+}
+
+private struct SessionsSetupStep: View {
+    let number: Int
+    let title: String
+    let detail: String
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 13) {
+            Text("\(number)")
+                .font(.caption.weight(.bold))
+                .foregroundStyle(EmberTheme.primary)
+                .frame(width: 30, height: 30)
+                .background(EmberTheme.mint, in: Circle())
+
+            VStack(alignment: .leading, spacing: 3) {
+                Text(title)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(EmberTheme.primary)
+                Text(detail)
+                    .font(.caption)
+                    .foregroundStyle(EmberTheme.muted)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+}
+
+private struct MissingLearningGoalState: View {
+    let onAddTopic: () -> Void
+
+    var body: some View {
+        VStack(spacing: 14) {
+            Image(systemName: "book.closed")
+                .font(.system(size: 28))
+                .foregroundStyle(EmberTheme.primary)
+                .frame(width: 64, height: 64)
+                .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 18))
+                .accessibilityHidden(true)
+
+            Text("Add a learning goal first")
+                .font(.headline)
+                .foregroundStyle(EmberTheme.primary)
+
+            Text("Choose a topic before creating your first checklist task.")
+                .font(.subheadline)
+                .foregroundStyle(EmberTheme.muted)
+                .multilineTextAlignment(.center)
+
+            Button(action: onAddTopic) {
+                Label("Add learning topic", systemImage: "plus")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity, minHeight: 48)
+                    .background(EmberTheme.primary, in: RoundedRectangle(cornerRadius: 13))
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity)
+        .background(EmberTheme.surface, in: RoundedRectangle(cornerRadius: 19))
+    }
+}
+
+private struct TaskEditorView: View {
+    @Bindable var viewModel: TaskPlannerViewModel
+    let task: LearningTask?
+
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
+    @Query(sort: \LearningGoal.createdAt) private var goals: [LearningGoal]
+    @State private var showingSaveError = false
+    @State private var saveErrorMessage = ""
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                TextField("Task title", text: $viewModel.draftTaskTitle)
+                    .textInputAutocapitalization(.sentences)
+
+                Picker("Learning topic", selection: $viewModel.draftGoalID) {
+                    if let originalGoalID = task?.goalID,
+                       !goals.contains(where: { $0.id == originalGoalID }) {
+                        Text("Unavailable topic").tag(Optional(originalGoalID))
+                    }
+                    if viewModel.draftGoalID == nil {
+                        Text("Select a topic").tag(nil as UUID?)
+                    }
+                    ForEach(goals, id: \.id) { goal in
+                        Text(goal.topic).tag(Optional(goal.id))
+                    }
+                }
+            }
+            .navigationTitle(task == nil ? "New task" : "Edit task")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save", action: save)
+                        .disabled(!viewModel.canSaveTask)
+                }
+            }
+        }
+        .alert("Couldn't save task", isPresented: $showingSaveError) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(saveErrorMessage)
+        }
+    }
+
+    private func save() {
+        do {
+            try viewModel.saveTask(task, goals: goals, in: modelContext)
+            dismiss()
+        } catch {
+            saveErrorMessage = error.localizedDescription
+            showingSaveError = true
+        }
     }
 }

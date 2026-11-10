@@ -8,6 +8,13 @@ final class AppNavigation {
     var selectedTab: AppTab = .today
     var path: [AppRoute] = []
 
+    /// The learning goal shown by `AppRoute.goalDetail`.
+    var selectedGoalID: UUID?
+    /// A task chosen before opening Focus. `FocusSessionView` reads it once, then clears it.
+    var pendingFocusTaskID: UUID?
+    /// The exact completed session Reflection should load.
+    var pendingReflectionSessionID: UUID?
+
     func select(_ tab: AppTab) {
         path.removeAll()
         selectedTab = tab
@@ -19,5 +26,23 @@ final class AppNavigation {
 
     func popToTab(_ tab: AppTab) {
         select(tab)
+    }
+
+    /// Opens a learning goal's checklist.
+    func openGoal(_ goalID: UUID) {
+        selectedGoalID = goalID
+        push(.goalDetail)
+    }
+
+    /// Opens Focus with `taskID` already chosen (pass nil to let the learner pick).
+    func startFocus(taskID: UUID?) {
+        pendingFocusTaskID = taskID
+        push(.focus)
+    }
+
+    /// Opens Reflection for the completed session that was just persisted.
+    func openReflection(sessionID: UUID) {
+        pendingReflectionSessionID = sessionID
+        push(.reflection)
     }
 }

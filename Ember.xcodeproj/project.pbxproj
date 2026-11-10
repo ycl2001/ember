@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,6 +12,15 @@
 		2615C766FACA11EB7E0847B0 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6E1E0BFF12AA0D280A4B8A /* RootView.swift */; };
 		2F27F37ED33D4C5AAEB506F6 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826F757408944AEA99508CE0 /* DashboardViewModel.swift */; };
 		37D2A246680D1D44581171FB /* EnergyCheckIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDADE3350567BA221E093832 /* EnergyCheckIn.swift */; };
+		3A2679D430A2C24500AA45D8 /* DailyAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679D330A2C24500AA45D8 /* DailyAnalysis.swift */; };
+		3A2679D630A2C24500AA45D8 /* MonthlyAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679D530A2C24500AA45D8 /* MonthlyAnalysis.swift */; };
+		3A2679D830A2C24500AA45D8 /* AnalyticsActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679D730A2C24500AA45D8 /* AnalyticsActions.swift */; };
+		3A2679DA30A2C24600AA45D8 /* BioRhythmReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679D930A2C24600AA45D8 /* BioRhythmReport.swift */; };
+		3A2679DC30A2C24600AA45D8 /* DailyAnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679DB30A2C24600AA45D8 /* DailyAnalysisView.swift */; };
+		3A2679DE30A2C24700AA45D8 /* MonthlyAnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679DD30A2C24700AA45D8 /* MonthlyAnalysisView.swift */; };
+		3A2679E030A2C24700AA45D8 /* WeeklyAnalysusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679DF30A2C24700AA45D8 /* WeeklyAnalysusView.swift */; };
+		3A77CB3430A2B3D300BE31FF /* EnergyFlowStateCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77CB3330A2B3D300BE31FF /* EnergyFlowStateCard.swift */; };
+		3A77CB3630A2B3D300BE31FF /* FeelingPickerCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77CB3530A2B3D300BE31FF /* FeelingPickerCard.swift */; };
 		4390AE37765858854E6B379E /* LearningTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = D894345E65907C8D977A4D28 /* LearningTask.swift */; };
 		4481F7391F8374B087C65363 /* FocusSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BF187814AAB24E8BA4E616 /* FocusSession.swift */; };
 		46A5B6F37818992C3C4BFDF1 /* FeaturePlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F845D9B8D8888E33518672E5 /* FeaturePlaceholderView.swift */; };
@@ -21,15 +30,9 @@
 		5FF0D710460B4A52B237292B /* AnalyticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D308512CBCF54D90A8EFEEB8 /* AnalyticsViewModel.swift */; };
 		64C5F0ACA041FB999FE17FFA /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804CF35177FA68E8561AED47 /* AnalyticsView.swift */; };
 		664540F1C4E24D2D848CB03B /* TaskPlannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E2A8D9E604A79A5CC7357 /* TaskPlannerViewModel.swift */; };
-		95B7C90A30A1379B0046BDC5 /* EnergyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B7C90930A1378D0046BDC5 /* EnergyRecord.swift */; };
-		95B7C91030A15F410046BDC5 /* AnalyticsActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B7C90E30A15F410046BDC5 /* AnalyticsActions.swift */; };
-		95B7C91130A15F410046BDC5 /* BioRhythmReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B7C90F30A15F410046BDC5 /* BioRhythmReport.swift */; };
-		95B7C91330A28D510046BDC5 /* DailyAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B7C91230A28D3E0046BDC5 /* DailyAnalysis.swift */; };
-		95B7C91530A28D660046BDC5 /* MonthlyAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B7C91430A28D5B0046BDC5 /* MonthlyAnalysis.swift */; };
-		95B7C91730A28D8D0046BDC5 /* DailyAnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B7C91630A28D7C0046BDC5 /* DailyAnalysisView.swift */; };
-		95B7C91930A28E3D0046BDC5 /* WeeklyAnalysusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B7C91830A28D920046BDC5 /* WeeklyAnalysusView.swift */; };
-		95B7C91B30A28E570046BDC5 /* MonthlyAnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B7C91A30A28E470046BDC5 /* MonthlyAnalysisView.swift */; };
 		A6C53055803EE9219DB5DADB /* LearningGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1B132B374277D42A23ACE4 /* LearningGoal.swift */; };
+		A932490930A027420087F57E /* OnboardingSteps.swift in Sources */ = {isa = PBXBuildFile; fileRef = A932490830A027420087F57E /* OnboardingSteps.swift */; };
+		A932490B30A027510087F57E /* OnboardingStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A932490A30A027510087F57E /* OnboardingStyle.swift */; };
 		AFA792AD445E288D6023EDFD /* AppRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA203ABC6BBC3552918D79 /* AppRoute.swift */; };
 		BCCFCE885EDB49F4BAF5EC3A /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500AE4AB024436C9835FF54 /* OnboardingViewModel.swift */; };
 		BCD0B6B2C074EE713079B80E /* EnergyCheckInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */; };
@@ -48,11 +51,31 @@
 		FF6570AD9396EE23464BDE76 /* SessionReflection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA53E3A9A8508DC4E98D6E /* SessionReflection.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		3A77CB3730A2B66D00BE31FF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE57CBD6DF21BD0D904B24DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E1BC4332F1B95F6F821DED73;
+			remoteInfo = Ember;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		00E32AC3B38E4048AF2F2FE6 /* ReflectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionViewModel.swift; sourceTree = "<group>"; };
 		05529D7BAF9BE1F1AD75AA78 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1500AE4AB024436C9835FF54 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		16BF187814AAB24E8BA4E616 /* FocusSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSession.swift; sourceTree = "<group>"; };
+		3A2679D330A2C24500AA45D8 /* DailyAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyAnalysis.swift; sourceTree = "<group>"; };
+		3A2679D530A2C24500AA45D8 /* MonthlyAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyAnalysis.swift; sourceTree = "<group>"; };
+		3A2679D730A2C24500AA45D8 /* AnalyticsActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsActions.swift; sourceTree = "<group>"; };
+		3A2679D930A2C24600AA45D8 /* BioRhythmReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioRhythmReport.swift; sourceTree = "<group>"; };
+		3A2679DB30A2C24600AA45D8 /* DailyAnalysisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyAnalysisView.swift; sourceTree = "<group>"; };
+		3A2679DD30A2C24700AA45D8 /* MonthlyAnalysisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyAnalysisView.swift; sourceTree = "<group>"; };
+		3A2679DF30A2C24700AA45D8 /* WeeklyAnalysusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyAnalysusView.swift; sourceTree = "<group>"; };
+		3A77CB3330A2B3D300BE31FF /* EnergyFlowStateCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyFlowStateCard.swift; sourceTree = "<group>"; };
+		3A77CB3530A2B3D300BE31FF /* FeelingPickerCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeelingPickerCard.swift; sourceTree = "<group>"; };
+		3A9626E830A299AD000A62F7 /* EmberTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EmberTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		41DD23F7C1454731400D4555 /* FocusSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionView.swift; sourceTree = "<group>"; };
 		57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyCheckInView.swift; sourceTree = "<group>"; };
 		5E9FABC339815B0B0344B6FB /* TaskPlannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPlannerView.swift; sourceTree = "<group>"; };
@@ -64,15 +87,9 @@
 		826F757408944AEA99508CE0 /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
 		8C3E2A8D9E604A79A5CC7357 /* TaskPlannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPlannerViewModel.swift; sourceTree = "<group>"; };
 		8FBA53E3A9A8508DC4E98D6E /* SessionReflection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionReflection.swift; sourceTree = "<group>"; };
-		95B7C90930A1378D0046BDC5 /* EnergyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyRecord.swift; sourceTree = "<group>"; };
-		95B7C90E30A15F410046BDC5 /* AnalyticsActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsActions.swift; sourceTree = "<group>"; };
-		95B7C90F30A15F410046BDC5 /* BioRhythmReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioRhythmReport.swift; sourceTree = "<group>"; };
-		95B7C91230A28D3E0046BDC5 /* DailyAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyAnalysis.swift; sourceTree = "<group>"; };
-		95B7C91430A28D5B0046BDC5 /* MonthlyAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyAnalysis.swift; sourceTree = "<group>"; };
-		95B7C91630A28D7C0046BDC5 /* DailyAnalysisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyAnalysisView.swift; sourceTree = "<group>"; };
-		95B7C91830A28D920046BDC5 /* WeeklyAnalysusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyAnalysusView.swift; sourceTree = "<group>"; };
-		95B7C91A30A28E470046BDC5 /* MonthlyAnalysisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyAnalysisView.swift; sourceTree = "<group>"; };
 		95BFC77EE7E502B6A98ACFCB /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		A932490830A027420087F57E /* OnboardingSteps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSteps.swift; sourceTree = "<group>"; };
+		A932490A30A027510087F57E /* OnboardingStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStyle.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000001 /* AppTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTab.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000002 /* AppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000003 /* EmberTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberTabBar.swift; sourceTree = "<group>"; };
@@ -91,8 +108,19 @@
 		FB6E1E0BFF12AA0D280A4B8A /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		3A9626E930A299AD000A62F7 /* EmberTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = EmberTests; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		0B0EAC1C67A2F2EB9E6EB6F7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3A9626E530A299AD000A62F7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -176,7 +204,6 @@
 				534B86DB3CD8DC07892341AB /* DesignSystem */,
 				E64DA6756D6CF253E6CA6FFA /* Features */,
 				05529D7BAF9BE1F1AD75AA78 /* Assets.xcassets */,
-				95B7C90930A1378D0046BDC5 /* EnergyRecord.swift */,
 			);
 			path = Ember;
 			sourceTree = "<group>";
@@ -221,6 +248,8 @@
 			isa = PBXGroup;
 			children = (
 				95BFC77EE7E502B6A98ACFCB /* OnboardingView.swift */,
+				A932490830A027420087F57E /* OnboardingSteps.swift */,
+				A932490A30A027510087F57E /* OnboardingStyle.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -254,11 +283,11 @@
 			isa = PBXGroup;
 			children = (
 				804CF35177FA68E8561AED47 /* AnalyticsView.swift */,
-				95B7C90E30A15F410046BDC5 /* AnalyticsActions.swift */,
-				95B7C90F30A15F410046BDC5 /* BioRhythmReport.swift */,
-				95B7C91630A28D7C0046BDC5 /* DailyAnalysisView.swift */,
-				95B7C91830A28D920046BDC5 /* WeeklyAnalysusView.swift */,
-				95B7C91A30A28E470046BDC5 /* MonthlyAnalysisView.swift */,
+				3A2679D730A2C24500AA45D8 /* AnalyticsActions.swift */,
+				3A2679D930A2C24600AA45D8 /* BioRhythmReport.swift */,
+				3A2679DB30A2C24600AA45D8 /* DailyAnalysisView.swift */,
+				3A2679DD30A2C24700AA45D8 /* MonthlyAnalysisView.swift */,
+				3A2679DF30A2C24700AA45D8 /* WeeklyAnalysusView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -267,6 +296,7 @@
 			isa = PBXGroup;
 			children = (
 				729F2DB930EE548BE49C4A6F /* Ember.app */,
+				3A9626E830A299AD000A62F7 /* EmberTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -309,6 +339,8 @@
 			isa = PBXGroup;
 			children = (
 				57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */,
+				3A77CB3330A2B3D300BE31FF /* EnergyFlowStateCard.swift */,
+				3A77CB3530A2B3D300BE31FF /* FeelingPickerCard.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -317,6 +349,7 @@
 			isa = PBXGroup;
 			children = (
 				3C506F5F43401EDEC74B7945 /* Ember */,
+				3A9626E930A299AD000A62F7 /* EmberTests */,
 				AE7805B56D1DCAFAA071416F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -334,8 +367,8 @@
 			isa = PBXGroup;
 			children = (
 				D308512CBCF54D90A8EFEEB8 /* AnalyticsViewModel.swift */,
-				95B7C91230A28D3E0046BDC5 /* DailyAnalysis.swift */,
-				95B7C91430A28D5B0046BDC5 /* MonthlyAnalysis.swift */,
+				3A2679D330A2C24500AA45D8 /* DailyAnalysis.swift */,
+				3A2679D530A2C24500AA45D8 /* MonthlyAnalysis.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -399,6 +432,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		3A9626E730A299AD000A62F7 /* EmberTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3A9626EE30A299AD000A62F7 /* Build configuration list for PBXNativeTarget "EmberTests" */;
+			buildPhases = (
+				3A9626E430A299AD000A62F7 /* Sources */,
+				3A9626E530A299AD000A62F7 /* Frameworks */,
+				3A9626E630A299AD000A62F7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3A77CB3830A2B66D00BE31FF /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				3A9626E930A299AD000A62F7 /* EmberTests */,
+			);
+			name = EmberTests;
+			packageProductDependencies = (
+			);
+			productName = EmberTests;
+			productReference = 3A9626E830A299AD000A62F7 /* EmberTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		E1BC4332F1B95F6F821DED73 /* Ember */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6FA5FFADD6E6A4C127CEE419 /* Build configuration list for PBXNativeTarget "Ember" */;
@@ -423,8 +479,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2720;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
+					3A9626E730A299AD000A62F7 = {
+						CreatedOnToolsVersion = 27.2;
+					};
 					E1BC4332F1B95F6F821DED73 = {
 						CreatedOnToolsVersion = 16.0;
 					};
@@ -444,11 +504,19 @@
 			projectRoot = "";
 			targets = (
 				E1BC4332F1B95F6F821DED73 /* Ember */,
+				3A9626E730A299AD000A62F7 /* EmberTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3A9626E630A299AD000A62F7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B04831CC372489EBF0287850 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -460,6 +528,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3A9626E430A299AD000A62F7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9261F04E014268C1FB6C1C5E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -467,47 +542,199 @@
 				579165972D487CD3EB8C6D5C /* EmberApp.swift in Sources */,
 				AFA792AD445E288D6023EDFD /* AppRoute.swift in Sources */,
 				2615C766FACA11EB7E0847B0 /* RootView.swift in Sources */,
+				3A2679DC30A2C24600AA45D8 /* DailyAnalysisView.swift in Sources */,
 				4DB7E088DD026CBACA7E5714 /* DashboardView.swift in Sources */,
+				A932490B30A027510087F57E /* OnboardingStyle.swift in Sources */,
 				A6C53055803EE9219DB5DADB /* LearningGoal.swift in Sources */,
 				4390AE37765858854E6B379E /* LearningTask.swift in Sources */,
 				37D2A246680D1D44581171FB /* EnergyCheckIn.swift in Sources */,
 				4481F7391F8374B087C65363 /* FocusSession.swift in Sources */,
-				95B7C91B30A28E570046BDC5 /* MonthlyAnalysisView.swift in Sources */,
 				FF6570AD9396EE23464BDE76 /* SessionReflection.swift in Sources */,
 				D667026D5A4010BBF2C32BF9 /* EmberTheme.swift in Sources */,
 				46A5B6F37818992C3C4BFDF1 /* FeaturePlaceholderView.swift in Sources */,
 				F0D6FA0EC211A2D98EB1E55E /* OnboardingView.swift in Sources */,
-				95B7C91030A15F410046BDC5 /* AnalyticsActions.swift in Sources */,
-				95B7C91130A15F410046BDC5 /* BioRhythmReport.swift in Sources */,
+				3A2679DE30A2C24700AA45D8 /* MonthlyAnalysisView.swift in Sources */,
 				BCD0B6B2C074EE713079B80E /* EnergyCheckInView.swift in Sources */,
 				EC5D369EAA4D9C383152A697 /* TaskPlannerView.swift in Sources */,
 				50468057A090BB81D052F369 /* FocusSessionView.swift in Sources */,
-				95B7C91930A28E3D0046BDC5 /* WeeklyAnalysusView.swift in Sources */,
 				EE9798606A27751CE15096F1 /* ReflectionView.swift in Sources */,
 				64C5F0ACA041FB999FE17FFA /* AnalyticsView.swift in Sources */,
 				BCCFCE885EDB49F4BAF5EC3A /* OnboardingViewModel.swift in Sources */,
 				166A566D328B43E888207546 /* EnergyCheckInViewModel.swift in Sources */,
+				3A2679D430A2C24500AA45D8 /* DailyAnalysis.swift in Sources */,
 				664540F1C4E24D2D848CB03B /* TaskPlannerViewModel.swift in Sources */,
 				07DAF14BB28D4D6184AAB865 /* FocusSessionViewModel.swift in Sources */,
 				E2763AF6B7A944C1879AAA5A /* ReflectionViewModel.swift in Sources */,
-				95B7C91730A28D8D0046BDC5 /* DailyAnalysisView.swift in Sources */,
 				5FF0D710460B4A52B237292B /* AnalyticsViewModel.swift in Sources */,
 				2F27F37ED33D4C5AAEB506F6 /* DashboardViewModel.swift in Sources */,
-				95B7C90A30A1379B0046BDC5 /* EnergyRecord.swift in Sources */,
+				3A2679D830A2C24500AA45D8 /* AnalyticsActions.swift in Sources */,
 				C0FFEE000000000000000006 /* ProfileViewModel.swift in Sources */,
+				3A2679D630A2C24500AA45D8 /* MonthlyAnalysis.swift in Sources */,
+				A932490930A027420087F57E /* OnboardingSteps.swift in Sources */,
+				3A2679DA30A2C24600AA45D8 /* BioRhythmReport.swift in Sources */,
+				3A2679E030A2C24700AA45D8 /* WeeklyAnalysusView.swift in Sources */,
+				3A77CB3430A2B3D300BE31FF /* EnergyFlowStateCard.swift in Sources */,
+				3A77CB3630A2B3D300BE31FF /* FeelingPickerCard.swift in Sources */,
 				C0FFEE000000000000000005 /* ProfileView.swift in Sources */,
 				C0FFEE000000000000000004 /* EmberComponents.swift in Sources */,
 				C0FFEE000000000000000003 /* EmberTabBar.swift in Sources */,
-				95B7C91330A28D510046BDC5 /* DailyAnalysis.swift in Sources */,
 				C0FFEE000000000000000002 /* AppNavigation.swift in Sources */,
 				C0FFEE000000000000000001 /* AppTab.swift in Sources */,
-				95B7C91530A28D660046BDC5 /* MonthlyAnalysis.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		3A77CB3830A2B66D00BE31FF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E1BC4332F1B95F6F821DED73 /* Ember */;
+			targetProxy = 3A77CB3730A2B66D00BE31FF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		3A9626EC30A299AD000A62F7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 27.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ember.EmberTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Ember.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Ember";
+				XROS_DEPLOYMENT_TARGET = 27.2;
+			};
+			name = Debug;
+		};
+		3A9626ED30A299AD000A62F7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 27.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ember.EmberTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Ember.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Ember";
+				XROS_DEPLOYMENT_TARGET = 27.2;
+			};
+			name = Release;
+		};
 		86680E473A81A55C52C0A72D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -588,6 +815,15 @@
 			buildConfigurations = (
 				FDD3EA28A0B1309668A442B2 /* Debug */,
 				8DB23D5B0AA80A48AA651830 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3A9626EE30A299AD000A62F7 /* Build configuration list for PBXNativeTarget "EmberTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A9626EC30A299AD000A62F7 /* Debug */,
+				3A9626ED30A299AD000A62F7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
