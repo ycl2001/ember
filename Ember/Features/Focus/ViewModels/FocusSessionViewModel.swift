@@ -297,6 +297,8 @@ final class FocusSessionViewModel {
             unfinishedDraft = nil
             return
         }
+        // The session isn't running while it waits for a choice, so no reminder should fire.
+        cancelMilestoneReminder()
         if tasks.contains(where: { $0.id == draft.taskID }) {
             unfinishedDraft = draft
         } else {
@@ -337,6 +339,7 @@ final class FocusSessionViewModel {
         context.insert(session)
         do {
             try context.save()
+            cancelMilestoneReminder()
             FocusDraftStore.clear()
             unfinishedDraft = nil
             selectedTaskID = draft.taskID
@@ -353,6 +356,7 @@ final class FocusSessionViewModel {
     }
 
     func discardUnfinished() {
+        cancelMilestoneReminder()
         FocusDraftStore.clear()
         unfinishedDraft = nil
     }
