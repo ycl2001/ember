@@ -13,6 +13,7 @@ struct TaskPlannerView: View {
     @State private var viewModel = TaskPlannerViewModel()
     @State private var goalToDelete: LearningGoal?
     @State private var goalToRename: LearningGoal?
+    @State private var videoRequest: VideoRecommendationRequest?
     /// A focus session left open when the app closed (read from Focus's on-device store).
     @State private var unfinishedSession: FocusSessionDraft?
 
@@ -54,8 +55,26 @@ struct TaskPlannerView: View {
             tasks: tasks
         ))
         .onAppear { refreshUnfinishedSession() }
+        .sheet(item: $videoRequest) { request in
+            VideoRecommendationSheet(request: request)
+        }
         // Ember's palette is light-only; keep sheets and menus from turning dark around it.
         .preferredColorScheme(.light)
+    }
+
+    private func openVideoRecommendations(forTaskID taskID: UUID) {
+        guard let task = tasks.first(where: { $0.id == taskID }) else { return }
+        openVideoRecommendations(for: task)
+    }
+
+    private func openVideoRecommendations(for task: LearningTask) {
+        guard let goal = goals.first(where: { $0.id == task.goalID }) else { return }
+        videoRequest = VideoRecommendationRequest(
+            goalID: goal.id,
+            taskID: task.id,
+            goalTitle: goal.topic,
+            taskTitle: task.title
+        )
     }
 
     private func refreshUnfinishedSession() {
@@ -76,7 +95,10 @@ struct TaskPlannerView: View {
             UpNextCard(
                 eyebrow: "Unfinished · \(FocusSessionViewModel.format(Int(draft.focusedSeconds))) focused",
                 title: draft.taskTitle,
-                actionTitle: "Resume session"
+                videoReference: tasks.first { $0.id == draft.taskID }
+                    .flatMap { TaskVideoReference.detect(in: $0.notes) },
+                actionTitle: "Resume session",
+                onVideoAction: { openVideoRecommendations(forTaskID: draft.taskID) }
             ) {
                 navigation?.startFocus(taskID: draft.taskID)
             }
@@ -84,7 +106,9 @@ struct TaskPlannerView: View {
             UpNextCard(
                 eyebrow: "Up next · \(next.goal.topic)",
                 title: next.task.title,
-                note: next.task.notes
+                note: next.task.notes,
+                videoReference: TaskVideoReference.detect(in: next.task.notes),
+                onVideoAction: { openVideoRecommendations(for: next.task) }
             ) {
                 navigation?.startFocus(taskID: next.task.id)
             }
@@ -173,6 +197,7 @@ struct LearningGoalDetailView: View {
     @Query(sort: \LearningTask.createdAt) private var allTasks: [LearningTask]
     @State private var viewModel = TaskPlannerViewModel()
     @State private var editor: TaskEditor?
+    @State private var videoRequest: VideoRecommendationRequest?
     @State private var taskToDelete: LearningTask?
     @State private var showingUpdateError = false
     @State private var showDone = false
@@ -234,6 +259,9 @@ struct LearningGoalDetailView: View {
         .sheet(item: $editor) { editor in
             TaskEditorView(viewModel: viewModel, task: editor.task)
         }
+        .sheet(item: $videoRequest) { request in
+            VideoRecommendationSheet(request: request)
+        }
         .alert(
             "Delete task?",
             isPresented: Binding(
@@ -267,11 +295,15 @@ struct LearningGoalDetailView: View {
         header(goal: goal, index: index, style: style, done: done.count, total: tasks.count)
 
         if let upNext = todo.first {
-            UpNextCard(eyebrow: "Up next", title: upNext.title, note: upNext.notes, leading: {
-                checkButton(for: upNext, onDark: true)
-            }) {
-                navigation?.startFocus(taskID: upNext.id)
-            }
+            UpNextCard(
+                eyebrow: "Up next",
+                title: upNext.title,
+                note: upNext.notes,
+                videoReference: TaskVideoReference.detect(in: upNext.notes),
+                onVideoAction: { openVideoRecommendations(for: upNext) },
+                leading: { checkButton(for: upNext, onDark: true) },
+                onStart: { navigation?.startFocus(taskID: upNext.id) }
+            )
             .contextMenu { taskMenu(for: upNext) }
         } else if tasks.isEmpty {
             CalmNoteCard(
@@ -355,61 +387,77 @@ struct LearningGoalDetailView: View {
     }
 
     private func todoRow(_ task: LearningTask) -> some View {
-        HStack(spacing: 11) {
-            checkButton(for: task, onDark: false)
-            Button { openEditor(for: task) } label: {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(task.title)
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(EmberTheme.primary)
-                        .multilineTextAlignment(.leading)
-                    if !task.notes.isEmpty {
-                        Label(task.notes, systemImage: "note.text")
-                            .font(.caption)
-                            .foregroundStyle(EmberTheme.muted)
-                            .lineLimit(1)
-                            .labelStyle(NoteLabelStyle())
+        VStack(alignment: .leading, spacing: 2) {
+            HStack(spacing: 11) {
+                checkButton(for: task, onDark: false)
+                Button { openEditor(for: task) } label: {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(task.title)
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(EmberTheme.primary)
+                            .multilineTextAlignment(.leading)
+                        if !task.notes.isEmpty {
+                            Label(task.notes, systemImage: "note.text")
+                                .font(.caption)
+                                .foregroundStyle(EmberTheme.muted)
+                                .lineLimit(1)
+                                .labelStyle(NoteLabelStyle())
+                        }
                     }
-                }
-                .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityHint("Rename or delete this task")
-            Button {
-                navigation?.startFocus(taskID: task.id)
-            } label: {
-                Image(systemName: "play.fill")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(EmberTheme.primary)
-                    .frame(width: 36, height: 36)
-                    .background(EmberTheme.mint, in: Circle())
-                    .frame(width: 44, height: 44)
+                    .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
                     .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityHint("Rename or delete this task")
+                if let reference = TaskVideoReference.detect(in: task.notes) {
+                    TaskVideoIndicator(
+                        reference: reference,
+                        taskTitle: task.title,
+                        onFindVideo: { openVideoRecommendations(for: task) }
+                    )
+                }
+                Button {
+                    navigation?.startFocus(taskID: task.id)
+                } label: {
+                    Image(systemName: "play.fill")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(EmberTheme.primary)
+                        .frame(width: 36, height: 36)
+                        .background(EmberTheme.mint, in: Circle())
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Start focus on \(task.title)")
             }
-            .buttonStyle(.plain)
-            .accessibilityLabel("Start focus on \(task.title)")
         }
-        .frame(minHeight: 52)
         .contextMenu { taskMenu(for: task) }
     }
 
     private func doneRow(_ task: LearningTask) -> some View {
-        HStack(spacing: 11) {
-            checkButton(for: task, onDark: false)
-            Button { openEditor(for: task) } label: {
-                Text(task.title)
-                    .font(.subheadline)
-                    .foregroundStyle(EmberTheme.muted)
-                    .strikethrough(true, color: EmberTheme.muted)
-                    .multilineTextAlignment(.leading)
-                    .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
-                    .contentShape(Rectangle())
+        VStack(alignment: .leading, spacing: 2) {
+            HStack(spacing: 11) {
+                checkButton(for: task, onDark: false)
+                Button { openEditor(for: task) } label: {
+                    Text(task.title)
+                        .font(.subheadline)
+                        .foregroundStyle(EmberTheme.muted)
+                        .strikethrough(true, color: EmberTheme.muted)
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityHint("Rename or delete this task")
+                if let reference = TaskVideoReference.detect(in: task.notes) {
+                    TaskVideoIndicator(
+                        reference: reference,
+                        taskTitle: task.title,
+                        onFindVideo: { openVideoRecommendations(for: task) }
+                    )
+                }
             }
-            .buttonStyle(.plain)
-            .accessibilityHint("Rename or delete this task")
         }
-        .frame(minHeight: 48)
         .contextMenu { taskMenu(for: task) }
     }
 
@@ -464,6 +512,9 @@ struct LearningGoalDetailView: View {
 
     @ViewBuilder
     private func taskMenu(for task: LearningTask) -> some View {
+        Button { openVideoRecommendations(for: task) } label: {
+            Label("Find learning video", systemImage: "play.rectangle")
+        }
         Button { openEditor(for: task) } label: {
             Label("Rename task", systemImage: "pencil")
         }
@@ -476,6 +527,16 @@ struct LearningGoalDetailView: View {
     private func openEditor(for task: LearningTask) {
         viewModel.prepareEditor(for: task, goals: goals)
         editor = TaskEditor(task: task)
+    }
+
+    private func openVideoRecommendations(for task: LearningTask) {
+        guard let goal = goals.first(where: { $0.id == task.goalID }) else { return }
+        videoRequest = VideoRecommendationRequest(
+            goalID: goal.id,
+            taskID: task.id,
+            goalTitle: goal.topic,
+            taskTitle: task.title
+        )
     }
 
     private func sectionLabel(_ text: String) -> some View {
@@ -801,22 +862,29 @@ private struct GoalProgressRing: View {
     }
 }
 
-/// The dark "Up next" card with one Start focus action.
+/// The dark "Up next" card keeps Focus primary and can show one secondary task action.
 private struct UpNextCard<Leading: View>: View {
     let eyebrow: String
     let title: String
     var note: String = ""
+    var videoReference: TaskVideoReference?
     var actionTitle: String = "Start focus"
+    var onVideoAction: (() -> Void)?
     let leading: Leading
     let onStart: () -> Void
 
-    init(eyebrow: String, title: String, note: String = "", actionTitle: String = "Start focus",
+    init(eyebrow: String, title: String, note: String = "",
+         videoReference: TaskVideoReference? = nil,
+         actionTitle: String = "Start focus",
+         onVideoAction: (() -> Void)? = nil,
          @ViewBuilder leading: () -> Leading,
          onStart: @escaping () -> Void) {
         self.eyebrow = eyebrow
         self.title = title
         self.note = note
+        self.videoReference = videoReference
         self.actionTitle = actionTitle
+        self.onVideoAction = onVideoAction
         self.leading = leading()
         self.onStart = onStart
     }
@@ -848,15 +916,26 @@ private struct UpNextCard<Leading: View>: View {
                     .lineLimit(2)
                     .labelStyle(NoteLabelStyle())
             }
-            Button(action: onStart) {
-                Label(actionTitle, systemImage: "play.fill")
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(EmberTheme.primary)
-                    .frame(maxWidth: .infinity, minHeight: 48)
-                    .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 13))
+            HStack(spacing: 8) {
+                Button(action: onStart) {
+                    Label(actionTitle, systemImage: "play.fill")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(EmberTheme.primary)
+                        .frame(maxWidth: .infinity, minHeight: 48)
+                        .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 13))
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("\(actionTitle): \(title)")
+
+                if let videoReference, let onVideoAction {
+                    TaskVideoIndicator(
+                        reference: videoReference,
+                        taskTitle: title,
+                        onDark: true,
+                        onFindVideo: onVideoAction
+                    )
+                }
             }
-            .buttonStyle(.plain)
-            .accessibilityLabel("\(actionTitle): \(title)")
         }
         .padding(17)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -865,10 +944,21 @@ private struct UpNextCard<Leading: View>: View {
 }
 
 private extension UpNextCard where Leading == EmptyView {
-    init(eyebrow: String, title: String, note: String = "", actionTitle: String = "Start focus",
+    init(eyebrow: String, title: String, note: String = "",
+         videoReference: TaskVideoReference? = nil,
+         actionTitle: String = "Start focus",
+         onVideoAction: (() -> Void)? = nil,
          onStart: @escaping () -> Void) {
-        self.init(eyebrow: eyebrow, title: title, note: note, actionTitle: actionTitle,
-                  leading: { EmptyView() }, onStart: onStart)
+        self.init(
+            eyebrow: eyebrow,
+            title: title,
+            note: note,
+            videoReference: videoReference,
+            actionTitle: actionTitle,
+            onVideoAction: onVideoAction,
+            leading: { EmptyView() },
+            onStart: onStart
+        )
     }
 }
 
