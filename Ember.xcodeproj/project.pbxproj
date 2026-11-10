@@ -27,6 +27,7 @@
 		A968D52230A2AF3D00EB421D /* EmberAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A968D52130A2AF3D00EB421D /* EmberAI.swift */; };
 		A968D52430A2AFC500EB421D /* EnergySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A968D52330A2AFC500EB421D /* EnergySummary.swift */; };
 		A968D52630A2B23800EB421D /* InsightCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A968D52530A2B23800EB421D /* InsightCard.swift */; };
+		A9D8900330A3DE5600E8FDAA /* ScopeSuggestionCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D8900230A3DE5600E8FDAA /* ScopeSuggestionCard.swift */; };
 		AFA792AD445E288D6023EDFD /* AppRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA203ABC6BBC3552918D79 /* AppRoute.swift */; };
 		BCCFCE885EDB49F4BAF5EC3A /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500AE4AB024436C9835FF54 /* OnboardingViewModel.swift */; };
 		BCD0B6B2C074EE713079B80E /* EnergyCheckInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */; };
@@ -67,6 +68,7 @@
 		A968D52130A2AF3D00EB421D /* EmberAI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberAI.swift; sourceTree = "<group>"; };
 		A968D52330A2AFC500EB421D /* EnergySummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergySummary.swift; sourceTree = "<group>"; };
 		A968D52530A2B23800EB421D /* InsightCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightCard.swift; sourceTree = "<group>"; };
+		A9D8900230A3DE5600E8FDAA /* ScopeSuggestionCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeSuggestionCard.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000001 /* AppTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTab.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000002 /* AppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000003 /* EmberTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberTabBar.swift; sourceTree = "<group>"; };
@@ -382,6 +384,7 @@
 		F696DBBAEFEE4A20899B8FD3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A9D8900230A3DE5600E8FDAA /* ScopeSuggestionCard.swift */,
 				41DD23F7C1454731400D4555 /* FocusSessionView.swift */,
 			);
 			path = Views;
@@ -487,6 +490,7 @@
 				BCCFCE885EDB49F4BAF5EC3A /* OnboardingViewModel.swift in Sources */,
 				166A566D328B43E888207546 /* EnergyCheckInViewModel.swift in Sources */,
 				664540F1C4E24D2D848CB03B /* TaskPlannerViewModel.swift in Sources */,
+				A9D8900330A3DE5600E8FDAA /* ScopeSuggestionCard.swift in Sources */,
 				07DAF14BB28D4D6184AAB865 /* FocusSessionViewModel.swift in Sources */,
 				E2763AF6B7A944C1879AAA5A /* ReflectionViewModel.swift in Sources */,
 				5FF0D710460B4A52B237292B /* AnalyticsViewModel.swift in Sources */,

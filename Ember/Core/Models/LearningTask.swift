@@ -10,14 +10,16 @@ final class LearningTask {
     var isCompleted: Bool
     var createdAt: Date
     var completedAt: Date?
+    var isAIGenerated: Bool = false
 
     init(id: UUID = UUID(), goalID: UUID, title: String, isCompleted: Bool = false,
-         createdAt: Date = .now, completedAt: Date? = nil) {
+         createdAt: Date = .now, completedAt: Date? = nil, isAIGenerated: Bool = false) {
         self.id = id
         self.goalID = goalID
         self.title = title
         self.isCompleted = isCompleted
         self.createdAt = createdAt
         self.completedAt = completedAt
+        self.isAIGenerated = isAIGenerated
     }
 }

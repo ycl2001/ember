@@ -55,10 +55,13 @@ enum ScopeChange {
 struct ScopeSuggestion {
     var change: ScopeChange
 
-    @Guide(description: "One sentence explaining why, referencing today's energy level")
+    @Guide(description: "One short sentence explaining why, mentioning today's energy")
     var reason: String
 
-    @Guide(description: "If change is smaller or bigger, the revised task titles. Empty if keep.")
+    @Guide(description: "Exact title of the unfinished task these steps relate to, copied from the list. Empty if keep.")
+    var focusTaskTitle: String
+
+    @Guide(description: "smaller: 2-3 short sub-steps of the focus task. bigger: 1 optional stretch task. keep: empty.", .maximumCount(3))
     var revisedTasks: [String]
 }
 
@@ -87,14 +90,19 @@ final class EmberAIService {
     }
 
     func scopeSuggestion(energyLevel: Int, tasks: [String]) async throws -> ScopeSuggestion? {
-        guard AIAvailability.current.isAvailable else { return nil }
+        guard AIAvailability.current.isAvailable, !tasks.isEmpty else { return nil }
 
         let session = LanguageModelSession(instructions: instructions)
         let prompt = """
-        Today's energy (1-5): \(energyLevel)
-        Planned checklist:
-        \(tasks.map { "- \($0)" }.joined(separator: "\n"))
-        Should the scope be smaller, keep, or bigger?
+        Today's energy: \(energyLevel) out of 5 (1-2 low, 3 steady, 4-5 high).
+        Unfinished tasks:
+        \(tasks.prefix(10).map { "- \($0)" }.joined(separator: "\n"))
+
+        Decide whether today's plan should be smaller, keep, or bigger.
+        - Low energy: smaller. Give 2-3 tiny sub-steps of the most demanding task.
+        - Steady energy: keep.
+        - High energy: bigger. Give 1 optional stretch task.
+        Keep every task title under 8 words.
         """
         let response = try await session.respond(to: prompt, generating: ScopeSuggestion.self)
         return response.content
