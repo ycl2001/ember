@@ -55,7 +55,6 @@ struct AnalyticsView: View {
         switch viewModel.period {
         case .daily:
             VStack(alignment: .leading, spacing: 23) {
-                metricsRow
                 DailyAnalysisView(
                     analysis: viewModel.dailyAnalysis(tasks: tasks, sessions: sessions, reflections: reflections)
                 )
