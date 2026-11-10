@@ -4,104 +4,32 @@ import SwiftUI
 
 struct OnboardingGoalsStep: View {
     @Bindable var viewModel: OnboardingViewModel
+    let existingGoals: [LearningGoal]
+    @FocusState private var isGoalNameFocused: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             FlowTitle(
-                title: "What are you striving to learn?",
-                subtitle: "Momentum breaks large curricula into friction-free daily stepping stones calibrated to your baseline stamina."
+                title: "What would you like to learn?",
+                subtitle: "Start with the outcome that matters to you. You can organise it now or later."
             )
 
-            VStack(spacing: 12) {
-                ForEach(LearningCategory.allCases) { category in
-                    categoryCard(category)
-                }
+            GoalEntryCard(
+                viewModel: viewModel,
+                existingGoals: existingGoals,
+                isGoalNameFocused: $isGoalNameFocused
+            )
+
+            GoalInspirationSection(viewModel: viewModel, isGoalNameFocused: $isGoalNameFocused)
+
+            if !viewModel.goalDrafts.isEmpty {
+                OnboardingGoalDraftList(
+                    viewModel: viewModel,
+                    isGoalNameFocused: $isGoalNameFocused
+                )
             }
 
-            customTopicSection
             commitmentSection
-        }
-    }
-
-    private func categoryCard(_ category: LearningCategory) -> some View {
-        let isSelected = viewModel.selectedCategory == category
-
-        return VStack(alignment: .leading, spacing: 12) {
-            Button {
-                viewModel.selectedCategory = category
-            } label: {
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack(spacing: 8) {
-                        Text(category.title)
-                            .font(.system(.title3, design: .serif, weight: .semibold))
-                            .foregroundStyle(FlowPalette.ink)
-                        if isSelected {
-                            FlowPill(text: "Primary Focus",
-                                     background: FlowPalette.mint,
-                                     foreground: FlowPalette.mintText,
-                                     showsDot: true)
-                        }
-                        Spacer(minLength: 0)
-                        FlowCheck(isSelected: isSelected)
-                    }
-                    Text(category.summary)
-                        .font(.subheadline)
-                        .foregroundStyle(FlowPalette.secondaryInk)
-                        .multilineTextAlignment(.leading)
-                }
-            }
-            .buttonStyle(.plain)
-
-            WrappingLayout(spacing: 8) {
-                ForEach(category.topics, id: \.self) { topic in
-                    FlowTag(title: topic, isSelected: viewModel.isSelected(topic: topic)) {
-                        viewModel.toggleTopic(topic, in: category)
-                    }
-                }
-            }
-        }
-        .flowSelectable(selected: isSelected)
-    }
-
-    private var customTopicSection: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Button {
-                viewModel.isAddingCustomTopic.toggle()
-            } label: {
-                Label("Add custom topic or syllabus", systemImage: "plus.circle")
-                    .font(.headline)
-                    .foregroundStyle(FlowPalette.ink)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 18)
-                    .background(FlowPalette.surface, in: RoundedRectangle(cornerRadius: 14))
-            }
-            .buttonStyle(.plain)
-
-            if viewModel.isAddingCustomTopic {
-                HStack(spacing: 8) {
-                    TextField("e.g. Network Fundamentals", text: $viewModel.customTopic)
-                        .textInputAutocapitalization(.words)
-                        .submitLabel(.done)
-                        .onSubmit { viewModel.addCustomTopic() }
-
-                    Button("Add") { viewModel.addCustomTopic() }
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(FlowPalette.forest)
-                        .disabled(!viewModel.canAddCustomTopic)
-                }
-                .padding(14)
-                .background(FlowPalette.card, in: RoundedRectangle(cornerRadius: 12))
-            }
-
-            if !viewModel.customTopics.isEmpty {
-                WrappingLayout(spacing: 8) {
-                    ForEach(viewModel.customTopics, id: \.self) { topic in
-                        FlowTag(title: topic, isSelected: viewModel.isSelected(topic: topic)) {
-                            viewModel.toggleTopic(topic, in: viewModel.selectedCategory)
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -149,6 +77,145 @@ struct OnboardingGoalsStep: View {
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+}
+
+private struct GoalEntryCard: View {
+    @Bindable var viewModel: OnboardingViewModel
+    let existingGoals: [LearningGoal]
+    var isGoalNameFocused: FocusState<Bool>.Binding
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            TextField("e.g. Master conversational French", text: $viewModel.draftGoalName, axis: .vertical)
+                .font(.system(.title3, design: .serif, weight: .medium))
+                .textInputAutocapitalization(.sentences)
+                .lineLimit(1...3)
+                .submitLabel(.done)
+                .focused(isGoalNameFocused)
+                .onSubmit(save)
+                .accessibilityLabel("Learning goal name")
+
+            Divider()
+
+            Text("Optional category")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(FlowPalette.secondaryInk)
+
+            WrappingLayout(spacing: 8) {
+                ForEach(LearningCategory.allCases) { category in
+                    FlowTag(title: category.title, isSelected: viewModel.draftGoalCategory == category) {
+                        viewModel.draftGoalCategory = category
+                    }
+                }
+                FlowTag(title: "Other / Not sure yet", isSelected: viewModel.draftGoalCategory == nil) {
+                    viewModel.draftGoalCategory = nil
+                }
+            }
+
+            if let message = viewModel.goalDraftError {
+                Label(message, systemImage: "exclamationmark.circle")
+                    .font(.caption)
+                    .foregroundStyle(.red)
+            }
+
+            HStack {
+                if viewModel.editingGoalDraftID != nil {
+                    Button("Cancel") { viewModel.cancelGoalDraftEditing() }
+                        .frame(minHeight: 44)
+                }
+                Spacer()
+                Button(viewModel.goalEditorActionTitle, action: save)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(FlowPalette.forest)
+                    .frame(minHeight: 44)
+            }
+        }
+        .padding(14)
+        .background(FlowPalette.card, in: RoundedRectangle(cornerRadius: 14))
+    }
+
+    private func save() {
+        if viewModel.saveGoalDraft(existingGoals: existingGoals) {
+            isGoalNameFocused.wrappedValue = true
+        }
+    }
+}
+
+private struct GoalInspirationSection: View {
+    @Bindable var viewModel: OnboardingViewModel
+    var isGoalNameFocused: FocusState<Bool>.Binding
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            FlowTitle(
+                title: "Need inspiration?",
+                subtitle: "These topics are optional starting points.",
+                compact: true
+            )
+            ForEach(LearningCategory.allCases) { category in
+                VStack(alignment: .leading, spacing: 7) {
+                    Text(category.title)
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(FlowPalette.secondaryInk)
+                    WrappingLayout(spacing: 8) {
+                        ForEach(category.topics, id: \.self) { topic in
+                            FlowTag(title: topic, isSelected: false) {
+                                viewModel.draftGoalName = topic
+                                viewModel.draftGoalCategory = category
+                                isGoalNameFocused.wrappedValue = true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+private struct OnboardingGoalDraftList: View {
+    @Bindable var viewModel: OnboardingViewModel
+    var isGoalNameFocused: FocusState<Bool>.Binding
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Your learning goals")
+                .font(.headline)
+                .foregroundStyle(FlowPalette.ink)
+
+            ForEach(viewModel.goalDrafts) { draft in
+                HStack(spacing: 10) {
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(draft.name)
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(FlowPalette.ink)
+                        Text(draft.category?.title ?? "Uncategorised")
+                            .font(.caption)
+                            .foregroundStyle(FlowPalette.secondaryInk)
+                    }
+                    Spacer(minLength: 8)
+                    Button {
+                        viewModel.editGoalDraft(draft)
+                        isGoalNameFocused.wrappedValue = true
+                    } label: {
+                        Label("Edit", systemImage: "pencil")
+                            .labelStyle(.iconOnly)
+                            .frame(width: 44, height: 44)
+                            .contentShape(Rectangle())
+                    }
+                    Button(role: .destructive) {
+                        viewModel.removeGoalDraft(draft)
+                    } label: {
+                        Label("Remove", systemImage: "trash")
+                            .labelStyle(.iconOnly)
+                            .frame(width: 44, height: 44)
+                            .contentShape(Rectangle())
+                    }
+                }
+                .padding(.leading, 12)
+                .background(FlowPalette.surface, in: RoundedRectangle(cornerRadius: 12))
+            }
+        }
     }
 }
 

@@ -162,6 +162,7 @@ struct FlowTag: View {
                 .font(.footnote)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
+                .frame(minHeight: 44)
                 .foregroundStyle(isSelected ? Color.white : FlowPalette.secondaryInk)
                 .background(isSelected ? FlowPalette.forest : FlowPalette.chip,
                             in: RoundedRectangle(cornerRadius: 8))
