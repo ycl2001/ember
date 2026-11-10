@@ -12,6 +12,8 @@
 		2615C766FACA11EB7E0847B0 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6E1E0BFF12AA0D280A4B8A /* RootView.swift */; };
 		2F27F37ED33D4C5AAEB506F6 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826F757408944AEA99508CE0 /* DashboardViewModel.swift */; };
 		37D2A246680D1D44581171FB /* EnergyCheckIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDADE3350567BA221E093832 /* EnergyCheckIn.swift */; };
+		3A77CB3430A2B3D300BE31FF /* EnergyFlowStateCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77CB3330A2B3D300BE31FF /* EnergyFlowStateCard.swift */; };
+		3A77CB3630A2B3D300BE31FF /* FeelingPickerCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77CB3530A2B3D300BE31FF /* FeelingPickerCard.swift */; };
 		4390AE37765858854E6B379E /* LearningTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = D894345E65907C8D977A4D28 /* LearningTask.swift */; };
 		4481F7391F8374B087C65363 /* FocusSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BF187814AAB24E8BA4E616 /* FocusSession.swift */; };
 		46A5B6F37818992C3C4BFDF1 /* FeaturePlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F845D9B8D8888E33518672E5 /* FeaturePlaceholderView.swift */; };
@@ -42,11 +44,23 @@
 		FF6570AD9396EE23464BDE76 /* SessionReflection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA53E3A9A8508DC4E98D6E /* SessionReflection.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		3A77CB3730A2B66D00BE31FF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE57CBD6DF21BD0D904B24DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E1BC4332F1B95F6F821DED73;
+			remoteInfo = Ember;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		00E32AC3B38E4048AF2F2FE6 /* ReflectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionViewModel.swift; sourceTree = "<group>"; };
 		05529D7BAF9BE1F1AD75AA78 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1500AE4AB024436C9835FF54 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		16BF187814AAB24E8BA4E616 /* FocusSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSession.swift; sourceTree = "<group>"; };
+		3A77CB3330A2B3D300BE31FF /* EnergyFlowStateCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyFlowStateCard.swift; sourceTree = "<group>"; };
+		3A77CB3530A2B3D300BE31FF /* FeelingPickerCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeelingPickerCard.swift; sourceTree = "<group>"; };
 		3A9626E830A299AD000A62F7 /* EmberTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EmberTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		41DD23F7C1454731400D4555 /* FocusSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionView.swift; sourceTree = "<group>"; };
 		57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyCheckInView.swift; sourceTree = "<group>"; };
@@ -306,6 +320,8 @@
 			isa = PBXGroup;
 			children = (
 				57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */,
+				3A77CB3330A2B3D300BE31FF /* EnergyFlowStateCard.swift */,
+				3A77CB3530A2B3D300BE31FF /* FeelingPickerCard.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -406,6 +422,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				3A77CB3830A2B66D00BE31FF /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				3A9626E930A299AD000A62F7 /* EmberTests */,
@@ -528,6 +545,8 @@
 				2F27F37ED33D4C5AAEB506F6 /* DashboardViewModel.swift in Sources */,
 				C0FFEE000000000000000006 /* ProfileViewModel.swift in Sources */,
 				A932490930A027420087F57E /* OnboardingSteps.swift in Sources */,
+				3A77CB3430A2B3D300BE31FF /* EnergyFlowStateCard.swift in Sources */,
+				3A77CB3630A2B3D300BE31FF /* FeelingPickerCard.swift in Sources */,
 				C0FFEE000000000000000005 /* ProfileView.swift in Sources */,
 				C0FFEE000000000000000004 /* EmberComponents.swift in Sources */,
 				C0FFEE000000000000000003 /* EmberTabBar.swift in Sources */,
@@ -537,6 +556,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3A77CB3830A2B66D00BE31FF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E1BC4332F1B95F6F821DED73 /* Ember */;
+			targetProxy = 3A77CB3730A2B66D00BE31FF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		3A9626EC30A299AD000A62F7 /* Debug */ = {

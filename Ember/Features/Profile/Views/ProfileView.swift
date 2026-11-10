@@ -34,6 +34,8 @@ struct ProfileView: View {
                 .padding(18)
                 .background(EmberTheme.surface, in: RoundedRectangle(cornerRadius: 19))
 
+                EnergyFlowStateCard { onNavigate(.energyCheckIn) }
+
                 HStack(spacing: 10) {
                     EmberMetricCard(value: "\(goals.count)", label: "Learning goals")
                     EmberMetricCard(value: "\(checkIns.count)", label: "Energy check-ins")
@@ -48,11 +50,6 @@ struct ProfileView: View {
                         subtitle: "Choose and revisit topics you want to explore.",
                         symbol: "target"
                     ) { onNavigate(.onboarding) }
-                    EmberActionRow(
-                        title: "Energy check-in",
-                        subtitle: "Record how ready you feel to learn.",
-                        symbol: "battery.75percent"
-                    ) { onNavigate(.energyCheckIn) }
                 }
 
                 Text("Ember · Learn with your energy, not against it.")
