@@ -135,6 +135,115 @@ struct ReflectionFlowTests {
     }
 
     @Test
+    func reflectionRemainsAccessibleAfterDeletingItsTask() throws {
+        let container = try makeContainer()
+        let context = container.mainContext
+        let task = LearningTask(goalID: UUID(), title: "Historical Swift lesson")
+        let session = FocusSession(
+            taskID: task.id,
+            startedAt: .now.addingTimeInterval(-600),
+            endedAt: .now,
+            durationSeconds: 600
+        )
+        let reflection = SessionReflection(
+            taskID: task.id,
+            sessionID: session.id,
+            energyBefore: 5,
+            energyAfter: 3,
+            cognitiveLoad: ReflectionCognitiveLoad.challenging.rawValue,
+            helpfulFactors: [ReflectionHelpfulFactor.interactivePractice.rawValue],
+            notes: "The exercise helped."
+        )
+        context.insert(task)
+        context.insert(session)
+        context.insert(reflection)
+        try context.save()
+
+        try TaskPlannerViewModel().deleteTask(task, in: context)
+
+        let savedSessions = try context.fetch(FetchDescriptor<FocusSession>())
+        let savedReflections = try context.fetch(FetchDescriptor<SessionReflection>())
+        let viewModel = ReflectionViewModel()
+        viewModel.load(
+            sessionID: session.id,
+            sessions: savedSessions,
+            tasks: try context.fetch(FetchDescriptor<LearningTask>()),
+            checkIns: [],
+            reflections: savedReflections
+        )
+
+        #expect(!viewModel.isMissingSession)
+        #expect(viewModel.summary?.taskTitle == "Historical Swift lesson")
+        #expect(viewModel.energyBefore == 5)
+        #expect(viewModel.energyAfter == 3)
+        #expect(viewModel.selectedCognitiveLoad == .challenging)
+        #expect(viewModel.selectedHelpfulFactors == [.interactivePractice])
+        #expect(viewModel.notes == "The exercise helped.")
+        #expect(viewModel.save(in: context))
+        #expect(viewModel.save(in: context))
+        #expect(try context.fetch(FetchDescriptor<SessionReflection>()).count == 1)
+        #expect(AnalyticsViewModel().reflectionsInRange(
+            savedReflections,
+            sessions: savedSessions,
+            during: DateInterval(start: .distantPast, end: .distantFuture)
+        ).count == 1)
+    }
+
+    @Test
+    func reflectionRemainsAccessibleAfterDeletingItsGoalAndTasks() throws {
+        let container = try makeContainer()
+        let context = container.mainContext
+        let goal = LearningGoal(topic: "Programming")
+        let task = LearningTask(goalID: goal.id, title: "Learn actors")
+        let session = FocusSession(taskID: task.id, endedAt: .now, durationSeconds: 300)
+        let reflection = SessionReflection(
+            taskID: task.id,
+            sessionID: session.id,
+            energyBefore: 3,
+            energyAfter: 3
+        )
+        context.insert(goal)
+        context.insert(task)
+        context.insert(session)
+        context.insert(reflection)
+        try context.save()
+
+        try TaskPlannerViewModel().deleteGoal(goal, tasks: [task], in: context)
+
+        let viewModel = ReflectionViewModel()
+        viewModel.load(
+            sessionID: session.id,
+            sessions: try context.fetch(FetchDescriptor<FocusSession>()),
+            tasks: try context.fetch(FetchDescriptor<LearningTask>()),
+            checkIns: [],
+            reflections: try context.fetch(FetchDescriptor<SessionReflection>())
+        )
+
+        #expect(!viewModel.isMissingSession)
+        #expect(viewModel.summary?.taskTitle == "Learn actors")
+        #expect(viewModel.summary?.sessionID == session.id)
+        #expect(try context.fetch(FetchDescriptor<LearningGoal>()).isEmpty)
+        #expect(try context.fetch(FetchDescriptor<LearningTask>()).isEmpty)
+    }
+
+    @Test
+    func orphanedHistoricalSessionUsesNeutralTaskTitle() {
+        let session = FocusSession(taskID: UUID(), endedAt: .now, durationSeconds: 90)
+        let viewModel = ReflectionViewModel()
+
+        viewModel.load(
+            sessionID: session.id,
+            sessions: [session],
+            tasks: [],
+            checkIns: [],
+            reflections: []
+        )
+
+        #expect(!viewModel.isMissingSession)
+        #expect(viewModel.summary?.taskTitle == "Deleted task")
+    }
+
+    @Test
     func handlesMissingSessionWithoutInventingData() throws {
         let viewModel = ReflectionViewModel()
         viewModel.load(
@@ -175,6 +284,15 @@ struct ReflectionFlowTests {
         let sessionID = UUID()
         let taskID = UUID()
         firstContainer?.mainContext.insert(
+            FocusSession(
+                id: sessionID,
+                taskID: taskID,
+                taskTitle: nil,
+                endedAt: .now,
+                durationSeconds: 120
+            )
+        )
+        firstContainer?.mainContext.insert(
             SessionReflection(
                 taskID: taskID,
                 sessionID: sessionID,
@@ -195,8 +313,13 @@ struct ReflectionFlowTests {
         let records = try reopenedContainer.mainContext.fetch(
             FetchDescriptor<SessionReflection>()
         )
+        let sessions = try reopenedContainer.mainContext.fetch(
+            FetchDescriptor<FocusSession>()
+        )
 
         #expect(records.count == 1)
+        #expect(sessions.count == 1)
+        #expect(sessions.first?.taskTitle == nil)
         #expect(records.first?.sessionID == sessionID)
         #expect(records.first?.taskID == taskID)
         #expect(records.first?.energySpent == -2)
