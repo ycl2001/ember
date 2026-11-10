@@ -399,6 +399,21 @@ final class FocusSessionViewModel {
         }
     }
 
+    /// Turns the reminder off if notifications were disabled in iPhone Settings since it was enabled.
+    /// Call when Focus opens and whenever the app comes back to the foreground.
+    func refreshReminderPermission() async {
+        guard lockReminderEnabled else { return }
+        let settings = await UNUserNotificationCenter.current().notificationSettings()
+        switch settings.authorizationStatus {
+        case .authorized, .provisional, .ephemeral:
+            return
+        default:
+            lockReminderEnabled = false
+            cancelMilestoneReminder()
+            reminderNotice = "Notifications are off for Ember. Turn them on in Settings to use this."
+        }
+    }
+
     /// Schedules one quiet notification for the moment focused time reaches 20 minutes.
     /// Rescheduled on every resume, so it follows focused time rather than clock time.
     private func scheduleMilestoneReminder() {

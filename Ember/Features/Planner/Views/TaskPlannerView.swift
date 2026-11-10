@@ -52,6 +52,8 @@ struct TaskPlannerView: View {
             tasks: tasks
         ))
         .onAppear { refreshUnfinishedSession() }
+        // Ember's palette is light-only; keep sheets and menus from turning dark around it.
+        .preferredColorScheme(.light)
     }
 
     private func refreshUnfinishedSession() {
@@ -74,7 +76,7 @@ struct TaskPlannerView: View {
                 title: draft.taskTitle,
                 actionTitle: "Resume session"
             ) {
-                navigation?.startFocus(taskID: nil)
+                navigation?.startFocus(taskID: draft.taskID)
             }
         } else if let next = viewModel.nextTask(across: goals, in: tasks) {
             UpNextCard(
@@ -105,7 +107,7 @@ struct TaskPlannerView: View {
         VStack(alignment: .leading, spacing: 11) {
             HStack(alignment: .firstTextBaseline) {
                 Text("Learning goals")
-                    .font(.system(size: 22, weight: .medium, design: .serif))
+                    .font(.system(.title2, design: .serif, weight: .medium))
                     .foregroundStyle(EmberTheme.primary)
                     .accessibilityAddTraits(.isHeader)
                 Spacer()
@@ -179,6 +181,7 @@ struct LearningGoalDetailView: View {
         .background(EmberTheme.canvas.ignoresSafeArea())
         .navigationTitle(goal?.topic ?? "Learning goal")
         .navigationBarTitleDisplayMode(.inline)
+        .preferredColorScheme(.light)
         .toolbar {
             if let goal {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -315,7 +318,7 @@ struct LearningGoalDetailView: View {
             VStack(alignment: .leading, spacing: 4) {
                 sectionLabel("Learning goal \(index + 1)")
                 Text(goal.topic)
-                    .font(.system(size: 28, weight: .medium, design: .serif))
+                    .font(.system(.title, design: .serif, weight: .medium))
                     .foregroundStyle(EmberTheme.primary)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -450,7 +453,7 @@ struct LearningGoalDetailView: View {
 
     private func sectionLabel(_ text: String) -> some View {
         Text(text.uppercased())
-            .font(.system(size: 10, weight: .bold, design: .rounded))
+            .font(.system(.caption2, design: .rounded, weight: .bold))
             .tracking(1.8)
             .foregroundStyle(EmberTheme.muted)
     }
@@ -585,7 +588,7 @@ private struct LearningGoalCard: View {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(alignment: .firstTextBaseline) {
                         Text(goal.topic)
-                            .font(.system(size: 18, weight: .medium, design: .serif))
+                            .font(.system(.title3, design: .serif, weight: .medium))
                             .foregroundStyle(EmberTheme.primary)
                             .lineLimit(1)
                         Spacer(minLength: 6)
@@ -703,7 +706,7 @@ private struct UpNextCard<Leading: View>: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text(eyebrow.uppercased())
-                    .font(.system(size: 10, weight: .bold, design: .rounded))
+                    .font(.system(.caption2, design: .rounded, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(EmberTheme.mint)
                     .lineLimit(1)
@@ -715,7 +718,7 @@ private struct UpNextCard<Leading: View>: View {
             HStack(spacing: 8) {
                 leading
                 Text(title)
-                    .font(.system(size: 22, weight: .medium, design: .serif))
+                    .font(.system(.title2, design: .serif, weight: .medium))
                     .foregroundStyle(.white)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -775,7 +778,7 @@ private struct CalmNoteCard: View {
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
-                    .font(.system(size: 19, weight: .medium, design: .serif))
+                    .font(.system(.title3, design: .serif, weight: .medium))
                     .foregroundStyle(EmberTheme.primary)
                 Text(detail)
                     .font(.caption)
@@ -806,7 +809,7 @@ private struct SessionsSetupHeading: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 10) {
                 Text("SESSIONS")
-                    .font(.system(size: 10, weight: .bold, design: .rounded))
+                    .font(.system(.caption2, design: .rounded, weight: .bold))
                     .tracking(2)
                     .foregroundStyle(EmberTheme.muted)
 
@@ -819,7 +822,7 @@ private struct SessionsSetupHeading: View {
             }
 
             Text("Let's build momentum.")
-                .font(.system(size: 33, weight: .medium, design: .serif))
+                .font(.system(.largeTitle, design: .serif, weight: .medium))
                 .tracking(-0.6)
                 .foregroundStyle(EmberTheme.primary)
                 .fixedSize(horizontal: false, vertical: true)
@@ -847,7 +850,7 @@ private struct SessionsSetupInvitation: View {
 
             VStack(spacing: 8) {
                 Text("What would you like to learn?")
-                    .font(.system(size: 24, weight: .medium, design: .serif))
+                    .font(.system(.title2, design: .serif, weight: .medium))
                     .foregroundStyle(EmberTheme.primary)
                     .multilineTextAlignment(.center)
 
@@ -999,7 +1002,7 @@ private struct TaskEditorView: View {
 
                 VStack(alignment: .leading, spacing: 9) {
                     Text(isEditing ? "TASK IN" : "NEW TASK FOR")
-                        .font(.system(size: 10, weight: .bold, design: .rounded))
+                        .font(.system(.caption2, design: .rounded, weight: .bold))
                         .tracking(1.8)
                         .foregroundStyle(EmberTheme.muted)
                     goalChip
@@ -1056,6 +1059,7 @@ private struct TaskEditorView: View {
         .presentationDragIndicator(.visible)
         .presentationCornerRadius(28)
         .presentationBackground(EmberTheme.surface)
+        .preferredColorScheme(.light)
         .sensoryFeedback(.success, trigger: addedCount)
         .confirmationDialog("Delete this task?", isPresented: $showDeleteConfirm, titleVisibility: .visible) {
             Button("Delete task", role: .destructive) { deleteTask() }
@@ -1139,7 +1143,7 @@ private struct TaskEditorView: View {
         VStack(alignment: .leading, spacing: 7) {
             // Vertical axis so long titles wrap instead of scrolling sideways.
             TextField("What's one small step?", text: $viewModel.draftTaskTitle, axis: .vertical)
-                .font(.system(size: 23, weight: .medium, design: .serif))
+                .font(.system(.title2, design: .serif, weight: .medium))
                 .foregroundStyle(EmberTheme.primary)
                 .lineLimit(1...3)
                 .textInputAutocapitalization(.sentences)
@@ -1172,7 +1176,7 @@ private struct TaskEditorView: View {
                 Image(systemName: "note.text")
                     .font(.system(size: 11, weight: .semibold))
                 Text("NOTES")
-                    .font(.system(size: 10, weight: .bold, design: .rounded))
+                    .font(.system(.caption2, design: .rounded, weight: .bold))
                     .tracking(1.8)
                 Text("Optional")
                     .font(.caption2)
@@ -1228,7 +1232,7 @@ private struct TaskEditorView: View {
     private var justAddedList: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("JUST ADDED")
-                .font(.system(size: 10, weight: .bold, design: .rounded))
+                .font(.system(.caption2, design: .rounded, weight: .bold))
                 .tracking(1.8)
                 .foregroundStyle(EmberTheme.muted)
                 .padding(.bottom, 4)

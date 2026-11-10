@@ -27,7 +27,26 @@ struct FocusSessionView: View {
         return allTasks.first { $0.id == id }
     }
 
+    // Split into two parts so the compiler can type-check the modifier chain quickly.
     var body: some View {
+        screen
+            // Vibrate only on start and finish (plus the milestone), not every pause/resume.
+            .sensoryFeedback(.impact(weight: .light), trigger: viewModel.phase, condition: Self.vibratesOnPhaseChange)
+            .sensoryFeedback(.success, trigger: viewModel.hasReachedMilestone, condition: Self.vibratesOnMilestone)
+            .task { await viewModel.refreshReminderPermission() }
+            // Ember's palette is light-only; keep sheets and menus from turning dark around it.
+            .preferredColorScheme(.light)
+            .onAppear(perform: handleAppear)
+            .onChange(of: openTasks.map(\.id)) { viewModel.ensureSelection(from: openTasks) }
+            .onChange(of: scenePhase) { _, newPhase in handleScenePhase(newPhase) }
+            .onChange(of: viewModel.isRunning) { _, running in
+                // Keep the screen awake only while the timer is actually running.
+                UIApplication.shared.isIdleTimerDisabled = running
+            }
+            .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
+    }
+
+    private var screen: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
                 switch viewModel.phase {
@@ -82,30 +101,47 @@ struct FocusSessionView: View {
                 .interactiveDismissDisabled()
         }
         .animation(.snappy, value: viewModel.phase)
-        .sensoryFeedback(.impact(weight: .light), trigger: viewModel.phase)
-        .sensoryFeedback(.success, trigger: viewModel.hasReachedMilestone) { _, reached in reached }
-        .onAppear {
+    }
+
+    private func handleAppear() {
             viewModel.checkForUnfinishedSession(tasks: allTasks)
             // A task chosen on the Sessions screen arrives through AppNavigation; use it once.
             if let taskID = navigation?.pendingFocusTaskID {
-                viewModel.preselect(taskID: taskID, from: openTasks)
+                if viewModel.unfinishedDraft?.taskID == taskID {
+                    // Opened from "Resume session" (or ▶ on the same task): continue straight away.
+                    viewModel.resumeUnfinished()
+                } else {
+                    viewModel.preselect(taskID: taskID, from: openTasks)
+                }
                 navigation?.pendingFocusTaskID = nil
             }
             viewModel.ensureSelection(from: openTasks)
+    }
+
+    /// Start (setup → running) and finish only; pause and resume stay silent.
+    private static func vibratesOnPhaseChange(
+        from old: FocusSessionViewModel.Phase,
+        to new: FocusSessionViewModel.Phase
+    ) -> Bool {
+        let started = old == .setup && new == .running
+        let finished = new == .finished
+        return started || finished
+    }
+
+    private static func vibratesOnMilestone(from _: Bool, to reached: Bool) -> Bool {
+        reached
+    }
+
+    private func handleScenePhase(_ newPhase: ScenePhase) {
+        switch newPhase {
+        case .active:
+            viewModel.refresh()
+            Task { await viewModel.refreshReminderPermission() }
+        case .inactive, .background:
+            viewModel.appWillLeaveForeground()
+        @unknown default:
+            break
         }
-        .onChange(of: openTasks.map(\.id)) { viewModel.ensureSelection(from: openTasks) }
-        .onChange(of: scenePhase) { _, newPhase in
-            switch newPhase {
-            case .active: viewModel.refresh()
-            case .inactive, .background: viewModel.appWillLeaveForeground()
-            @unknown default: break
-            }
-        }
-        .onChange(of: viewModel.isRunning) { _, running in
-            // Keep the screen awake only while the timer is actually running.
-            UIApplication.shared.isIdleTimerDisabled = running
-        }
-        .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
     }
 
     // MARK: - Setup
@@ -197,7 +233,7 @@ struct FocusSessionView: View {
                     VStack(alignment: .leading, spacing: 3) {
                         if let topic = goalTopic(for: task) {
                             Text(topic.uppercased())
-                                .font(.system(size: 9, weight: .bold, design: .rounded))
+                                .font(.system(.caption2, design: .rounded, weight: .bold))
                                 .tracking(1.6)
                                 .foregroundStyle(EmberTheme.muted)
                         }
@@ -256,16 +292,16 @@ struct FocusSessionView: View {
     private func unfinishedSessionCard(_ draft: FocusSessionDraft) -> some View {
         VStack(alignment: .leading, spacing: 13) {
             Text("UNFINISHED SESSION · \(draft.savedAt.formatted(.relative(presentation: .named)).uppercased())")
-                .font(.system(size: 10, weight: .bold, design: .rounded))
+                .font(.system(.caption2, design: .rounded, weight: .bold))
                 .tracking(1.6)
                 .foregroundStyle(EmberTheme.mint)
             Text(draft.taskTitle)
-                .font(.system(size: 21, weight: .medium, design: .serif))
+                .font(.system(.title2, design: .serif, weight: .medium))
                 .foregroundStyle(.white)
                 .fixedSize(horizontal: false, vertical: true)
             HStack(alignment: .center, spacing: 12) {
                 Text(FocusSessionViewModel.format(Int(draft.focusedSeconds)))
-                    .font(.system(size: 34, weight: .medium, design: .serif))
+                    .font(.system(.largeTitle, design: .serif, weight: .medium))
                     .monospacedDigit()
                     .foregroundStyle(.white)
                 Text("focused so far\npaused time not counted")
@@ -393,7 +429,7 @@ struct FocusSessionView: View {
                 .frame(width: 48, height: 48)
                 .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 15))
             Text("Plan a task to focus on")
-                .font(.system(size: 22, weight: .medium, design: .serif))
+                .font(.system(.title2, design: .serif, weight: .medium))
                 .foregroundStyle(EmberTheme.primary)
             Text("Focus sessions are linked to a learning task. Add one in your checklist first.")
                 .font(.subheadline)
@@ -473,7 +509,7 @@ struct FocusSessionView: View {
                     .foregroundStyle(EmberTheme.primary)
                 emberDots
                 Text(viewModel.isRunning ? "FOCUSING" : "PAUSED")
-                    .font(.system(size: 11, weight: .bold, design: .rounded))
+                    .font(.system(.caption2, design: .rounded, weight: .bold))
                     .tracking(2)
                     .foregroundStyle(EmberTheme.muted)
                     .padding(.top, 2)
@@ -556,7 +592,7 @@ struct FocusSessionView: View {
                 .frame(width: 66, height: 66)
                 .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 22))
             Text("Nice work. Session saved.")
-                .font(.system(size: 29, weight: .medium, design: .serif))
+                .font(.system(.title, design: .serif, weight: .medium))
                 .foregroundStyle(EmberTheme.primary)
                 .multilineTextAlignment(.center)
             Text(viewModel.activeTaskTitle)
@@ -645,7 +681,7 @@ struct FocusSessionView: View {
             statusChip("20 min milestone", systemImage: "flag.fill", tint: EmberTheme.amber.opacity(0.3))
             VStack(alignment: .leading, spacing: 6) {
                 Text("Pacing checkpoint")
-                    .font(.system(size: 26, weight: .medium, design: .serif))
+                    .font(.system(.title, design: .serif, weight: .medium))
                     .foregroundStyle(EmberTheme.primary)
                 Text("You've focused for 20 minutes. The timer is paused while you decide how to continue.")
                     .font(.subheadline)
@@ -697,7 +733,7 @@ struct FocusSessionView: View {
 
     private func sectionLabel(_ text: String) -> some View {
         Text(text.uppercased())
-            .font(.system(size: 10, weight: .bold, design: .rounded))
+            .font(.system(.caption2, design: .rounded, weight: .bold))
             .tracking(2)
             .foregroundStyle(EmberTheme.muted)
     }
