@@ -51,7 +51,8 @@ struct TaskPlannerView: View {
         if let next = viewModel.nextTask(across: goals, in: tasks) {
             UpNextCard(
                 eyebrow: "Up next · \(next.goal.topic)",
-                title: next.task.title
+                title: next.task.title,
+                note: next.task.notes
             ) {
                 navigation?.startFocus(taskID: next.task.id)
             }
@@ -179,7 +180,7 @@ struct LearningGoalDetailView: View {
         header(goal: goal, index: index, style: style, done: done.count, total: tasks.count)
 
         if let upNext = todo.first {
-            UpNextCard(eyebrow: "Up next", title: upNext.title, leading: {
+            UpNextCard(eyebrow: "Up next", title: upNext.title, note: upNext.notes, leading: {
                 checkButton(for: upNext, onDark: true)
             }) {
                 navigation?.startFocus(taskID: upNext.id)
@@ -262,10 +263,19 @@ struct LearningGoalDetailView: View {
     private func todoRow(_ task: LearningTask) -> some View {
         HStack(spacing: 11) {
             checkButton(for: task, onDark: false)
-            Text(task.title)
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(EmberTheme.primary)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(task.title)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(EmberTheme.primary)
+                if !task.notes.isEmpty {
+                    Label(task.notes, systemImage: "note.text")
+                        .font(.caption)
+                        .foregroundStyle(EmberTheme.muted)
+                        .lineLimit(1)
+                        .labelStyle(NoteLabelStyle())
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
             Button {
                 navigation?.startFocus(taskID: task.id)
             } label: {
@@ -531,14 +541,16 @@ private struct GoalProgressRing: View {
 private struct UpNextCard<Leading: View>: View {
     let eyebrow: String
     let title: String
+    var note: String = ""
     let leading: Leading
     let onStart: () -> Void
 
-    init(eyebrow: String, title: String,
+    init(eyebrow: String, title: String, note: String = "",
          @ViewBuilder leading: () -> Leading,
          onStart: @escaping () -> Void) {
         self.eyebrow = eyebrow
         self.title = title
+        self.note = note
         self.leading = leading()
         self.onStart = onStart
     }
@@ -563,6 +575,13 @@ private struct UpNextCard<Leading: View>: View {
                     .foregroundStyle(.white)
                     .fixedSize(horizontal: false, vertical: true)
             }
+            if !note.isEmpty {
+                Label(note, systemImage: "note.text")
+                    .font(.caption)
+                    .foregroundStyle(Color.white.opacity(0.72))
+                    .lineLimit(2)
+                    .labelStyle(NoteLabelStyle())
+            }
             Button(action: onStart) {
                 Label("Start focus", systemImage: "play.fill")
                     .font(.subheadline.weight(.semibold))
@@ -580,8 +599,18 @@ private struct UpNextCard<Leading: View>: View {
 }
 
 private extension UpNextCard where Leading == EmptyView {
-    init(eyebrow: String, title: String, onStart: @escaping () -> Void) {
-        self.init(eyebrow: eyebrow, title: title, leading: { EmptyView() }, onStart: onStart)
+    init(eyebrow: String, title: String, note: String = "", onStart: @escaping () -> Void) {
+        self.init(eyebrow: eyebrow, title: title, note: note, leading: { EmptyView() }, onStart: onStart)
+    }
+}
+
+/// Small icon + text with tight spacing, used for task notes.
+struct NoteLabelStyle: LabelStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 5) {
+            configuration.icon.font(.system(size: 10, weight: .semibold))
+            configuration.title
+        }
     }
 }
 
@@ -783,6 +812,10 @@ private struct MissingLearningGoalState: View {
     }
 }
 
+/// Ember-styled sheet for adding or editing a task inside one learning goal.
+/// New tasks: the goal is fixed (shown as a chip), and "Add task" keeps the sheet open
+/// so several small steps can be added in a row. Editing: same sheet, with a
+/// "Move to another goal" option.
 private struct TaskEditorView: View {
     @Bindable var viewModel: TaskPlannerViewModel
     let task: LearningTask?
@@ -790,54 +823,278 @@ private struct TaskEditorView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \LearningGoal.createdAt) private var goals: [LearningGoal]
-    @State private var showingSaveError = false
-    @State private var saveErrorMessage = ""
+    @FocusState private var focusedField: Field?
+    @State private var justAdded: [String] = []
+    @State private var errorMessage: String?
+    @State private var addedCount = 0
+
+    private enum Field { case title, notes }
+
+    private var isEditing: Bool { task != nil }
+    private var isTitleFocused: Bool { focusedField == .title }
+
+    private static let starterIdeas = [
+        "Read one chapter",
+        "Do 5 practice questions",
+        "Watch one lecture",
+        "Review my notes"
+    ]
+
+    private var goalIndex: Int? { goals.firstIndex { $0.id == viewModel.draftGoalID } }
+    private var goalName: String {
+        goalIndex.map { goals[$0].topic } ?? "Choose a goal"
+    }
 
     var body: some View {
-        NavigationStack {
-            Form {
-                TextField("Task title", text: $viewModel.draftTaskTitle)
-                    .textInputAutocapitalization(.sentences)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 18) {
+                topBar
 
-                Picker("Learning topic", selection: $viewModel.draftGoalID) {
-                    if let originalGoalID = task?.goalID,
-                       !goals.contains(where: { $0.id == originalGoalID }) {
-                        Text("Unavailable topic").tag(Optional(originalGoalID))
-                    }
-                    if viewModel.draftGoalID == nil {
-                        Text("Select a topic").tag(nil as UUID?)
-                    }
-                    ForEach(goals, id: \.id) { goal in
-                        Text(goal.topic).tag(Optional(goal.id))
-                    }
+                VStack(alignment: .leading, spacing: 9) {
+                    Text(isEditing ? "TASK IN" : "NEW TASK FOR")
+                        .font(.system(size: 10, weight: .bold, design: .rounded))
+                        .tracking(1.8)
+                        .foregroundStyle(EmberTheme.muted)
+                    goalChip
+                }
+
+                titleField
+
+                if !isEditing && viewModel.draftTaskTitle.isEmpty {
+                    starterIdeas
+                }
+
+                notesBox
+
+                Button(action: submit) {
+                    Label(isEditing ? "Save changes" : "Add task",
+                          systemImage: isEditing ? "checkmark" : "plus")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity, minHeight: 50)
+                        .background(EmberTheme.primary, in: RoundedRectangle(cornerRadius: 13))
+                        .opacity(viewModel.canSaveTask ? 1 : 0.4)
+                }
+                .buttonStyle(.plain)
+
+                if let errorMessage {
+                    Text(errorMessage)
+                        .font(.caption.weight(.medium))
+                        .foregroundStyle(.red)
+                }
+
+                if !justAdded.isEmpty {
+                    justAddedList
                 }
             }
-            .navigationTitle(task == nil ? "New task" : "Edit task")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
-                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Save", action: save)
-                        .disabled(!viewModel.canSaveTask)
-                }
-            }
+            .padding(.horizontal, 20)
+            .padding(.top, 14)
+            .padding(.bottom, 20)
         }
-        .alert("Couldn't save task", isPresented: $showingSaveError) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text(saveErrorMessage)
+        .scrollDismissesKeyboard(.never)
+        .background(EmberTheme.surface.ignoresSafeArea())
+        .presentationDetents([.medium, .large])
+        .presentationDragIndicator(.visible)
+        .presentationCornerRadius(28)
+        .presentationBackground(EmberTheme.surface)
+        .sensoryFeedback(.success, trigger: addedCount)
+        .task {
+            // Focusing during the sheet's slide-in can be ignored, so wait for it to settle.
+            try? await Task.sleep(for: .milliseconds(350))
+            focusedField = .title
         }
     }
 
-    private func save() {
+    // MARK: - Pieces
+
+    private var topBar: some View {
+        HStack {
+            Button(justAdded.isEmpty ? "Cancel" : "Done") { dismiss() }
+                .font(.subheadline.weight(justAdded.isEmpty ? .regular : .semibold))
+                .foregroundStyle(justAdded.isEmpty ? EmberTheme.muted : EmberTheme.primary)
+                .frame(minHeight: 44)
+            Spacer()
+            Text(isEditing ? "Edit task" : "New task")
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(EmberTheme.primary)
+            Spacer()
+            // Keeps the title centred.
+            Text(justAdded.isEmpty ? "Cancel" : "Done")
+                .font(.subheadline)
+                .hidden()
+        }
+    }
+
+    @ViewBuilder
+    private var goalChip: some View {
+        let chip = HStack(spacing: 7) {
+            Image(systemName: LearningGoalStyle(index: goalIndex ?? 0).symbol)
+                .font(.system(size: 12, weight: .semibold))
+            Text(goalName)
+                .font(.footnote.weight(.semibold))
+                .lineLimit(1)
+            if isEditing && goals.count > 1 {
+                Image(systemName: "chevron.up.chevron.down")
+                    .font(.system(size: 10, weight: .semibold))
+            }
+        }
+        .foregroundStyle(EmberTheme.primary)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 7)
+        .background(LearningGoalStyle(index: goalIndex ?? 0).tint, in: Capsule())
+
+        if isEditing && goals.count > 1 {
+            Menu {
+                Section("Move to another goal") {
+                    ForEach(goals, id: \.id) { goal in
+                        Button {
+                            viewModel.draftGoalID = goal.id
+                        } label: {
+                            if goal.id == viewModel.draftGoalID {
+                                Label(goal.topic, systemImage: "checkmark")
+                            } else {
+                                Text(goal.topic)
+                            }
+                        }
+                    }
+                }
+            } label: {
+                chip
+            }
+            .accessibilityLabel("Goal: \(goalName). Move to another goal")
+        } else {
+            chip
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Goal: \(goalName)")
+        }
+    }
+
+    private var titleField: some View {
+        VStack(alignment: .leading, spacing: 7) {
+            TextField("What's one small step?", text: $viewModel.draftTaskTitle)
+                .font(.system(size: 23, weight: .medium, design: .serif))
+                .foregroundStyle(EmberTheme.primary)
+                .textInputAutocapitalization(.sentences)
+                .submitLabel(isEditing ? .done : .next)
+                .focused($focusedField, equals: .title)
+                .onSubmit(submit)
+                .onChange(of: viewModel.draftTaskTitle) { errorMessage = nil }
+            Rectangle()
+                .fill(isTitleFocused ? EmberTheme.primary : EmberTheme.separator)
+                .frame(height: 1.5)
+                .animation(.easeInOut(duration: 0.2), value: isTitleFocused)
+            Text("Keep it short and doable in one session.")
+                .font(.caption)
+                .foregroundStyle(EmberTheme.muted)
+        }
+    }
+
+    /// Optional notes for the task (pages, links, reminders), shown in the checklist and Focus.
+    private var notesBox: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 6) {
+                Image(systemName: "note.text")
+                    .font(.system(size: 11, weight: .semibold))
+                Text("NOTES")
+                    .font(.system(size: 10, weight: .bold, design: .rounded))
+                    .tracking(1.8)
+                Text("Optional")
+                    .font(.caption2)
+                Spacer()
+            }
+            .foregroundStyle(EmberTheme.muted)
+
+            TextField(
+                "Pages, links or anything to remember",
+                text: $viewModel.draftNotes,
+                axis: .vertical
+            )
+            .font(.subheadline)
+            .foregroundStyle(EmberTheme.primary)
+            .lineLimit(3...6)
+            .focused($focusedField, equals: .notes)
+            .padding(12)
+            .frame(maxWidth: .infinity, alignment: .topLeading)
+            .background(EmberTheme.canvas.clipShape(RoundedRectangle(cornerRadius: 14)))
+            .overlay {
+                RoundedRectangle(cornerRadius: 14)
+                    .strokeBorder(focusedField == .notes ? EmberTheme.primary : EmberTheme.separator,
+                                  lineWidth: focusedField == .notes ? 1.5 : 1)
+            }
+            .animation(.easeInOut(duration: 0.2), value: focusedField)
+            .accessibilityLabel("Notes, optional")
+        }
+    }
+
+    private var starterIdeas: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 7) {
+                ForEach(Self.starterIdeas, id: \.self) { idea in
+                    Button {
+                        viewModel.draftTaskTitle = idea
+                        focusedField = .title
+                    } label: {
+                        Text(idea)
+                            .font(.footnote)
+                            .foregroundStyle(EmberTheme.primary)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(Color.white, in: Capsule())
+                            .overlay(Capsule().strokeBorder(EmberTheme.separator))
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+        .scrollClipDisabled()
+    }
+
+    private var justAddedList: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("JUST ADDED")
+                .font(.system(size: 10, weight: .bold, design: .rounded))
+                .tracking(1.8)
+                .foregroundStyle(EmberTheme.muted)
+                .padding(.bottom, 4)
+            ForEach(Array(justAdded.enumerated()), id: \.offset) { _, title in
+                HStack(spacing: 10) {
+                    Image(systemName: "circle")
+                        .foregroundStyle(EmberTheme.muted)
+                    Text(title)
+                        .font(.subheadline)
+                        .foregroundStyle(EmberTheme.primary)
+                    Spacer()
+                }
+                .frame(minHeight: 40)
+                Divider().overlay(EmberTheme.separator)
+            }
+        }
+        .transition(.opacity)
+    }
+
+    // MARK: - Actions
+
+    private func submit() {
+        guard viewModel.canSaveTask else {
+            errorMessage = "Write a task first."
+            focusedField = .title
+            return
+        }
+        let title = viewModel.draftTaskTitle.trimmingCharacters(in: .whitespacesAndNewlines)
         do {
             try viewModel.saveTask(task, goals: goals, in: modelContext)
-            dismiss()
+            if isEditing {
+                dismiss()
+            } else {
+                // Stay open for the next small step.
+                withAnimation(.snappy) { justAdded.insert(title, at: 0) }
+                addedCount += 1
+                viewModel.draftTaskTitle = ""
+                viewModel.draftNotes = ""
+                focusedField = .title
+            }
         } catch {
-            saveErrorMessage = error.localizedDescription
-            showingSaveError = true
+            errorMessage = error.localizedDescription
         }
     }
 }

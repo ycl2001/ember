@@ -183,6 +183,13 @@ struct FocusSessionView: View {
                             .font(.subheadline.weight(.semibold))
                             .foregroundStyle(EmberTheme.primary)
                             .fixedSize(horizontal: false, vertical: true)
+                        if !task.notes.isEmpty {
+                            Label(task.notes, systemImage: "note.text")
+                                .font(.caption)
+                                .foregroundStyle(EmberTheme.muted)
+                                .labelStyle(NoteLabelStyle())
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
                     }
                     Spacer(minLength: 4)
                     Image(systemName: "checkmark.circle.fill")

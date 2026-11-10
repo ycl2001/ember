@@ -7,6 +7,7 @@ import SwiftData
 final class TaskPlannerViewModel {
     var draftTaskTitle = ""
     var draftGoalID: UUID?
+    var draftNotes = ""
 
     var canSaveTask: Bool {
         !trimmedTitle.isEmpty && draftGoalID != nil
@@ -18,6 +19,7 @@ final class TaskPlannerViewModel {
 
     func prepareEditor(for task: LearningTask?, goals: [LearningGoal]) {
         draftTaskTitle = task?.title ?? ""
+        draftNotes = task?.notes ?? ""
         draftGoalID = task?.goalID ?? goals.first?.id
     }
 
@@ -29,11 +31,13 @@ final class TaskPlannerViewModel {
             throw SaveError.unavailableGoal
         }
 
+        let notes = draftNotes.trimmingCharacters(in: .whitespacesAndNewlines)
         if let task {
             task.title = title
             task.goalID = goalID
+            task.notes = notes
         } else {
-            context.insert(LearningTask(goalID: goalID, title: title))
+            context.insert(LearningTask(goalID: goalID, title: title, notes: notes))
         }
         try persist(in: context)
     }
