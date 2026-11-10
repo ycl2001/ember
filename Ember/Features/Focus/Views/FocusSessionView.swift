@@ -482,10 +482,12 @@ struct FocusSessionView: View {
                 .opacity(viewModel.canFinish ? 1 : 0.5)
             case .finished:
                 Button {
-                    navigation?.push(.reflection)
+                    guard let sessionID = viewModel.savedSession?.id else { return }
+                    navigation?.openReflection(sessionID: sessionID)
                 } label: {
                     primaryLabel("Reflect on your energy", systemImage: "arrow.right")
                 }
+                .disabled(viewModel.savedSession == nil)
                 Button { viewModel.startAnother() } label: {
                     secondaryLabel("Start another session")
                 }
