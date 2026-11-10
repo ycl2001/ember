@@ -1,9 +1,9 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
-/// Stable Analytics tab shell; Member 5 adds period filtering and charts later.
 struct AnalyticsView: View {
     @State private var viewModel = AnalyticsViewModel()
+
     @Query private var tasks: [LearningTask]
     @Query private var sessions: [FocusSession]
     @Query private var reflections: [SessionReflection]
@@ -13,50 +13,25 @@ struct AnalyticsView: View {
             VStack(alignment: .leading, spacing: 23) {
                 EmberPageHeading(
                     eyebrow: "Analytics",
-                    title: "Your learning energy.",
-                    subtitle: "Understand your progress and how each session feels."
+                    title: "Energy & Task Analytics",
+                    subtitle: "Review saved tasks, focus sessions, and before-and-after energy reflections."
                 )
 
-                HStack(spacing: 10) {
-                    EmberMetricCard(value: "\(viewModel.completedTaskCount(in: tasks))", label: "Tasks done")
-                    EmberMetricCard(value: "\(sessions.filter { $0.endedAt != nil }.count)", label: "Sessions")
-                    EmberMetricCard(value: "\(reflections.count)", label: "Reflections")
+                periodPicker
+
+                if viewModel.period != .daily {
+                    rangeSummary
                 }
 
-                VStack(alignment: .leading, spacing: 14) {
-                    Text("Energy & task analytics")
-                        .font(.system(size: 22, weight: .medium, design: .serif))
-                        .foregroundStyle(EmberTheme.primary)
-                    if reflections.isEmpty {
-                        VStack(spacing: 12) {
-                            Image(systemName: "chart.xyaxis.line")
-                                .font(.system(size: 36))
-                                .foregroundStyle(EmberTheme.primary)
-                            Text("Your pattern will grow with you")
-                                .font(.headline)
-                                .foregroundStyle(EmberTheme.primary)
-                            Text("After your first focus session and reflection, your energy insights will appear here.")
-                                .font(.subheadline)
-                                .foregroundStyle(EmberTheme.muted)
-                                .multilineTextAlignment(.center)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 43)
-                    } else {
-                        Text("Net self-reported energy change")
-                            .font(.caption)
-                            .foregroundStyle(EmberTheme.muted)
-                        Text("\(viewModel.netReportedEnergyChange(in: reflections))")
-                            .font(.system(size: 40, weight: .medium, design: .serif))
-                            .foregroundStyle(EmberTheme.primary)
-                        Text("Positive means lower energy afterward; negative means more energised. Member 5 will add charts by day, week and month.")
-                            .font(.caption)
-                            .foregroundStyle(EmberTheme.muted)
-                    }
-                }
-                .padding(20)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(EmberTheme.surface, in: RoundedRectangle(cornerRadius: 19))
+                selectedAnalysis
+
+                AnalyticsActionButtons(
+                    period: viewModel.period,
+                    viewModel: viewModel,
+                    tasks: tasks,
+                    sessions: sessions,
+                    reflections: reflections
+                )
             }
             .padding(.horizontal, 20)
             .padding(.top, 26)
@@ -64,5 +39,85 @@ struct AnalyticsView: View {
         }
         .background(EmberTheme.canvas.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
+    }
+
+    @ViewBuilder
+    private var selectedAnalysis: some View {
+        switch viewModel.period {
+        case .daily:
+            DailyAnalysisView(
+                analysis: viewModel.dailyAnalysis(
+                    tasks: tasks,
+                    sessions: sessions,
+                    reflections: reflections
+                )
+            )
+        case .weekly:
+            VStack(alignment: .leading, spacing: 23) {
+                metricsRow
+                WeeklyAnalysisView(
+                    viewModel: viewModel,
+                    tasks: tasks,
+                    sessions: sessions,
+                    reflections: reflections
+                )
+            }
+        case .monthly:
+            MonthlyAnalysisView(
+                analysis: viewModel.monthlyAnalysis(
+                    tasks: tasks,
+                    sessions: sessions,
+                    reflections: reflections
+                )
+            )
+        }
+    }
+
+    private var periodPicker: some View {
+        HStack(spacing: 4) {
+            ForEach(AnalyticsViewModel.Period.allCases) { period in
+                let isSelected = period == viewModel.period
+                Button {
+                    withAnimation(.easeInOut(duration: 0.15)) {
+                        viewModel.updatePeriod(period)
+                    }
+                } label: {
+                    Text(period.rawValue)
+                        .font(.callout.weight(isSelected ? .semibold : .regular))
+                        .foregroundStyle(isSelected ? EmberTheme.primary : EmberTheme.muted)
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                        .background(isSelected ? EmberTheme.surface : .clear, in: Capsule())
+                        .shadow(color: isSelected ? .black.opacity(0.06) : .clear, radius: 3, y: 1)
+                }
+                .buttonStyle(.plain)
+                .accessibilityValue(isSelected ? "Selected" : "Not selected")
+                .accessibilityAddTraits(isSelected ? .isSelected : [])
+            }
+        }
+        .padding(4)
+        .background(EmberTheme.muted.opacity(0.12), in: Capsule())
+        .frame(maxWidth: .infinity)
+    }
+
+    private var rangeSummary: some View {
+        Label(viewModel.rangeTitle(viewModel.selectedRange), systemImage: "calendar")
+            .font(.subheadline)
+            .foregroundStyle(EmberTheme.primary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.vertical, 6)
+    }
+
+    private var metricsRow: some View {
+        HStack(spacing: 10) {
+            EmberMetricCard(
+                value: "\(viewModel.completedTaskCount(in: tasks, during: viewModel.selectedRange))",
+                label: "Tasks done"
+            )
+            EmberMetricCard(
+                value: "\(viewModel.sessionsCount(in: sessions, during: viewModel.selectedRange))",
+                label: "Sessions"
+            )
+        }
+        .padding(.top, 6)
     }
 }
