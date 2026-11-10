@@ -18,7 +18,7 @@
 		3A2679DA30A2C24600AA45D8 /* BioRhythmReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679D930A2C24600AA45D8 /* BioRhythmReport.swift */; };
 		3A2679DC30A2C24600AA45D8 /* DailyAnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679DB30A2C24600AA45D8 /* DailyAnalysisView.swift */; };
 		3A2679DE30A2C24700AA45D8 /* MonthlyAnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679DD30A2C24700AA45D8 /* MonthlyAnalysisView.swift */; };
-		3A2679E030A2C24700AA45D8 /* WeeklyAnalysusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679DF30A2C24700AA45D8 /* WeeklyAnalysusView.swift */; };
+		3A2679E030A2C24700AA45D8 /* WeeklyAnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679DF30A2C24700AA45D8 /* WeeklyAnalysisView.swift */; };
 		3A77CB3430A2B3D300BE31FF /* EnergyFlowStateCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77CB3330A2B3D300BE31FF /* EnergyFlowStateCard.swift */; };
 		3A77CB3630A2B3D300BE31FF /* FeelingPickerCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77CB3530A2B3D300BE31FF /* FeelingPickerCard.swift */; };
 		4390AE37765858854E6B379E /* LearningTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = D894345E65907C8D977A4D28 /* LearningTask.swift */; };
@@ -72,7 +72,7 @@
 		3A2679D930A2C24600AA45D8 /* BioRhythmReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioRhythmReport.swift; sourceTree = "<group>"; };
 		3A2679DB30A2C24600AA45D8 /* DailyAnalysisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyAnalysisView.swift; sourceTree = "<group>"; };
 		3A2679DD30A2C24700AA45D8 /* MonthlyAnalysisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyAnalysisView.swift; sourceTree = "<group>"; };
-		3A2679DF30A2C24700AA45D8 /* WeeklyAnalysusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyAnalysusView.swift; sourceTree = "<group>"; };
+		3A2679DF30A2C24700AA45D8 /* WeeklyAnalysisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyAnalysisView.swift; sourceTree = "<group>"; };
 		3A77CB3330A2B3D300BE31FF /* EnergyFlowStateCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyFlowStateCard.swift; sourceTree = "<group>"; };
 		3A77CB3530A2B3D300BE31FF /* FeelingPickerCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeelingPickerCard.swift; sourceTree = "<group>"; };
 		3A9626E830A299AD000A62F7 /* EmberTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EmberTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -287,7 +287,7 @@
 				3A2679D930A2C24600AA45D8 /* BioRhythmReport.swift */,
 				3A2679DB30A2C24600AA45D8 /* DailyAnalysisView.swift */,
 				3A2679DD30A2C24700AA45D8 /* MonthlyAnalysisView.swift */,
-				3A2679DF30A2C24700AA45D8 /* WeeklyAnalysusView.swift */,
+				3A2679DF30A2C24700AA45D8 /* WeeklyAnalysisView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -572,7 +572,7 @@
 				3A2679D630A2C24500AA45D8 /* MonthlyAnalysis.swift in Sources */,
 				A932490930A027420087F57E /* OnboardingSteps.swift in Sources */,
 				3A2679DA30A2C24600AA45D8 /* BioRhythmReport.swift in Sources */,
-				3A2679E030A2C24700AA45D8 /* WeeklyAnalysusView.swift in Sources */,
+				3A2679E030A2C24700AA45D8 /* WeeklyAnalysisView.swift in Sources */,
 				3A77CB3430A2B3D300BE31FF /* EnergyFlowStateCard.swift in Sources */,
 				3A77CB3630A2B3D300BE31FF /* FeelingPickerCard.swift in Sources */,
 				C0FFEE000000000000000005 /* ProfileView.swift in Sources */,
