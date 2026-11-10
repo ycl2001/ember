@@ -12,6 +12,7 @@ struct TaskPlannerView: View {
     @Query(sort: \LearningTask.createdAt) private var tasks: [LearningTask]
     @State private var viewModel = TaskPlannerViewModel()
     @State private var goalToDelete: LearningGoal?
+    @State private var goalToRename: LearningGoal?
     /// A focus session left open when the app closed (read from Focus's on-device store).
     @State private var unfinishedSession: FocusSessionDraft?
 
@@ -48,6 +49,7 @@ struct TaskPlannerView: View {
         .modifier(GoalEditing(
             viewModel: viewModel,
             deleting: $goalToDelete,
+            renaming: $goalToRename,
             goals: goals,
             tasks: tasks
         ))
@@ -118,23 +120,42 @@ struct TaskPlannerView: View {
                 }
             }
 
-            ForEach(Array(goals.enumerated()), id: \.element.id) { index, goal in
-                let goalTasks = viewModel.tasks(for: goal.id, in: tasks)
-                LearningGoalCard(
-                    goal: goal,
-                    style: LearningGoalStyle(index: index),
-                    tasks: goalTasks,
-                    nextTask: goalTasks.first { !$0.isCompleted }
-                ) {
-                    navigation?.openGoal(goal.id)
-                }
-                .contextMenu {
-                    Button(role: .destructive) { goalToDelete = goal } label: {
-                        Label("Delete goal", systemImage: "trash")
+            ForEach(viewModel.groupedGoals(goals)) { group in
+                VStack(alignment: .leading, spacing: 9) {
+                    Text(group.title.uppercased())
+                        .font(.caption.weight(.semibold))
+                        .tracking(0.8)
+                        .foregroundStyle(EmberTheme.muted)
+
+                    ForEach(group.goals, id: \.id) { goal in
+                        let goalTasks = viewModel.tasks(for: goal.id, in: tasks)
+                        LearningGoalCard(
+                            goal: goal,
+                            style: LearningGoalStyle(index: goals.firstIndex { $0.id == goal.id } ?? 0),
+                            tasks: goalTasks,
+                            nextTask: goalTasks.first { !$0.isCompleted }
+                        ) {
+                            if goalToRename?.id != goal.id {
+                                navigation?.openGoal(goal.id)
+                            }
+                        }
+                        .contextMenu {
+                            Button { openGoalRename(goal) } label: {
+                                Label("Rename goal", systemImage: "pencil")
+                            }
+                            Button(role: .destructive) { goalToDelete = goal } label: {
+                                Label("Delete goal", systemImage: "trash")
+                            }
+                        }
                     }
                 }
             }
         }
+    }
+
+    private func openGoalRename(_ goal: LearningGoal) {
+        viewModel.prepareGoalRename(goal)
+        goalToRename = goal
     }
 }
 
@@ -156,6 +177,7 @@ struct LearningGoalDetailView: View {
     @State private var showingUpdateError = false
     @State private var showDone = false
     @State private var goalToDelete: LearningGoal?
+    @State private var goalToRename: LearningGoal?
 
     private var goalIndex: Int? { goals.firstIndex { $0.id == goalID } }
     private var goal: LearningGoal? { goalIndex.map { goals[$0] } }
@@ -186,12 +208,16 @@ struct LearningGoalDetailView: View {
             if let goal {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
+                        Button { openGoalRename(goal) } label: {
+                            Label("Rename goal", systemImage: "pencil")
+                        }
                         Button(role: .destructive) { goalToDelete = goal } label: {
                             Label("Delete goal", systemImage: "trash")
                         }
                     } label: {
                         Image(systemName: "ellipsis.circle")
                             .foregroundStyle(EmberTheme.primary)
+                            .frame(width: 44, height: 44)
                     }
                     .accessibilityLabel("Goal options")
                 }
@@ -200,6 +226,7 @@ struct LearningGoalDetailView: View {
         .modifier(GoalEditing(
             viewModel: viewModel,
             deleting: $goalToDelete,
+            renaming: $goalToRename,
             goals: goals,
             tasks: allTasks,
             onDeleted: { dismiss() }
@@ -466,6 +493,11 @@ struct LearningGoalDetailView: View {
         }
     }
 
+    private func openGoalRename(_ goal: LearningGoal) {
+        viewModel.prepareGoalRename(goal)
+        goalToRename = goal
+    }
+
     private struct TaskEditor: Identifiable {
         let id = UUID()
         let task: LearningTask?
@@ -478,6 +510,7 @@ struct LearningGoalDetailView: View {
 private struct GoalEditing: ViewModifier {
     @Bindable var viewModel: TaskPlannerViewModel
     @Binding var deleting: LearningGoal?
+    @Binding var renaming: LearningGoal?
     let goals: [LearningGoal]
     let tasks: [LearningTask]
     var onDeleted: () -> Void = {}
@@ -487,6 +520,9 @@ private struct GoalEditing: ViewModifier {
 
     func body(content: Content) -> some View {
         content
+            .sheet(item: $renaming) { goal in
+                GoalRenameView(viewModel: viewModel, goal: goal, goals: goals)
+            }
             .confirmationDialog(
                 deleting.map { "Delete “\($0.topic)”?" } ?? "Delete goal?",
                 isPresented: Binding(
@@ -531,6 +567,89 @@ private struct GoalEditing: ViewModifier {
             onDeleted()
         } catch {
             errorMessage = error.localizedDescription
+        }
+    }
+}
+
+private struct GoalRenameView: View {
+    @Bindable var viewModel: TaskPlannerViewModel
+    let goal: LearningGoal
+    let goals: [LearningGoal]
+
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
+    @FocusState private var isNameFocused: Bool
+    @State private var persistenceError: String?
+
+    private var validationMessage: String? {
+        viewModel.goalNameValidationMessage(for: goal, goals: goals)
+    }
+
+    var body: some View {
+        NavigationStack {
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Name your learning goal")
+                    .font(.headline)
+                    .foregroundStyle(EmberTheme.primary)
+
+                TextField("Learning goal name", text: $viewModel.draftGoalName)
+                    .textInputAutocapitalization(.sentences)
+                    .submitLabel(.done)
+                    .focused($isNameFocused)
+                    .onSubmit(save)
+                    .onChange(of: viewModel.draftGoalName) { persistenceError = nil }
+                    .accessibilityLabel("Learning goal name")
+                    .padding(14)
+                    .background(EmberTheme.canvas.clipShape(RoundedRectangle(cornerRadius: 14)))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 14)
+                            .strokeBorder(isNameFocused ? EmberTheme.primary : EmberTheme.separator)
+                    }
+
+                Picker("Category", selection: $viewModel.draftGoalCategory) {
+                    Text("Uncategorised").tag(nil as LearningCategory?)
+                    ForEach(LearningCategory.allCases) { category in
+                        Text(category.title).tag(Optional(category))
+                    }
+                }
+                .pickerStyle(.menu)
+                .frame(minHeight: 44)
+
+                if let message = persistenceError ?? validationMessage {
+                    Label(message, systemImage: "exclamationmark.circle")
+                        .font(.footnote)
+                        .foregroundStyle(.red)
+                }
+
+                Spacer()
+            }
+            .padding(20)
+            .background(EmberTheme.surface.ignoresSafeArea())
+            .navigationTitle("Rename goal")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save", action: save)
+                        .disabled(validationMessage != nil)
+                }
+            }
+        }
+        .presentationDetents([.medium])
+        .presentationDragIndicator(.visible)
+        .preferredColorScheme(.light)
+        .task { isNameFocused = true }
+    }
+
+    private func save() {
+        guard validationMessage == nil else { return }
+        do {
+            try viewModel.renameGoal(goal, goals: goals, in: modelContext)
+            dismiss()
+        } catch {
+            persistenceError = error.localizedDescription
         }
     }
 }
