@@ -9,6 +9,7 @@ import UIKit
 struct FocusSessionView: View {
     @State private var viewModel = FocusSessionViewModel()
     @State private var showDiscardConfirm = false
+    @State private var showDiscardUnfinishedConfirm = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @Environment(\.modelContext) private var modelContext
@@ -84,6 +85,7 @@ struct FocusSessionView: View {
         .sensoryFeedback(.impact(weight: .light), trigger: viewModel.phase)
         .sensoryFeedback(.success, trigger: viewModel.hasReachedMilestone) { _, reached in reached }
         .onAppear {
+            viewModel.checkForUnfinishedSession(tasks: allTasks)
             // A task chosen on the Sessions screen arrives through AppNavigation; use it once.
             if let taskID = navigation?.pendingFocusTaskID {
                 viewModel.preselect(taskID: taskID, from: openTasks)
@@ -93,7 +95,11 @@ struct FocusSessionView: View {
         }
         .onChange(of: openTasks.map(\.id)) { viewModel.ensureSelection(from: openTasks) }
         .onChange(of: scenePhase) { _, newPhase in
-            if newPhase == .active { viewModel.refresh() }
+            switch newPhase {
+            case .active: viewModel.refresh()
+            case .inactive, .background: viewModel.appWillLeaveForeground()
+            @unknown default: break
+            }
         }
         .onChange(of: viewModel.isRunning) { _, running in
             // Keep the screen awake only while the timer is actually running.
@@ -106,6 +112,20 @@ struct FocusSessionView: View {
 
     @ViewBuilder
     private var setupContent: some View {
+        if let draft = viewModel.unfinishedDraft {
+            EmberPageHeading(
+                eyebrow: "Welcome back",
+                title: "Pick up where you left off?",
+                subtitle: "Your last session was still open when Ember closed."
+            )
+            unfinishedSessionCard(draft)
+        } else {
+            readyToStartContent
+        }
+    }
+
+    @ViewBuilder
+    private var readyToStartContent: some View {
         EmberPageHeading(
             eyebrow: "Ready when you are",
             title: "One task, full attention.",
@@ -230,7 +250,119 @@ struct FocusSessionView: View {
         LearningGoalStyle(index: goals.firstIndex { $0.id == task.goalID } ?? 0)
     }
 
+    /// Dark card offering to resume, save or discard a session left open when the app closed.
+    private func unfinishedSessionCard(_ draft: FocusSessionDraft) -> some View {
+        VStack(alignment: .leading, spacing: 13) {
+            Text("UNFINISHED SESSION · \(draft.savedAt.formatted(.relative(presentation: .named)).uppercased())")
+                .font(.system(size: 10, weight: .bold, design: .rounded))
+                .tracking(1.6)
+                .foregroundStyle(EmberTheme.mint)
+            Text(draft.taskTitle)
+                .font(.system(size: 21, weight: .medium, design: .serif))
+                .foregroundStyle(.white)
+                .fixedSize(horizontal: false, vertical: true)
+            HStack(alignment: .center, spacing: 12) {
+                Text(FocusSessionViewModel.format(Int(draft.focusedSeconds)))
+                    .font(.system(size: 34, weight: .medium, design: .serif))
+                    .monospacedDigit()
+                    .foregroundStyle(.white)
+                Text("focused so far\npaused time not counted")
+                    .font(.caption)
+                    .foregroundStyle(EmberTheme.mint)
+            }
+
+            Button { viewModel.resumeUnfinished() } label: {
+                Label("Resume session", systemImage: "play.fill")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(EmberTheme.primary)
+                    .frame(maxWidth: .infinity, minHeight: 48)
+                    .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 13))
+            }
+            .buttonStyle(.plain)
+
+            HStack(spacing: 9) {
+                Button { viewModel.finishUnfinished(in: modelContext) } label: {
+                    Text("Save as finished")
+                        .font(.footnote.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(Color.white.opacity(0.35)))
+                }
+                Button { showDiscardUnfinishedConfirm = true } label: {
+                    Text("Discard")
+                        .font(.footnote.weight(.semibold))
+                        .foregroundStyle(Color.white.opacity(0.7))
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(Color.white.opacity(0.2)))
+                }
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(17)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(EmberTheme.primary, in: RoundedRectangle(cornerRadius: 22))
+        .confirmationDialog(
+            "Discard this session?",
+            isPresented: $showDiscardUnfinishedConfirm,
+            titleVisibility: .visible
+        ) {
+            Button("Discard session", role: .destructive) { viewModel.discardUnfinished() }
+            Button("Keep it", role: .cancel) {}
+        } message: {
+            Text("The \(FocusSessionViewModel.format(Int(draft.focusedSeconds))) you focused won't be saved.")
+        }
+    }
+
     private var milestoneToggleCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            milestoneToggle
+            if viewModel.milestoneReminderEnabled {
+                Divider().overlay(EmberTheme.separator)
+                lockReminderToggle
+            }
+        }
+        .padding(13)
+        .background(EmberTheme.surface, in: RoundedRectangle(cornerRadius: 19))
+        .animation(.snappy, value: viewModel.milestoneReminderEnabled)
+    }
+
+    /// Optional notification at 20 focused minutes, for when the phone is locked.
+    private var lockReminderToggle: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Toggle(isOn: Binding(
+                get: { viewModel.lockReminderEnabled },
+                set: { newValue in Task { await viewModel.setLockReminder(newValue) } }
+            )) {
+                HStack(spacing: 13) {
+                    Image(systemName: "bell")
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundStyle(EmberTheme.primary)
+                        .frame(width: 40, height: 40)
+                        .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 13))
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text("Remind me when locked")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(EmberTheme.primary)
+                        Text(viewModel.lockReminderEnabled
+                             ? "You'll get one quiet notification."
+                             : "Asks permission the first time.")
+                            .font(.caption)
+                            .foregroundStyle(EmberTheme.muted)
+                    }
+                }
+            }
+            .tint(EmberTheme.primary)
+
+            if let notice = viewModel.reminderNotice {
+                Label(notice, systemImage: "bell.slash")
+                    .font(.caption)
+                    .foregroundStyle(EmberTheme.muted)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+
+    private var milestoneToggle: some View {
         Toggle(isOn: $viewModel.milestoneReminderEnabled) {
             HStack(spacing: 13) {
                 Image(systemName: "flag")
@@ -249,8 +381,6 @@ struct FocusSessionView: View {
             }
         }
         .tint(EmberTheme.primary)
-        .padding(13)
-        .background(EmberTheme.surface, in: RoundedRectangle(cornerRadius: 19))
     }
 
     private var emptyState: some View {
@@ -472,7 +602,7 @@ struct FocusSessionView: View {
         VStack(spacing: 9) {
             switch viewModel.phase {
             case .setup:
-                if let task = selectedTask, !openTasks.isEmpty {
+                if viewModel.unfinishedDraft == nil, let task = selectedTask, !openTasks.isEmpty {
                     Button { viewModel.start(task: task) } label: {
                         primaryLabel("Start focusing", systemImage: "play.fill")
                     }
