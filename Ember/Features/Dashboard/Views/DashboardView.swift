@@ -9,9 +9,6 @@ struct DashboardView: View {
 
     @Query private var goals: [LearningGoal]
     @Query private var tasks: [LearningTask]
-    @Query(sort: \EnergyCheckIn.createdAt, order: .reverse) private var checkIns: [EnergyCheckIn]
-
-    private var latestEnergy: EnergyCheckIn? { checkIns.first }
 
     var body: some View {
         ScrollView {
@@ -34,7 +31,7 @@ struct DashboardView: View {
                         .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 17))
                 }
 
-                energyCard
+                FeelingPickerCard()
 
                 VStack(alignment: .leading, spacing: 11) {
                     HStack {
@@ -99,44 +96,5 @@ struct DashboardView: View {
         }
         .background(EmberTheme.canvas.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
-    }
-
-    private var energyCard: some View {
-        VStack(alignment: .leading, spacing: 18) {
-            HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("ENERGY FLOW STATE")
-                        .font(.system(size: 10, weight: .bold))
-                        .tracking(1.6)
-                        .foregroundStyle(EmberTheme.mint)
-                    Text(latestEnergy.map { "Energy \($0.level) / 5" } ?? "How's your energy?")
-                        .font(.system(size: 29, weight: .medium, design: .serif))
-                        .foregroundStyle(.white)
-                    Text(latestEnergy == nil ? "Check in before planning your day." : "Your latest self-reported energy check-in.")
-                        .font(.subheadline)
-                        .foregroundStyle(Color.white.opacity(0.75))
-                }
-                Spacer(minLength: 8)
-                Image(systemName: "battery.75percent")
-                    .font(.system(size: 24))
-                    .foregroundStyle(EmberTheme.amber)
-            }
-            Button {
-                onNavigate(.energyCheckIn)
-            } label: {
-                HStack {
-                    Text(latestEnergy == nil ? "Check in now" : "Update energy")
-                    Spacer()
-                    Image(systemName: "arrow.up.right")
-                }
-                .font(.subheadline.weight(.semibold))
-                .padding(13)
-                .foregroundStyle(EmberTheme.primary)
-                .background(EmberTheme.mint, in: RoundedRectangle(cornerRadius: 12))
-            }
-            .accessibilityIdentifier("today_energy_checkin")
-        }
-        .padding(20)
-        .background(EmberTheme.primary, in: RoundedRectangle(cornerRadius: 24))
     }
 }
