@@ -224,6 +224,18 @@ struct ProtectorItem: Identifiable {
     var id: String { title }
 }
 
+struct OnboardingGoalDraft: Identifiable, Equatable {
+    let id: UUID
+    var name: String
+    var category: LearningCategory?
+
+    init(id: UUID = UUID(), name: String, category: LearningCategory?) {
+        self.id = id
+        self.name = name
+        self.category = category
+    }
+}
+
 // MARK: - View model
 
 /// Member 2: state, validation, and saving for the 3-step onboarding flow.
@@ -263,11 +275,13 @@ final class OnboardingViewModel {
     var step: Step = .goals
 
     // Step 1
-    var selectedCategory: LearningCategory = .academic
-    private(set) var selectedTopics: [String] = []
-    private(set) var customTopics: [String] = []
-    var customTopic = ""
-    var isAddingCustomTopic = false
+    var draftGoalName = "" {
+        didSet { goalDraftError = nil }
+    }
+    var draftGoalCategory: LearningCategory?
+    private(set) var goalDrafts: [OnboardingGoalDraft] = []
+    private(set) var editingGoalDraftID: UUID?
+    private(set) var goalDraftError: String?
     var commitment: DailyCommitment = .bitesized
     private(set) var skippedGoals = false
 
@@ -289,13 +303,18 @@ final class OnboardingViewModel {
         }
     }
 
-    func advance() {
-        guard let next = Step(rawValue: step.rawValue + 1) else { return }
+    @discardableResult
+    func advance(existingGoals: [LearningGoal] = []) -> Bool {
+        if step == .goals, !validateGoals(existingGoals: existingGoals) {
+            return false
+        }
+        guard let next = Step(rawValue: step.rawValue + 1) else { return false }
         if step == .goals {
             skippedGoals = false
         }
         errorMessage = nil
         step = next
+        return true
     }
 
     /// Returns false when already on the first step, so the caller can close the flow.
@@ -314,47 +333,98 @@ final class OnboardingViewModel {
 
     // MARK: Step 1
 
-    func isSelected(topic: String) -> Bool {
-        selectedTopics.contains(topic)
+    var goalEditorActionTitle: String {
+        editingGoalDraftID == nil ? "Add goal" : "Save changes"
     }
 
-    func toggleTopic(_ topic: String, in category: LearningCategory) {
-        selectedCategory = category
-        if let index = selectedTopics.firstIndex(of: topic) {
-            selectedTopics.remove(at: index)
+    func selectSuggestion(_ topic: String, category: LearningCategory) {
+        draftGoalName = topic
+        draftGoalCategory = category
+        errorMessage = nil
+    }
+
+    func selectCategory(_ category: LearningCategory?) {
+        draftGoalCategory = category
+    }
+
+    @discardableResult
+    func saveGoalDraft(existingGoals: [LearningGoal] = []) -> Bool {
+        let name = trimmedDraftGoalName
+        guard !name.isEmpty else {
+            goalDraftError = "Enter what you would like to learn."
+            return false
+        }
+
+        let duplicateDraft = goalDrafts.contains {
+            $0.id != editingGoalDraftID && $0.name.caseInsensitiveCompare(name) == .orderedSame
+        }
+        let duplicateExisting = existingGoals.contains {
+            $0.topic.caseInsensitiveCompare(name) == .orderedSame
+        }
+        guard !duplicateDraft, !duplicateExisting else {
+            goalDraftError = "A learning goal with that name already exists."
+            return false
+        }
+
+        if let editingGoalDraftID,
+           let index = goalDrafts.firstIndex(where: { $0.id == editingGoalDraftID }) {
+            goalDrafts[index].name = name
+            goalDrafts[index].category = draftGoalCategory
         } else {
-            selectedTopics.append(topic)
+            goalDrafts.append(OnboardingGoalDraft(name: name, category: draftGoalCategory))
+        }
+        resetGoalEditor()
+        return true
+    }
+
+    func editGoalDraft(_ draft: OnboardingGoalDraft) {
+        editingGoalDraftID = draft.id
+        draftGoalName = draft.name
+        draftGoalCategory = draft.category
+        goalDraftError = nil
+    }
+
+    func removeGoalDraft(_ draft: OnboardingGoalDraft) {
+        goalDrafts.removeAll { $0.id == draft.id }
+        if editingGoalDraftID == draft.id {
+            resetGoalEditor()
         }
     }
 
-    var trimmedCustomTopic: String {
-        customTopic.trimmingCharacters(in: .whitespacesAndNewlines)
+    func cancelGoalDraftEditing() {
+        resetGoalEditor()
     }
 
-    var canAddCustomTopic: Bool {
-        !trimmedCustomTopic.isEmpty
-    }
-
-    func addCustomTopic() {
-        let name = trimmedCustomTopic
-        guard !name.isEmpty else { return }
-
-        let alreadyAdded = selectedTopics.contains {
-            $0.caseInsensitiveCompare(name) == .orderedSame
-        }
-        if !alreadyAdded {
-            customTopics.append(name)
-            selectedTopics.append(name)
-        }
-        customTopic = ""
-    }
-
-    /// Topics that become goals. If no chip is picked, the chosen category is used.
-    /// Empty when the learner skipped Step 1.
+    /// Names that become goals. Empty when the learner skipped Step 1.
     var goalTopics: [String] {
         if skippedGoals { return [] }
-        if selectedTopics.isEmpty { return [selectedCategory.title] }
-        return selectedTopics
+        return goalDrafts.map(\.name)
+    }
+
+    private var trimmedDraftGoalName: String {
+        draftGoalName.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private func validateGoals(existingGoals: [LearningGoal]) -> Bool {
+        if !trimmedDraftGoalName.isEmpty {
+            guard saveGoalDraft(existingGoals: existingGoals) else {
+                errorMessage = goalDraftError
+                return false
+            }
+        }
+        guard !goalDrafts.isEmpty else {
+            errorMessage = "Add a learning goal, or choose Skip."
+            return false
+        }
+        return true
+    }
+
+    private func resetGoalEditor() {
+        draftGoalName = ""
+        draftGoalCategory = nil
+        editingGoalDraftID = nil
+        goalDraftError = nil
+        errorMessage = nil
     }
 
     // MARK: Step 2
@@ -443,12 +513,16 @@ final class OnboardingViewModel {
     /// Creates a LearningGoal for each new topic and stores the other answers.
     /// Returns true when everything was saved.
     func finish(in context: ModelContext, existingGoals: [LearningGoal]) -> Bool {
-        for topic in goalTopics {
+        if !skippedGoals, !validateGoals(existingGoals: existingGoals) {
+            return false
+        }
+        for draft in skippedGoals ? [] : goalDrafts {
+            let topic = draft.name
             let exists = existingGoals.contains {
                 $0.topic.caseInsensitiveCompare(topic) == .orderedSame
             }
             if !exists {
-                context.insert(LearningGoal(topic: topic))
+                context.insert(LearningGoal(topic: topic, category: draft.category?.rawValue))
             }
         }
 

@@ -8,6 +8,8 @@ final class TaskPlannerViewModel {
     var draftTaskTitle = ""
     var draftGoalID: UUID?
     var draftNotes = ""
+    var draftGoalName = ""
+    var draftGoalCategory: LearningCategory?
 
     var canSaveTask: Bool {
         !trimmedTitle.isEmpty && draftGoalID != nil
@@ -55,6 +57,47 @@ final class TaskPlannerViewModel {
 
     // MARK: - Goals
 
+    func prepareGoalRename(_ goal: LearningGoal) {
+        draftGoalName = goal.topic
+        draftGoalCategory = goal.category.flatMap(LearningCategory.init(rawValue:))
+    }
+
+    func goalNameValidationMessage(for goal: LearningGoal, goals: [LearningGoal]) -> String? {
+        let name = trimmedGoalName
+        if name.isEmpty {
+            return "Enter a learning goal name."
+        }
+        let isDuplicate = goals.contains {
+            $0.id != goal.id && $0.topic.caseInsensitiveCompare(name) == .orderedSame
+        }
+        return isDuplicate ? "A learning goal with that name already exists." : nil
+    }
+
+    func renameGoal(_ goal: LearningGoal, goals: [LearningGoal], in context: ModelContext) throws {
+        guard goalNameValidationMessage(for: goal, goals: goals) == nil else {
+            throw SaveError.invalidGoalName
+        }
+        goal.topic = trimmedGoalName
+        goal.category = draftGoalCategory?.rawValue
+        try persist(in: context)
+    }
+
+    func groupedGoals(_ goals: [LearningGoal]) -> [LearningGoalGroup] {
+        var groups = LearningCategory.allCases.compactMap { category -> LearningGoalGroup? in
+            let matchingGoals = goals.filter { $0.category == category.rawValue }
+            guard !matchingGoals.isEmpty else { return nil }
+            return LearningGoalGroup(category: category, goals: matchingGoals)
+        }
+        let uncategorised = goals.filter { goal in
+            guard let category = goal.category else { return true }
+            return LearningCategory(rawValue: category) == nil
+        }
+        if !uncategorised.isEmpty {
+            groups.append(LearningGoalGroup(category: nil, goals: uncategorised))
+        }
+        return groups
+    }
+
     /// Deletes a goal and every task in it. Past focus sessions are kept for insights.
     func deleteGoal(_ goal: LearningGoal, tasks: [LearningTask], in context: ModelContext) throws {
         for task in tasks where task.goalID == goal.id {
@@ -101,17 +144,31 @@ final class TaskPlannerViewModel {
         }
     }
 
+    private var trimmedGoalName: String {
+        draftGoalName.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
     private enum SaveError: LocalizedError {
         case emptyTitle
         case unavailableGoal
+        case invalidGoalName
         case persistenceFailed
 
         var errorDescription: String? {
             switch self {
             case .emptyTitle: "Enter a task title."
             case .unavailableGoal: "Choose an available learning goal."
+            case .invalidGoalName: "Enter a unique learning goal name."
             case .persistenceFailed: "Your changes couldn’t be saved. Please try again."
             }
         }
     }
+}
+
+struct LearningGoalGroup: Identifiable {
+    let category: LearningCategory?
+    let goals: [LearningGoal]
+
+    var id: String { category?.rawValue ?? "uncategorised" }
+    var title: String { category?.title ?? "Uncategorised" }
 }

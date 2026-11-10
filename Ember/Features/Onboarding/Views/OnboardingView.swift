@@ -66,7 +66,7 @@ struct OnboardingView: View {
     private var stepContent: some View {
         switch viewModel.step {
         case .goals:
-            OnboardingGoalsStep(viewModel: viewModel)
+            OnboardingGoalsStep(viewModel: viewModel, existingGoals: goals)
         case .rhythm:
             OnboardingRhythmStep(viewModel: viewModel)
         case .blueprint:
@@ -117,7 +117,7 @@ struct OnboardingView: View {
         if viewModel.step == .blueprint {
             finish()
         } else {
-            viewModel.advance()
+            viewModel.advance(existingGoals: goals)
         }
     }
 
