@@ -7,6 +7,7 @@ struct AnalyticsView: View {
     @Query private var tasks: [LearningTask]
     @Query private var sessions: [FocusSession]
     @Query private var reflections: [SessionReflection]
+    @Query(sort: \EnergyCheckIn.createdAt) private var checkIns: [EnergyCheckIn]
 
     var body: some View {
         ScrollView {
@@ -22,6 +23,8 @@ struct AnalyticsView: View {
                     EmberMetricCard(value: "\(sessions.filter { $0.endedAt != nil }.count)", label: "Sessions")
                     EmberMetricCard(value: "\(reflections.count)", label: "Reflections")
                 }
+
+                InsightCard(summary: EnergySummary.make(from: checkIns))
 
                 VStack(alignment: .leading, spacing: 14) {
                     Text("Energy & task analytics")

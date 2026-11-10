@@ -24,6 +24,9 @@
 		A6C53055803EE9219DB5DADB /* LearningGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1B132B374277D42A23ACE4 /* LearningGoal.swift */; };
 		A932490930A027420087F57E /* OnboardingSteps.swift in Sources */ = {isa = PBXBuildFile; fileRef = A932490830A027420087F57E /* OnboardingSteps.swift */; };
 		A932490B30A027510087F57E /* OnboardingStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A932490A30A027510087F57E /* OnboardingStyle.swift */; };
+		A968D52230A2AF3D00EB421D /* EmberAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A968D52130A2AF3D00EB421D /* EmberAI.swift */; };
+		A968D52430A2AFC500EB421D /* EnergySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A968D52330A2AFC500EB421D /* EnergySummary.swift */; };
+		A968D52630A2B23800EB421D /* InsightCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A968D52530A2B23800EB421D /* InsightCard.swift */; };
 		AFA792AD445E288D6023EDFD /* AppRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA203ABC6BBC3552918D79 /* AppRoute.swift */; };
 		BCCFCE885EDB49F4BAF5EC3A /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500AE4AB024436C9835FF54 /* OnboardingViewModel.swift */; };
 		BCD0B6B2C074EE713079B80E /* EnergyCheckInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */; };
@@ -61,6 +64,9 @@
 		95BFC77EE7E502B6A98ACFCB /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		A932490830A027420087F57E /* OnboardingSteps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSteps.swift; sourceTree = "<group>"; };
 		A932490A30A027510087F57E /* OnboardingStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStyle.swift; sourceTree = "<group>"; };
+		A968D52130A2AF3D00EB421D /* EmberAI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberAI.swift; sourceTree = "<group>"; };
+		A968D52330A2AFC500EB421D /* EnergySummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergySummary.swift; sourceTree = "<group>"; };
+		A968D52530A2B23800EB421D /* InsightCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightCard.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000001 /* AppTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTab.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000002 /* AppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000003 /* EmberTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberTabBar.swift; sourceTree = "<group>"; };
@@ -151,6 +157,7 @@
 		2BA340BF271E1A0E2D6B10FC /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				A968D52030A2AEC000EB421D /* AI */,
 				20D83567C1ABE1FD275D4733 /* Models */,
 			);
 			path = Core;
@@ -242,9 +249,18 @@
 		92FD7638F2F245488779A78B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A968D52530A2B23800EB421D /* InsightCard.swift */,
 				804CF35177FA68E8561AED47 /* AnalyticsView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		A968D52030A2AEC000EB421D /* AI */ = {
+			isa = PBXGroup;
+			children = (
+				A968D52130A2AF3D00EB421D /* EmberAI.swift */,
+			);
+			path = AI;
 			sourceTree = "<group>";
 		};
 		AE7805B56D1DCAFAA071416F /* Products */ = {
@@ -317,6 +333,7 @@
 		D3B827B3E43646AA9A36FBA8 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				A968D52330A2AFC500EB421D /* EnergySummary.swift */,
 				D308512CBCF54D90A8EFEEB8 /* AnalyticsViewModel.swift */,
 			);
 			path = ViewModels;
@@ -447,10 +464,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				579165972D487CD3EB8C6D5C /* EmberApp.swift in Sources */,
+				A968D52230A2AF3D00EB421D /* EmberAI.swift in Sources */,
 				AFA792AD445E288D6023EDFD /* AppRoute.swift in Sources */,
 				2615C766FACA11EB7E0847B0 /* RootView.swift in Sources */,
 				4DB7E088DD026CBACA7E5714 /* DashboardView.swift in Sources */,
 				A932490B30A027510087F57E /* OnboardingStyle.swift in Sources */,
+				A968D52430A2AFC500EB421D /* EnergySummary.swift in Sources */,
 				A6C53055803EE9219DB5DADB /* LearningGoal.swift in Sources */,
 				4390AE37765858854E6B379E /* LearningTask.swift in Sources */,
 				37D2A246680D1D44581171FB /* EnergyCheckIn.swift in Sources */,
@@ -463,6 +482,7 @@
 				EC5D369EAA4D9C383152A697 /* TaskPlannerView.swift in Sources */,
 				50468057A090BB81D052F369 /* FocusSessionView.swift in Sources */,
 				EE9798606A27751CE15096F1 /* ReflectionView.swift in Sources */,
+				A968D52630A2B23800EB421D /* InsightCard.swift in Sources */,
 				64C5F0ACA041FB999FE17FFA /* AnalyticsView.swift in Sources */,
 				BCCFCE885EDB49F4BAF5EC3A /* OnboardingViewModel.swift in Sources */,
 				166A566D328B43E888207546 /* EnergyCheckInViewModel.swift in Sources */,
@@ -513,7 +533,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.6;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -549,7 +569,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.6;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
