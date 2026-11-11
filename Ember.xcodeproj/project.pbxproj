@@ -26,6 +26,11 @@
 		3AB13DF330A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB13DF230A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift */; };
 		3AB13DF530A3ED0C00F383EB /* DailyInspiration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB13DF430A3ED0C00F383EB /* DailyInspiration.swift */; };
 		3AB13DF730A3ED0C00F383EB /* DailyInspirationCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB13DF630A3ED0C00F383EB /* DailyInspirationCard.swift */; };
+		3AB7CA9530A469200005B7ED /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3AB7CA9430A469200005B7ED /* GoogleService-Info.plist */; };
+		3AB7CA9830A46B3B0005B7ED /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 3AB7CA9730A46B3B0005B7ED /* FirebaseAppCheck */; };
+		3AB7CA9A30A46B3B0005B7ED /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 3AB7CA9930A46B3B0005B7ED /* FirebaseCore */; };
+		3AB7CA9C30A46B3B0005B7ED /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 3AB7CA9B30A46B3B0005B7ED /* FirebaseFunctions */; };
+		3AB7CA9E30A473010005B7ED /* EmberAppCheckProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CA9D30A473010005B7ED /* EmberAppCheckProviderFactory.swift */; };
 		4390AE37765858854E6B379E /* LearningTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = D894345E65907C8D977A4D28 /* LearningTask.swift */; };
 		4481F7391F8374B087C65363 /* FocusSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BF187814AAB24E8BA4E616 /* FocusSession.swift */; };
 		46A5B6F37818992C3C4BFDF1 /* FeaturePlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F845D9B8D8888E33518672E5 /* FeaturePlaceholderView.swift */; };
@@ -94,6 +99,9 @@
 		3AB13DF230A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyEnergyEncouragementCard.swift; sourceTree = "<group>"; };
 		3AB13DF430A3ED0C00F383EB /* DailyInspiration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyInspiration.swift; sourceTree = "<group>"; };
 		3AB13DF630A3ED0C00F383EB /* DailyInspirationCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyInspirationCard.swift; sourceTree = "<group>"; };
+		3AB7CA9430A469200005B7ED /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3AB7CA9D30A473010005B7ED /* EmberAppCheckProviderFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberAppCheckProviderFactory.swift; sourceTree = "<group>"; };
+		3AB7CA9F30A478450005B7ED /* Ember.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Ember.entitlements; sourceTree = "<group>"; };
 		41DD23F7C1454731400D4555 /* FocusSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionView.swift; sourceTree = "<group>"; };
 		57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyCheckInView.swift; sourceTree = "<group>"; };
 		5E9FABC339815B0B0344B6FB /* TaskPlannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPlannerView.swift; sourceTree = "<group>"; };
@@ -139,6 +147,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AB7CA9C30A46B3B0005B7ED /* FirebaseFunctions in Frameworks */,
+				3AB7CA9A30A46B3B0005B7ED /* FirebaseCore in Frameworks */,
+				3AB7CA9830A46B3B0005B7ED /* FirebaseAppCheck in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,6 +204,7 @@
 				F5F013C355AC82BBF061604F /* EmberApp.swift */,
 				9A17AA000000000000000002 /* EmberStorage.swift */,
 				FB6E1E0BFF12AA0D280A4B8A /* RootView.swift */,
+				3AB7CA9D30A473010005B7ED /* EmberAppCheckProviderFactory.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -229,11 +241,13 @@
 		3C506F5F43401EDEC74B7945 /* Ember */ = {
 			isa = PBXGroup;
 			children = (
+				3AB7CA9F30A478450005B7ED /* Ember.entitlements */,
 				13C4608B5138EBE9B3A45A55 /* App */,
 				2BA340BF271E1A0E2D6B10FC /* Core */,
 				534B86DB3CD8DC07892341AB /* DesignSystem */,
 				E64DA6756D6CF253E6CA6FFA /* Features */,
 				05529D7BAF9BE1F1AD75AA78 /* Assets.xcassets */,
+				3AB7CA9430A469200005B7ED /* GoogleService-Info.plist */,
 			);
 			path = Ember;
 			sourceTree = "<group>";
@@ -532,6 +546,11 @@
 				3AB7CA1230A40CA40005B7ED /* LearningResources */,
 			);
 			name = Ember;
+			packageProductDependencies = (
+				3AB7CA9730A46B3B0005B7ED /* FirebaseAppCheck */,
+				3AB7CA9930A46B3B0005B7ED /* FirebaseCore */,
+				3AB7CA9B30A46B3B0005B7ED /* FirebaseFunctions */,
+			);
 			productName = Ember;
 			productReference = 729F2DB930EE548BE49C4A6F /* Ember.app */;
 			productType = "com.apple.product-type.application";
@@ -567,6 +586,9 @@
 				Base,
 			);
 			mainGroup = CF1D10CF086BFC87F58F0B85;
+			packageReferences = (
+				3AB7CA9630A46B3B0005B7ED /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = AE7805B56D1DCAFAA071416F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -598,6 +620,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0ADC22F3C046CC76298F620 /* Assets.xcassets in Resources */,
+				3AB7CA9530A469200005B7ED /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -641,6 +664,7 @@
 				EE9798606A27751CE15096F1 /* ReflectionView.swift in Sources */,
 				64C5F0ACA041FB999FE17FFA /* AnalyticsView.swift in Sources */,
 				BCCFCE885EDB49F4BAF5EC3A /* OnboardingViewModel.swift in Sources */,
+				3AB7CA9E30A473010005B7ED /* EmberAppCheckProviderFactory.swift in Sources */,
 				166A566D328B43E888207546 /* EnergyCheckInViewModel.swift in Sources */,
 				3A2679D430A2C24500AA45D8 /* DailyAnalysis.swift in Sources */,
 				664540F1C4E24D2D848CB03B /* TaskPlannerViewModel.swift in Sources */,
@@ -835,15 +859,18 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Ember/Ember.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3VJ6XS7472;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Ember;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
 				MARKETING_VERSION = 0.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ycl2001.ember;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = au.edu.uts.ember;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_VERSION = 5.0;
@@ -905,15 +932,18 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Ember/Ember.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3VJ6XS7472;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Ember;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
 				MARKETING_VERSION = 0.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ycl2001.ember;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = au.edu.uts.ember;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_VERSION = 5.0;
@@ -977,6 +1007,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3AB7CA9630A46B3B0005B7ED /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 13.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3AB7CA9730A46B3B0005B7ED /* FirebaseAppCheck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3AB7CA9630A46B3B0005B7ED /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAppCheck;
+		};
+		3AB7CA9930A46B3B0005B7ED /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3AB7CA9630A46B3B0005B7ED /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		3AB7CA9B30A46B3B0005B7ED /* FirebaseFunctions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3AB7CA9630A46B3B0005B7ED /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFunctions;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DE57CBD6DF21BD0D904B24DC /* Project object */;
 }

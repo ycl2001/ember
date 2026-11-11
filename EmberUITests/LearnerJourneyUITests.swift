@@ -33,6 +33,20 @@ final class LearnerJourneyUITests: XCTestCase {
         XCTAssertTrue(completedCheck.waitForExistence(timeout: timeout))
     }
 
+    func testVideoDiscoveryIsVisibleWithoutAVideoNoteAndPresentsRecommendations() throws {
+        let app = launchFreshApp()
+        let goal = "Learn Python"
+        let task = "Learn variables"
+        try createFirstGoal(goal, in: app)
+        try addTask(task, to: goal, in: app)
+
+        let videoAction = app.buttons["Find learning video for \(task)"]
+        try tapVisible(videoAction, in: app)
+
+        XCTAssertTrue(app.navigationBars["Learning videos"].waitForExistence(timeout: timeout))
+        XCTAssertTrue(app.buttons["Done"].isHittable)
+    }
+
     // Case 02.
     func testCanSkipSetupAndAddAGoalLater() throws {
         let app = launchFreshApp()

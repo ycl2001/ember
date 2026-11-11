@@ -6,6 +6,7 @@ protocol YouTubeServing: Sendable {
 
 enum YouTubeServiceError: LocalizedError, Equatable {
     case notConfigured
+    case invalidRequest
     case invalidResponse
     case unavailable
     case quotaExceeded
@@ -14,6 +15,8 @@ enum YouTubeServiceError: LocalizedError, Equatable {
         switch self {
         case .notConfigured:
             "Video recommendations aren't configured for this build. Your checklist is still available."
+        case .invalidRequest:
+            "This learning goal or task can't be used for video recommendations."
         case .invalidResponse:
             "YouTube returned an unexpected response. Please try again later."
         case .unavailable:

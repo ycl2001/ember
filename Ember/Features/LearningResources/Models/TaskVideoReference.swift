@@ -4,6 +4,10 @@ enum TaskVideoReference: Equatable, Sendable {
     case mentioned
     case linked(URL)
 
+    static func actionReference(in notes: String) -> TaskVideoReference {
+        detect(in: notes) ?? .mentioned
+    }
+
     static func detect(in notes: String) -> TaskVideoReference? {
         if let url = linkedVideoURL(in: notes) {
             return .linked(url)
