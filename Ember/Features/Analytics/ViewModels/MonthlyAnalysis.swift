@@ -87,6 +87,23 @@ struct MonthlyAnalysis {
 }
 
 extension AnalyticsViewModel {
+    static func monthlyEnergyObservations(
+        sessions: [FocusSession],
+        reflections: [SessionReflection]
+    ) -> [MonthlyEnergyObservation] {
+        let sessionsByID = Dictionary(
+            sessions.map { ($0.id, $0) },
+            uniquingKeysWith: { first, _ in first }
+        )
+
+        return reflections.map { reflection in
+            MonthlyEnergyObservation(
+                date: sessionsByID[reflection.sessionID]?.endedAt ?? reflection.createdAt,
+                level: reflection.energyAfter
+            )
+        }.sorted(by: MonthlyEnergyObservation.chronological)
+    }
+
     func monthlyAnalysis(
         tasks: [LearningTask],
         sessions: [FocusSession],
@@ -117,9 +134,32 @@ extension AnalyticsViewModel {
         let monthReflections = reflections.filter {
             contains(observationDate(for: $0, sessionsByID: sessionsByID), in: month)
         }
-        guard !activeDays.isEmpty else { return .insufficient }
 
         let finalIncludedDay = calendar.date(byAdding: .day, value: -1, to: month.end) ?? month.end
+        let anchor = min(referenceDate, finalIncludedDay)
+        let grid = MonthlyEnergyGrid(
+            observations: Self.monthlyEnergyObservations(sessions: sessions, reflections: reflections),
+            asOf: anchor,
+            calendar: calendar
+        )
+        let weeks = grid.weeks.enumerated().map { weekIndex, days in
+            MonthlyAnalysis.Week(
+                label: "W\(weekIndex + 1)",
+                cells: days.enumerated().map { dayIndex, day in
+                    MonthlyAnalysis.Cell(
+                        id: weekIndex * 7 + dayIndex,
+                        day: calendar.component(.day, from: day.date),
+                        level: day.level
+                    )
+                }
+            )
+        }
+        guard !activeDays.isEmpty else {
+            var analysis = MonthlyAnalysis.insufficient
+            analysis.weeks = weeks
+            return analysis
+        }
+
         let effectiveEnd = min(referenceDate, finalIncludedDay)
         let elapsedDays = max(
             1,
@@ -174,32 +214,6 @@ extension AnalyticsViewModel {
                 badgeTone: .grey,
                 footnote: "Activity exists, but no energy reflections were saved."
             )
-        }
-
-        var mondayCalendar = calendar
-        mondayCalendar.firstWeekday = 2
-        let anchor = min(referenceDate, finalIncludedDay)
-        let currentWeekStart = mondayCalendar.dateInterval(of: .weekOfYear, for: anchor)?.start ?? calendar.startOfDay(for: anchor)
-        let matrixStart = calendar.date(byAdding: .day, value: -21, to: currentWeekStart) ?? currentWeekStart
-
-        let groupedReflections = Dictionary(grouping: monthReflections) {
-            calendar.startOfDay(for: observationDate(for: $0, sessionsByID: sessionsByID))
-        }
-        let energyByDay = groupedReflections.mapValues { values in
-            Double(values.reduce(0) { $0 + $1.energyAfter }) / Double(values.count)
-        }
-
-        var weeks: [MonthlyAnalysis.Week] = []
-        for weekIndex in 0..<4 {
-            var cells: [MonthlyAnalysis.Cell] = []
-            for dayIndex in 0..<7 {
-                let index = weekIndex * 7 + dayIndex
-                guard let date = calendar.date(byAdding: .day, value: index, to: matrixStart) else { continue }
-                let dateKey = calendar.startOfDay(for: date)
-                let level = EmberEnergyScale.rating(for: energyByDay[dateKey])
-                cells.append(.init(id: index, day: calendar.component(.day, from: date), level: level))
-            }
-            weeks.append(.init(label: "W\(weekIndex + 1)", cells: cells))
         }
 
         var insights: [MonthlyAnalysis.Insight] = []

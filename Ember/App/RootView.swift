@@ -30,6 +30,10 @@ struct RootView: View {
         }
         .environment(navigation)
         .tint(EmberTheme.primary)
+        .modifier(MonthlyEnergyWidgetSync())
+        .onOpenURL { url in
+            navigation.handleWidgetURL(url)
+        }
     }
 
     @ViewBuilder
@@ -43,7 +47,7 @@ struct RootView: View {
         case .sessions:
             TaskPlannerView(onNavigate: { navigation.push($0) })
         case .analytics:
-            AnalyticsView()
+            analyticsView
         case .profile:
             ProfileView(onNavigate: { navigation.push($0) })
         }
@@ -70,7 +74,13 @@ struct RootView: View {
                 onContinueLearning: { finishReflection(on: .sessions) }
             )
         case .analytics:
-            AnalyticsView()
+            analyticsView
+        }
+    }
+
+    private var analyticsView: some View {
+        AnalyticsView(initialPeriod: navigation.analyticsPeriod) { period in
+            navigation.analyticsPeriod = period
         }
     }
 
