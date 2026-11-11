@@ -9,22 +9,11 @@ private enum MonthlyPalette {
     static let brown = Color(red: 0.55, green: 0.33, blue: 0.12)
     static let mint = Color(red: 0.85, green: 0.93, blue: 0.87)
     static let mintBadge = Color(red: 0.78, green: 0.92, blue: 0.82)
-    static let levelGreen = Color(red: 0.66, green: 0.82, blue: 0.73)
     static let orange = Color(red: 0.93, green: 0.64, blue: 0.34)
     static let peach = Color(red: 0.98, green: 0.87, blue: 0.78)
     static let grey = Color(red: 0.91, green: 0.91, blue: 0.89)
     static let panel = Color(red: 0.95, green: 0.95, blue: 0.93)
     static let emptyDot = Color(red: 0.94, green: 0.94, blue: 0.93)
-
-    static func levelColor(_ level: Int?) -> Color {
-        switch level ?? 0 {
-        case 5: return ink
-        case 4: return levelGreen
-        case 3: return orange
-        case 2: return peach
-        default: return emptyDot
-        }
-    }
 }
 
 /// Markdown text where **bold** parts are drawn in a stronger colour than the rest.
@@ -64,9 +53,16 @@ struct MonthlyAnalysisView: View {
                 }
                 .frame(maxWidth: .infinity)
             } else {
-                HStack(alignment: .top, spacing: 12) {
-                    MonthlyStatCardView(eyebrow: "Monthly Activity", card: analysis.streak)
-                    MonthlyStatCardView(eyebrow: "Avg Energy", card: analysis.energy)
+                ViewThatFits(in: .horizontal) {
+                    HStack(alignment: .top, spacing: 12) {
+                        MonthlyStatCardView(eyebrow: "Monthly Activity", card: analysis.streak)
+                        MonthlyStatCardView(eyebrow: "Avg Energy", card: analysis.energy)
+                    }
+
+                    VStack(spacing: 12) {
+                        MonthlyStatCardView(eyebrow: "Monthly Activity", card: analysis.streak)
+                        MonthlyStatCardView(eyebrow: "Avg Energy", card: analysis.energy)
+                    }
                 }
 
                 ReflectiveCadenceCard(eyebrow: analysis.cadenceEyebrow, title: analysis.cadenceTitle)
@@ -96,10 +92,8 @@ private struct MonthlyStatCardView: View {
 
             HStack(alignment: .firstTextBaseline, spacing: 6) {
                 Text(card.value)
-                    .font(.system(size: 46, weight: .semibold, design: .serif))
+                    .font(.system(.largeTitle, design: .serif).weight(.semibold))
                     .foregroundStyle(MonthlyPalette.ink)
-                    .minimumScaleFactor(0.7)
-                    .lineLimit(1)
                 if let unit = card.unit {
                     Text(unit)
                         .font(.subheadline)
@@ -115,8 +109,7 @@ private struct MonthlyStatCardView: View {
             Label(card.badge, systemImage: card.badgeIcon)
                 .font(.footnote.weight(.semibold))
                 .foregroundStyle(badgeForeground)
-                .lineLimit(1)
-                .minimumScaleFactor(0.85)
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(.vertical, 6)
                 .padding(.horizontal, 10)
                 .background(badgeBackground, in: Capsule())
@@ -262,13 +255,25 @@ private struct SpotMatrixCard: View {
                         ForEach(week.cells) { cell in
                             VStack(spacing: 4) {
                                 Circle()
-                                    .fill(MonthlyPalette.levelColor(cell.level))
+                                    .fill(
+                                        EmberEnergyScale.color(for: cell.level)
+                                            ?? MonthlyPalette.emptyDot
+                                    )
                                     .frame(width: 30, height: 30)
+                                    .overlay {
+                                        Circle().stroke(EmberTheme.primary, lineWidth: 1)
+                                    }
                                 Text(cell.day, format: .number.precision(.integerLength(2)))
                                     .font(.footnote)
                                     .foregroundStyle(EmberTheme.muted)
                             }
                             .frame(maxWidth: .infinity)
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel("Day \(cell.day)")
+                            .accessibilityValue(
+                                cell.level.map { "Average after-session energy \($0) of 5" }
+                                    ?? "No energy observation"
+                            )
                         }
                     }
                     .padding(.vertical, 10)
@@ -285,8 +290,14 @@ private struct SpotMatrixCard: View {
                 ForEach(analysis.legend) { item in
                     HStack(spacing: 8) {
                         Circle()
-                            .fill(MonthlyPalette.levelColor(item.level))
+                            .fill(
+                                EmberEnergyScale.color(for: item.level)
+                                    ?? MonthlyPalette.emptyDot
+                            )
                             .frame(width: 12, height: 12)
+                            .overlay {
+                                Circle().stroke(EmberTheme.primary, lineWidth: 1)
+                            }
                         HStack(spacing: 4) {
                             Text("Level \(item.level) \(item.name)")
                                 .foregroundStyle(MonthlyPalette.ink)
@@ -297,6 +308,7 @@ private struct SpotMatrixCard: View {
                         .lineLimit(1)
                         .minimumScaleFactor(0.75)
                     }
+                    .accessibilityElement(children: .combine)
                 }
             }
             .padding(14)
