@@ -7,6 +7,8 @@ private enum DailyPalette {
     static let orange = Color(red: 0.93, green: 0.64, blue: 0.34)
     static let brown = Color(red: 0.55, green: 0.33, blue: 0.12)
     static let mint = Color(red: 0.85, green: 0.93, blue: 0.87)
+    static let mintBadge = Color(red: 0.78, green: 0.92, blue: 0.82)
+    static let green = Color(red: 0.55, green: 0.75, blue: 0.62)
     static let peach = Color(red: 0.98, green: 0.87, blue: 0.78)
     static let grey = Color(red: 0.91, green: 0.91, blue: 0.89)
     static let panel = Color(red: 0.95, green: 0.95, blue: 0.93)
@@ -38,14 +40,16 @@ struct DailyAnalysisView: View {
         Group {
             DailyHeroCard(hero: analysis.hero)
 
-            HStack(alignment: .firstTextBaseline) {
-                Text("Observed Windows")
-                    .font(.title3.weight(.medium))
-                    .foregroundStyle(EmberTheme.primary)
-                Spacer()
-                Text("\(analysis.windows.count) recorded")
-                    .font(.footnote)
-                    .foregroundStyle(EmberTheme.muted)
+            ViewThatFits(in: .horizontal) {
+                HStack(alignment: .firstTextBaseline) {
+                    windowSectionTitle
+                    Spacer(minLength: 12)
+                    windowCount
+                }
+                VStack(alignment: .leading, spacing: 4) {
+                    windowSectionTitle
+                    windowCount
+                }
             }
 
             VStack(spacing: 16) {
@@ -59,6 +63,19 @@ struct DailyAnalysisView: View {
             }
         }
     }
+
+    private var windowSectionTitle: some View {
+        Text("Observed learning windows")
+            .font(.title3.weight(.medium))
+            .foregroundStyle(EmberTheme.primary)
+            .accessibilityAddTraits(.isHeader)
+    }
+
+    private var windowCount: some View {
+        Text("\(analysis.windows.count) \(analysis.windows.count == 1 ? "interval" : "intervals") recorded")
+            .font(.footnote)
+            .foregroundStyle(EmberTheme.muted)
+    }
 }
 
 private struct DailyHeroCard: View {
@@ -66,17 +83,15 @@ private struct DailyHeroCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
-            HStack(alignment: .firstTextBaseline) {
-                Label(hero.headline, systemImage: "chart.line.uptrend.xyaxis")
-                    .font(.footnote.weight(.semibold))
-                    .tracking(1)
-                    .textCase(.uppercase)
-                    .foregroundStyle(.white.opacity(0.9))
-                Spacer()
-                if let score = hero.scoreText {
-                    Text(score)
-                        .font(.system(.title2, design: .serif).weight(.medium))
-                        .foregroundStyle(.white)
+            ViewThatFits(in: .horizontal) {
+                HStack(alignment: .firstTextBaseline, spacing: 12) {
+                    headline
+                    Spacer(minLength: 0)
+                    score
+                }
+                VStack(alignment: .leading, spacing: 6) {
+                    headline
+                    score
                 }
             }
 
@@ -95,6 +110,24 @@ private struct DailyHeroCard: View {
         .padding(24)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(DailyPalette.heroBackground, in: .rect(cornerRadius: 22))
+        .accessibilityElement(children: .combine)
+    }
+
+    private var headline: some View {
+        Label(hero.headline, systemImage: "chart.line.uptrend.xyaxis")
+            .font(.footnote.weight(.semibold))
+            .tracking(1)
+            .textCase(.uppercase)
+            .foregroundStyle(.white.opacity(0.9))
+    }
+
+    @ViewBuilder
+    private var score: some View {
+        if let score = hero.scoreText {
+            Text(score)
+                .font(.system(.title2, design: .serif).weight(.medium))
+                .foregroundStyle(.white)
+        }
     }
 }
 
@@ -109,8 +142,17 @@ private struct DailySparkline: View {
                 Path { path in
                     guard let first = points.first else { return }
                     path.move(to: first)
-                    for point in points.dropFirst() {
-                        path.addLine(to: point)
+                    for index in 1..<points.count {
+                        let previous = points[index - 1]
+                        let current = points[index]
+                        let midpoint = CGPoint(
+                            x: (previous.x + current.x) / 2,
+                            y: (previous.y + current.y) / 2
+                        )
+                        path.addQuadCurve(to: midpoint, control: previous)
+                    }
+                    if let last = points.last {
+                        path.addLine(to: last)
                     }
                 }
                 .stroke(
@@ -184,30 +226,48 @@ private struct DailyWindowCard: View {
     }
 
     private var heading: some View {
-        Label(window.title, systemImage: iconName)
-            .font(.headline)
-            .foregroundStyle(DailyPalette.ink)
-            .fixedSize(horizontal: false, vertical: true)
+        HStack(spacing: 12) {
+            Image(systemName: iconName)
+                .font(.body.weight(.semibold))
+                .foregroundStyle(DailyPalette.ink)
+                .frame(width: 44, height: 44)
+                .background(iconBackground, in: Circle())
+                .accessibilityHidden(true)
+
+            Text(window.title)
+                .font(.headline)
+                .foregroundStyle(DailyPalette.ink)
+                .fixedSize(horizontal: false, vertical: true)
+                .layoutPriority(1)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isHeader)
     }
 
     private var badge: some View {
         Text(window.badge)
             .font(.footnote.weight(.semibold))
-            .foregroundStyle(DailyPalette.ink)
+            .foregroundStyle(badgeForeground)
             .padding(.vertical, 6)
             .padding(.horizontal, 12)
             .background(badgeColor, in: Capsule())
+            .fixedSize(horizontal: false, vertical: true)
     }
 
     @ViewBuilder
     private var chips: some View {
         ForEach(window.chips) { chip in
-            Label(chip.text, systemImage: chip.icon)
-                .font(.footnote)
-                .foregroundStyle(EmberTheme.muted)
-                .padding(.vertical, 7)
-                .padding(.horizontal, 12)
-                .background(DailyPalette.grey.opacity(0.7), in: Capsule())
+            Label {
+                Text(chip.text)
+                    .foregroundStyle(EmberTheme.muted)
+            } icon: {
+                Image(systemName: chip.icon)
+                    .foregroundStyle(chip.icon.contains("checkmark") ? DailyPalette.green : DailyPalette.ink)
+            }
+            .font(.footnote)
+            .padding(.vertical, 7)
+            .padding(.horizontal, 12)
+            .background(DailyPalette.grey.opacity(0.7), in: Capsule())
         }
     }
 
@@ -219,12 +279,24 @@ private struct DailyWindowCard: View {
         }
     }
 
-    private var badgeColor: Color {
+    private var iconBackground: Color {
         switch window.tone {
         case .peak: DailyPalette.mint
         case .steady: DailyPalette.peach
         case .recovery, .neutral: DailyPalette.grey
         }
+    }
+
+    private var badgeColor: Color {
+        switch window.tone {
+        case .peak: DailyPalette.mintBadge
+        case .steady: DailyPalette.peach
+        case .recovery, .neutral: DailyPalette.grey
+        }
+    }
+
+    private var badgeForeground: Color {
+        window.tone == .steady ? DailyPalette.brown : DailyPalette.ink
     }
 }
 
@@ -233,16 +305,16 @@ private struct DailyEnergyChangeCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
-            HStack(spacing: 12) {
-                Label(observation.headline, systemImage: "arrow.left.arrow.right")
-                    .font(.headline)
-                    .foregroundStyle(DailyPalette.ink)
-                Spacer()
-                Text(observation.status)
-                    .font(.footnote.weight(.semibold))
-                    .padding(.vertical, 6)
-                    .padding(.horizontal, 12)
-                    .background(observation.isProtected ? DailyPalette.mint : DailyPalette.peach, in: Capsule())
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 12) {
+                    heading
+                    Spacer(minLength: 0)
+                    statusBadge
+                }
+                VStack(alignment: .leading, spacing: 10) {
+                    heading
+                    statusBadge
+                }
             }
 
             Text(observation.body)
@@ -252,11 +324,50 @@ private struct DailyEnergyChangeCard: View {
 
             ProgressView(value: observation.reserve) {
                 Text("Average after-session energy")
+                    .font(.footnote)
+                    .foregroundStyle(EmberTheme.muted)
             }
             .tint(DailyPalette.heroBackground)
+            .accessibilityValue(observation.status)
         }
         .padding(20)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(DailyPalette.panel, in: .rect(cornerRadius: 20))
+        .shadow(color: .black.opacity(0.04), radius: 6, y: 2)
+    }
+
+    private var heading: some View {
+        HStack(spacing: 12) {
+            Image(systemName: "arrow.up.arrow.down")
+                .font(.title3)
+                .foregroundStyle(DailyPalette.ink)
+                .frame(width: 48, height: 48)
+                .background(DailyPalette.mint, in: Circle())
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Energy reflection")
+                    .font(.footnote)
+                    .tracking(0.8)
+                    .textCase(.uppercase)
+                    .foregroundStyle(EmberTheme.muted)
+                Text(observation.headline)
+                    .font(.headline)
+                    .foregroundStyle(DailyPalette.ink)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isHeader)
+    }
+
+    private var statusBadge: some View {
+        Text(observation.status)
+            .font(.footnote.weight(.semibold))
+            .foregroundStyle(DailyPalette.ink)
+            .padding(.vertical, 6)
+            .padding(.horizontal, 12)
+            .background(observation.isProtected ? DailyPalette.mint : DailyPalette.peach, in: Capsule())
+            .fixedSize(horizontal: false, vertical: true)
     }
 }
