@@ -1,6 +1,6 @@
 # Ember MVP user test plan
 
-**Baseline:** `integration/mvp-flow` at `6c59dba`. Record the actual commit tested. The automated checks and manual scenarios below cover Ember’s learning flow, from setting a goal to seeing saved activity in Analytics.
+**Baseline:** `integration/mvp-flow` at `e912e43`. Record the actual commit tested. The automated checks and manual scenarios below cover Ember’s learning flow, from setting a goal to seeing saved activity in Analytics.
 
 ## Run the automated checks
 
@@ -13,10 +13,10 @@ Open `Ember.xcodeproj`, choose the **Ember** scheme and an **iPhone Simulator**,
 | 05 | UI and integration tests for saving **Gentle** as **2/5** and reading it again after relaunch. |
 | 06–07 | Focus timer pause and draft recovery checks. Use the manual steps for the physical-device checkpoint and the next-task selection after a finished session. |
 | 08 | Integration test for saving a 5-to-2 reflection and reading the three-point drop in Analytics. Use the manual steps for the screen flow and the previous-day check-in. |
-| 09 | Integration tests for empty periods and reporting from saved data, plus three documented issues in the Daily energy chart and Monthly heatmap. |
+| 09 | Integration tests for empty periods and reporting from saved data, plus two documented outstanding issues in the Daily energy chart and Monthly heatmap. The Monthly level-1 rating regression is resolved. |
 | 10 | The checklist UI test checks the completion control’s accessibility value. Try VoiceOver and larger text on a device or Simulator to check how the full flow feels. |
 
-Xcode records the three Analytics defects as **known issues**. They stay visible in the report while the rest of the suite runs. When one is fixed, remove its `withKnownIssue` wrapper so the assertion becomes a normal regression test. Use the manual prompts to check discoverability and collect participant feedback.
+Xcode records the two remaining Analytics defects as **known issues**. They stay visible in the report while the rest of the suite runs. The Monthly level-1 rating issue was resolved by PR #29, so its assertion now runs as a normal regression test. When another issue is fixed, remove its `withKnownIssue` wrapper as well. Use the manual prompts to check discoverability and collect participant feedback.
 
 ## How to run a session
 
@@ -101,7 +101,7 @@ Xcode records the three Analytics defects as **known issues**. They stay visible
 
 **Pass if:** Empty periods show an empty state. Weekly counts one completed task and one session. Monthly shows an average of **2/5** from one reflection. In Daily, the task-only hour does not create an energy peak or rating.
 
-**Extra heatmap checks:** With separate test data, a day with one **1/5** reflection should display level 1. When the **Last 4 Weeks** grid includes days from the previous month, a reflection on one of those days should appear in its cell. Use existing dated test records or run across a month boundary.
+**Extra heatmap checks:** The resolved level-1 regression is covered by an automated test: a day with one **1/5** reflection must display level 1. One known issue remains in this area: when the **Last 4 Weeks** grid includes days from the previous month, a reflection on one of those days should appear in its cell. Use existing dated test records or run across a month boundary.
 
 ## 10. Learner uses VoiceOver or larger text
 

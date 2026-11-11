@@ -13,7 +13,7 @@ struct MVPUseCaseTests {
 
     @Test("04: Checklist edits, progress and deletion survive reopening the store")
     func checklistLifecyclePersists() throws {
-        try withTemporaryStore(for: [LearningGoal.self, LearningTask.self]) { makeContainer in
+        try withTemporaryStore(for: [LearningGoal.self, LearningTask.self, FocusSession.self]) { makeContainer in
             let goalID = UUID()
             let taskID: UUID
             do {
@@ -153,9 +153,7 @@ struct MVPUseCaseTests {
 
         #expect(month.state == .observed)
         let cell = try #require(month.weeks.flatMap(\.cells).first { $0.day == 10 })
-        withKnownIssue("The monthly heatmap currently clamps ratings to levels 2–5.") {
-            #expect(cell.level == 1 && month.legend.contains { $0.level == 1 && $0.days == 1 })
-        }
+        #expect(cell.level == 1 && month.legend.contains { $0.level == 1 && $0.days == 1 })
     }
 
     @Test("09: The four-week heatmap includes visible dates from the prior month")
