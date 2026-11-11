@@ -90,10 +90,10 @@
 		3A77CB3530A2B3D300BE31FF /* FeelingPickerCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeelingPickerCard.swift; sourceTree = "<group>"; };
 		3A9626E830A299AD000A62F7 /* EmberTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EmberTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AB13DEE30A3EC2400F383EB /* EmberEnergyScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberEnergyScale.swift; sourceTree = "<group>"; };
-		3AB13DF030A3ED0C00F383EB /* WeeklyEnergyEncouragement.swift */ = {isa = PBXFileReference; path = WeeklyEnergyEncouragement.swift; sourceTree = "<group>"; };
-		3AB13DF230A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift */ = {isa = PBXFileReference; path = WeeklyEnergyEncouragementCard.swift; sourceTree = "<group>"; };
-		3AB13DF430A3ED0C00F383EB /* DailyInspiration.swift */ = {isa = PBXFileReference; path = DailyInspiration.swift; sourceTree = "<group>"; };
-		3AB13DF630A3ED0C00F383EB /* DailyInspirationCard.swift */ = {isa = PBXFileReference; path = DailyInspirationCard.swift; sourceTree = "<group>"; };
+		3AB13DF030A3ED0C00F383EB /* WeeklyEnergyEncouragement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyEnergyEncouragement.swift; sourceTree = "<group>"; };
+		3AB13DF230A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyEnergyEncouragementCard.swift; sourceTree = "<group>"; };
+		3AB13DF430A3ED0C00F383EB /* DailyInspiration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyInspiration.swift; sourceTree = "<group>"; };
+		3AB13DF630A3ED0C00F383EB /* DailyInspirationCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyInspirationCard.swift; sourceTree = "<group>"; };
 		41DD23F7C1454731400D4555 /* FocusSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionView.swift; sourceTree = "<group>"; };
 		57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyCheckInView.swift; sourceTree = "<group>"; };
 		5E9FABC339815B0B0344B6FB /* TaskPlannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPlannerView.swift; sourceTree = "<group>"; };
@@ -130,6 +130,7 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3A9626E930A299AD000A62F7 /* EmberTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = EmberTests; sourceTree = "<group>"; };
+		3AB7CA1230A40CA40005B7ED /* LearningResources */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = LearningResources; sourceTree = "<group>"; };
 		9A17AA000000000000000005 /* EmberUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = EmberUITests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -429,6 +430,7 @@
 		E64DA6756D6CF253E6CA6FFA /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				3AB7CA1230A40CA40005B7ED /* LearningResources */,
 				C0FFEE200000000000000001 /* Profile */,
 				29CD8CB236DA4BB4AE341147 /* Dashboard */,
 				B5F8509EFAD5142A3CC518E1 /* Analytics */,
@@ -525,6 +527,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				3AB7CA1230A40CA40005B7ED /* LearningResources */,
 			);
 			name = Ember;
 			productName = Ember;
