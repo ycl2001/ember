@@ -164,7 +164,7 @@ struct WeeklyAnalysisView: View {
                             )
                             .overlay {
                                 Circle()
-                                    .stroke(EmberTheme.surface, lineWidth: 2)
+                                    .stroke(EmberTheme.primary, lineWidth: 2)
                             }
                             .frame(width: day.isHighlighted ? 14 : 12, height: day.isHighlighted ? 14 : 12)
                     }

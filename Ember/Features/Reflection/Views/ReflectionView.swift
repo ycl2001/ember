@@ -476,13 +476,15 @@ private struct EmberEnergyRatingPicker: View {
     let selectedLevel: Int?
     let onSelect: (Int) -> Void
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(EmberEnergyRatingPalette.text)
 
-            HStack(spacing: 8) {
+            LazyVGrid(columns: columns, spacing: 8) {
                 ForEach(1...5, id: \.self) { level in
                     ratingButton(level)
                 }
@@ -504,6 +506,9 @@ private struct EmberEnergyRatingPicker: View {
                 Circle()
                     .fill(EmberEnergyScale.color(for: level) ?? EmberEnergyRatingPalette.border)
                     .frame(width: 9, height: 9)
+                    .overlay {
+                        Circle().stroke(EmberEnergyRatingPalette.text, lineWidth: 1)
+                    }
 
                 Text(label(for: level))
                     .font(.caption2.weight(isSelected ? .semibold : .regular))
@@ -512,7 +517,7 @@ private struct EmberEnergyRatingPicker: View {
                             ? EmberEnergyRatingPalette.text
                             : EmberEnergyRatingPalette.secondaryText
                     )
-                    .lineLimit(1)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             .frame(maxWidth: .infinity, minHeight: 64)
             .padding(.vertical, 6)
@@ -536,6 +541,11 @@ private struct EmberEnergyRatingPicker: View {
         .accessibilityLabel("\(title), energy \(level) of 5, \(label(for: level))")
         .accessibilityValue(isSelected ? "Selected" : "Not selected")
         .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+
+    private var columns: [GridItem] {
+        let count = dynamicTypeSize.isAccessibilitySize ? 2 : 5
+        return Array(repeating: GridItem(.flexible(), spacing: 8), count: count)
     }
 
     private func label(for level: Int) -> String {

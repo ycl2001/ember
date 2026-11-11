@@ -53,9 +53,16 @@ struct MonthlyAnalysisView: View {
                 }
                 .frame(maxWidth: .infinity)
             } else {
-                HStack(alignment: .top, spacing: 12) {
-                    MonthlyStatCardView(eyebrow: "Monthly Activity", card: analysis.streak)
-                    MonthlyStatCardView(eyebrow: "Avg Energy", card: analysis.energy)
+                ViewThatFits(in: .horizontal) {
+                    HStack(alignment: .top, spacing: 12) {
+                        MonthlyStatCardView(eyebrow: "Monthly Activity", card: analysis.streak)
+                        MonthlyStatCardView(eyebrow: "Avg Energy", card: analysis.energy)
+                    }
+
+                    VStack(spacing: 12) {
+                        MonthlyStatCardView(eyebrow: "Monthly Activity", card: analysis.streak)
+                        MonthlyStatCardView(eyebrow: "Avg Energy", card: analysis.energy)
+                    }
                 }
 
                 ReflectiveCadenceCard(eyebrow: analysis.cadenceEyebrow, title: analysis.cadenceTitle)
@@ -85,10 +92,8 @@ private struct MonthlyStatCardView: View {
 
             HStack(alignment: .firstTextBaseline, spacing: 6) {
                 Text(card.value)
-                    .font(.system(size: 46, weight: .semibold, design: .serif))
+                    .font(.system(.largeTitle, design: .serif).weight(.semibold))
                     .foregroundStyle(MonthlyPalette.ink)
-                    .minimumScaleFactor(0.7)
-                    .lineLimit(1)
                 if let unit = card.unit {
                     Text(unit)
                         .font(.subheadline)
@@ -104,8 +109,7 @@ private struct MonthlyStatCardView: View {
             Label(card.badge, systemImage: card.badgeIcon)
                 .font(.footnote.weight(.semibold))
                 .foregroundStyle(badgeForeground)
-                .lineLimit(1)
-                .minimumScaleFactor(0.85)
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(.vertical, 6)
                 .padding(.horizontal, 10)
                 .background(badgeBackground, in: Capsule())
@@ -256,11 +260,20 @@ private struct SpotMatrixCard: View {
                                             ?? MonthlyPalette.emptyDot
                                     )
                                     .frame(width: 30, height: 30)
+                                    .overlay {
+                                        Circle().stroke(EmberTheme.primary, lineWidth: 1)
+                                    }
                                 Text(cell.day, format: .number.precision(.integerLength(2)))
                                     .font(.footnote)
                                     .foregroundStyle(EmberTheme.muted)
                             }
                             .frame(maxWidth: .infinity)
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel("Day \(cell.day)")
+                            .accessibilityValue(
+                                cell.level.map { "Average after-session energy \($0) of 5" }
+                                    ?? "No energy observation"
+                            )
                         }
                     }
                     .padding(.vertical, 10)
@@ -282,6 +295,9 @@ private struct SpotMatrixCard: View {
                                     ?? MonthlyPalette.emptyDot
                             )
                             .frame(width: 12, height: 12)
+                            .overlay {
+                                Circle().stroke(EmberTheme.primary, lineWidth: 1)
+                            }
                         HStack(spacing: 4) {
                             Text("Level \(item.level) \(item.name)")
                                 .foregroundStyle(MonthlyPalette.ink)
@@ -292,6 +308,7 @@ private struct SpotMatrixCard: View {
                         .lineLimit(1)
                         .minimumScaleFactor(0.75)
                     }
+                    .accessibilityElement(children: .combine)
                 }
             }
             .padding(14)

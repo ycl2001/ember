@@ -90,6 +90,8 @@ struct AnalyticsView: View {
                         .shadow(color: isSelected ? .black.opacity(0.06) : .clear, radius: 3, y: 1)
                 }
                 .buttonStyle(.plain)
+                .frame(maxWidth: .infinity, minHeight: 44)
+                .contentShape(.rect)
                 .accessibilityValue(isSelected ? "Selected" : "Not selected")
                 .accessibilityAddTraits(isSelected ? .isSelected : [])
             }
