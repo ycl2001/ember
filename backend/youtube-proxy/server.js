@@ -166,10 +166,10 @@ export function createProxy({
     try {
       if (request.url.length > 8192) throw new RequestError(414, 'uri_too_long');
       const url = new URL(request.url, 'http://localhost');
-      if (!['/healthz', endpoint].includes(url.pathname)) throw new RequestError(404, 'not_found');
+      if (!['/health', endpoint].includes(url.pathname)) throw new RequestError(404, 'not_found');
       if (request.method !== 'GET') return send(405, { error: 'method_not_allowed' }, { allow: 'GET' });
       if (!apiKey) throw new RequestError(503, 'service_unconfigured');
-      if (url.pathname === '/healthz') return send(200, { status: 'ok' });
+      if (url.pathname === '/health') return send(200, { status: 'ok' });
       allowRequest(now());
       // Swift URLComponents leaves literal plus signs intact in query values.
       const params = new URLSearchParams(url.search.replaceAll('+', '%2B'));

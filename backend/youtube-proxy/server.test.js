@@ -145,10 +145,10 @@ test('sanitizes upstream errors and retries on later requests', async t => {
 
 test('health does not call YouTube and routes reject unsupported methods', async t => {
   const { calls, request } = await start(t, () => assert.fail('Unexpected upstream call'));
-  assert.deepEqual(await (await request('/healthz')).json(), { status: 'ok' });
+  assert.deepEqual(await (await request('/health')).json(), { status: 'ok' });
   assert.equal((await request('/unknown')).status, 404);
   assert.equal((await request(endpoint, { method: 'POST' })).status, 405);
   assert.equal(calls.length, 0);
   const unconfigured = await start(t, () => assert.fail('Unexpected upstream call'), { apiKey: '' });
-  assert.equal((await unconfigured.request('/healthz')).status, 503);
+  assert.equal((await unconfigured.request('/health')).status, 503);
 });

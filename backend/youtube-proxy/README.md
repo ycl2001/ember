@@ -12,7 +12,7 @@ The tests start the HTTP server on loopback and mock all YouTube requests. They 
 
 ## HTTP API
 
-- `GET /healthz` checks that the process is serving with a configured key. It makes no upstream request.
+- `GET /health` checks that the process is serving with a configured key. It makes no upstream request.
 - `GET /v1/youtube/recommendations` accepts `goal` and `task` (up to 256 UTF-16 code units each), `q` (up to 600), and `maxResults` (integer 1–5, default 5). A nonblank `q` takes precedence. Otherwise the server derives a tutorial query from the task and goal. Supply at least one nonblank search input. Encode spaces as `%20`; a literal `+` is preserved for compatibility with Swift URLComponents.
 - Success returns `{"items":[...]}` with the fields required by `YouTubeVideoListResponse.swift`. The proxy keeps YouTube search order and skips unavailable or non-embeddable videos. An empty result returns `{"items":[]}`.
 - Errors return `{"error":"code"}`. Invalid input returns 400, rate or quota limits return 429 with `Retry-After`, upstream failures return 502, and upstream timeouts return 504. Ember currently handles all 429 responses as quota exhaustion.
@@ -49,7 +49,7 @@ gcloud run services proxy ember-youtube-proxy --project="$PROJECT_ID" --region="
 ```
 
 ```sh
-curl --fail-with-body http://localhost:8080/healthz
+curl --fail-with-body http://localhost:8080/health
 curl --fail-with-body --get http://localhost:8080/v1/youtube/recommendations \
   --data-urlencode 'goal=Swift' \
   --data-urlencode 'task=Optionals' \
