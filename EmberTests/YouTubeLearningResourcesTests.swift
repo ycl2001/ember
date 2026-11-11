@@ -94,6 +94,23 @@ struct YouTubeLearningResourcesTests {
         #expect(TaskVideoReference.detect(in: notes) == nil)
     }
 
+    @Test
+    func exposesVideoDiscoveryActionWithoutAReferenceInNotes() {
+        #expect(TaskVideoReference.actionReference(in: "Review chapter 3") == .mentioned)
+    }
+
+    @Test
+    func discoveryActionPreservesALinkedVideo() {
+        guard case .linked(let url) = TaskVideoReference.actionReference(
+            in: "Use https://youtu.be/dQw4w9WgXcQ?t=90"
+        ) else {
+            Issue.record("Expected the action to preserve the linked video")
+            return
+        }
+
+        #expect(url.absoluteString == "https://youtu.be/dQw4w9WgXcQ?t=90")
+    }
+
     @Test(arguments: [
         "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=43s",
         "https://youtu.be/dQw4w9WgXcQ?t=43",

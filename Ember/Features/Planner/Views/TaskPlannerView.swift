@@ -96,7 +96,7 @@ struct TaskPlannerView: View {
                 eyebrow: "Unfinished · \(FocusSessionViewModel.format(Int(draft.focusedSeconds))) focused",
                 title: draft.taskTitle,
                 videoReference: tasks.first { $0.id == draft.taskID }
-                    .flatMap { TaskVideoReference.detect(in: $0.notes) },
+                    .map { TaskVideoReference.actionReference(in: $0.notes) },
                 actionTitle: "Resume session",
                 onVideoAction: { openVideoRecommendations(forTaskID: draft.taskID) }
             ) {
@@ -107,7 +107,7 @@ struct TaskPlannerView: View {
                 eyebrow: "Up next · \(next.goal.topic)",
                 title: next.task.title,
                 note: next.task.notes,
-                videoReference: TaskVideoReference.detect(in: next.task.notes),
+                videoReference: TaskVideoReference.actionReference(in: next.task.notes),
                 onVideoAction: { openVideoRecommendations(for: next.task) }
             ) {
                 navigation?.startFocus(taskID: next.task.id)
@@ -299,7 +299,7 @@ struct LearningGoalDetailView: View {
                 eyebrow: "Up next",
                 title: upNext.title,
                 note: upNext.notes,
-                videoReference: TaskVideoReference.detect(in: upNext.notes),
+                videoReference: TaskVideoReference.actionReference(in: upNext.notes),
                 onVideoAction: { openVideoRecommendations(for: upNext) },
                 leading: { checkButton(for: upNext, onDark: true) },
                 onStart: { navigation?.startFocus(taskID: upNext.id) }
@@ -409,13 +409,11 @@ struct LearningGoalDetailView: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityHint("Rename or delete this task")
-                if let reference = TaskVideoReference.detect(in: task.notes) {
-                    TaskVideoIndicator(
-                        reference: reference,
-                        taskTitle: task.title,
-                        onFindVideo: { openVideoRecommendations(for: task) }
-                    )
-                }
+                TaskVideoIndicator(
+                    reference: TaskVideoReference.actionReference(in: task.notes),
+                    taskTitle: task.title,
+                    onFindVideo: { openVideoRecommendations(for: task) }
+                )
                 Button {
                     navigation?.startFocus(taskID: task.id)
                 } label: {
@@ -449,13 +447,11 @@ struct LearningGoalDetailView: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityHint("Rename or delete this task")
-                if let reference = TaskVideoReference.detect(in: task.notes) {
-                    TaskVideoIndicator(
-                        reference: reference,
-                        taskTitle: task.title,
-                        onFindVideo: { openVideoRecommendations(for: task) }
-                    )
-                }
+                TaskVideoIndicator(
+                    reference: TaskVideoReference.actionReference(in: task.notes),
+                    taskTitle: task.title,
+                    onFindVideo: { openVideoRecommendations(for: task) }
+                )
             }
         }
         .contextMenu { taskMenu(for: task) }
