@@ -9,7 +9,7 @@ struct MonthlyEnergyWidget: Widget {
         }
         .configurationDisplayName("Ember Energy")
         .description("See your average after-session energy for each day in the four-week grid.")
-        .supportedFamilies([.systemMedium, .systemLarge])
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }
 
@@ -76,20 +76,45 @@ private struct MonthlyEnergyWidgetView: View {
 
     var body: some View {
         Group {
-            if family == .systemLarge {
+            switch family {
+            case .systemSmall:
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("4-Week Energy")
+                        .font(.system(.headline, design: .serif).weight(.semibold))
+                        .foregroundStyle(palette.ink)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
+                        .accessibilityLabel("Four-week after-session energy")
+                        .accessibilityAddTraits(.isHeader)
+
+                    EnergyWidgetMatrix(grid: entry.grid, palette: palette)
+                        .privacySensitive()
+
+                    if entry.hasRatings {
+                        EnergyWidgetScale(palette: palette)
+                    } else {
+                        Text("Save a reflection")
+                            .font(.caption2)
+                            .foregroundStyle(palette.muted)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
+                            .privacySensitive()
+                    }
+                }
+            case .systemLarge:
                 VStack(alignment: .leading, spacing: 8) {
                     EnergyWidgetHeading(compact: false, hasRatings: entry.hasRatings, palette: palette)
-                    EnergyWidgetMatrix(grid: entry.grid, compact: false, palette: palette)
+                    EnergyWidgetMatrix(grid: entry.grid, palette: palette)
                         .privacySensitive()
                     EnergyWidgetScale(palette: palette)
                         .padding(.top, 2)
                 }
-            } else {
+            default:
                 HStack(spacing: 12) {
                     EnergyWidgetHeading(compact: true, hasRatings: entry.hasRatings, palette: palette)
                         .frame(width: 108, alignment: .leading)
                     VStack(spacing: 5) {
-                        EnergyWidgetMatrix(grid: entry.grid, compact: true, palette: palette)
+                        EnergyWidgetMatrix(grid: entry.grid, palette: palette)
                             .privacySensitive()
                         EnergyWidgetScale(palette: palette)
                     }
@@ -131,18 +156,21 @@ private struct EnergyWidgetHeading: View {
 
 private struct EnergyWidgetMatrix: View {
     @Environment(\.calendar) private var calendar
+    @Environment(\.widgetFamily) private var family
     let grid: MonthlyEnergyGrid
-    let compact: Bool
     let palette: EnergyWidgetPalette
 
+    private var showsDates: Bool { family == .systemLarge }
+
     var body: some View {
-        VStack(spacing: compact ? 2 : 4) {
+        VStack(spacing: showsDates ? 4 : 2) {
             HStack(spacing: 0) {
-                if !compact { Color.clear.frame(width: 25, height: 1) }
+                if showsDates { Color.clear.frame(width: 25, height: 1) }
                 ForEach(weekdayLetters.indices, id: \.self) { index in
                     Text(weekdayLetters[index])
                         .font(.caption2.weight(.semibold))
                         .foregroundStyle(palette.muted)
+                        .lineLimit(1)
                         .frame(maxWidth: .infinity)
                 }
             }
@@ -151,7 +179,7 @@ private struct EnergyWidgetMatrix: View {
 
             ForEach(grid.weeks.indices, id: \.self) { index in
                 HStack(spacing: 0) {
-                    if !compact {
+                    if showsDates {
                         Text("W\(index + 1)")
                             .font(.caption2.monospacedDigit())
                             .foregroundStyle(palette.muted)
@@ -160,13 +188,13 @@ private struct EnergyWidgetMatrix: View {
                     }
 
                     ForEach(grid.weeks[index], id: \.date) { day in
-                        EnergyWidgetDay(day: day, compact: compact, palette: palette)
+                        EnergyWidgetDay(day: day, palette: palette)
                     }
                 }
                 .padding(.horizontal, 5)
-                .padding(.vertical, compact ? 1 : 3)
+                .padding(.vertical, showsDates ? 3 : 1)
                 .frame(maxHeight: .infinity)
-                .background(palette.row, in: RoundedRectangle(cornerRadius: compact ? 5 : 10))
+                .background(palette.row, in: RoundedRectangle(cornerRadius: showsDates ? 10 : 5))
             }
         }
     }
@@ -179,10 +207,18 @@ private struct EnergyWidgetMatrix: View {
 
 private struct EnergyWidgetDay: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
+    @Environment(\.widgetFamily) private var family
     @Environment(\.widgetRenderingMode) private var renderingMode
     let day: MonthlyEnergyGrid.Day
-    let compact: Bool
     let palette: EnergyWidgetPalette
+
+    private var dotSize: CGFloat {
+        switch family {
+        case .systemSmall: 10
+        case .systemLarge: 19
+        default: 13
+        }
+    }
 
     var body: some View {
         VStack(spacing: 1) {
@@ -192,13 +228,15 @@ private struct EnergyWidgetDay: View {
                     .widgetAccentable(day.level != nil)
                 if let level = day.level, differentiateWithoutColor || renderingMode != .fullColor {
                     Text(level, format: .number)
-                        .font(.system(size: compact ? 9 : 11, weight: .bold, design: .rounded))
+                        .font(.system(size: family == .systemLarge ? 11 : 9, weight: .bold, design: .rounded))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
                         .foregroundStyle(palette.ink(on: level))
                 }
             }
-            .frame(width: compact ? 13 : 19, height: compact ? 13 : 19)
+            .frame(width: dotSize, height: dotSize)
 
-            if !compact {
+            if family == .systemLarge {
                 Text(day.date, format: .dateTime.day(.twoDigits))
                     .font(.caption2.monospacedDigit())
                     .foregroundStyle(palette.muted)
