@@ -9,24 +9,10 @@ private enum MonthlyPalette {
     static let brown = Color(red: 0.55, green: 0.33, blue: 0.12)
     static let mint = Color(red: 0.85, green: 0.93, blue: 0.87)
     static let mintBadge = Color(red: 0.78, green: 0.92, blue: 0.82)
-    static let levelGreen = Color(red: 0.66, green: 0.82, blue: 0.73)
-    static let orange = Color(red: 0.93, green: 0.64, blue: 0.34)
     static let peach = Color(red: 0.98, green: 0.87, blue: 0.78)
-    static let terracotta = Color(red: 0.75, green: 0.43, blue: 0.39)
     static let grey = Color(red: 0.91, green: 0.91, blue: 0.89)
     static let panel = Color(red: 0.95, green: 0.95, blue: 0.93)
     static let emptyDot = Color(red: 0.94, green: 0.94, blue: 0.93)
-
-    static func levelColor(_ level: Int?) -> Color {
-        switch level ?? 0 {
-        case 5: return ink
-        case 4: return levelGreen
-        case 3: return orange
-        case 2: return peach
-        case 1: return terracotta
-        default: return emptyDot
-        }
-    }
 }
 
 /// Markdown text where **bold** parts are drawn in a stronger colour than the rest.
@@ -219,6 +205,7 @@ private struct ReflectiveCadenceCard: View {
 // MARK: - 4-Week Spot Matrix
 
 private struct SpotMatrixCard: View {
+    @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
     let analysis: MonthlyAnalysis
 
     private let weekdayLetters = ["M", "T", "W", "T", "F", "S", "S"]
@@ -268,8 +255,15 @@ private struct SpotMatrixCard: View {
                         ForEach(week.cells) { cell in
                             VStack(spacing: 4) {
                                 Circle()
-                                    .fill(MonthlyPalette.levelColor(cell.level))
+                                    .fill(EnergyRatingPalette.color(for: cell.level) ?? MonthlyPalette.emptyDot)
                                     .frame(width: 30, height: 30)
+                                    .overlay {
+                                        if differentiateWithoutColor, let level = cell.level {
+                                            Text(level, format: .number)
+                                                .font(.caption2.weight(.bold))
+                                                .foregroundStyle(EnergyRatingPalette.labelColor(on: level))
+                                        }
+                                    }
                                 Text(cell.day, format: .number.precision(.integerLength(2)))
                                     .font(.footnote)
                                     .foregroundStyle(EmberTheme.muted)
@@ -294,7 +288,7 @@ private struct SpotMatrixCard: View {
                 ForEach(analysis.legend) { item in
                     HStack(spacing: 8) {
                         Circle()
-                            .fill(MonthlyPalette.levelColor(item.level))
+                            .fill(EnergyRatingPalette.color(for: item.level) ?? MonthlyPalette.emptyDot)
                             .frame(width: 12, height: 12)
                         HStack(spacing: 4) {
                             Text("Level \(item.level) \(item.name)")

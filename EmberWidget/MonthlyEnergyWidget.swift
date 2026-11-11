@@ -224,14 +224,14 @@ private struct EnergyWidgetDay: View {
         VStack(spacing: 1) {
             ZStack {
                 Circle()
-                    .fill(palette.fill(for: day.level))
+                    .fill(EnergyRatingPalette.color(for: day.level) ?? palette.emptyDot)
                     .widgetAccentable(day.level != nil)
                 if let level = day.level, differentiateWithoutColor || renderingMode != .fullColor {
                     Text(level, format: .number)
                         .font(.system(size: family == .systemLarge ? 11 : 9, weight: .bold, design: .rounded))
                         .lineLimit(1)
                         .minimumScaleFactor(0.75)
-                        .foregroundStyle(palette.ink(on: level))
+                        .foregroundStyle(renderingMode == .fullColor ? EnergyRatingPalette.labelColor(on: level) : palette.ink)
                 }
             }
             .frame(width: dotSize, height: dotSize)
@@ -259,7 +259,7 @@ private struct EnergyWidgetScale: View {
             Text("1")
             ForEach(1...5, id: \.self) { level in
                 Circle()
-                    .fill(palette.fill(for: level))
+                    .fill(EnergyRatingPalette.color(for: level) ?? palette.emptyDot)
                     .frame(width: 7, height: 7)
             }
             Text("5")
@@ -291,18 +291,7 @@ private struct EnergyWidgetPalette {
         isDark ? Color(red: 0.14, green: 0.20, blue: 0.17) : Color(red: 0.95, green: 0.96, blue: 0.93)
     }
 
-    func fill(for level: Int?) -> Color {
-        switch level {
-        case 1: Color(red: 0.91, green: 0.68, blue: 0.61)
-        case 2: Color(red: 1.00, green: 0.85, blue: 0.74)
-        case 3: Color(red: 0.97, green: 0.64, blue: 0.32)
-        case 4: Color(red: 0.59, green: 0.80, blue: 0.72)
-        case 5: isDark ? Color(red: 0.41, green: 0.67, blue: 0.55) : ink
-        default: isDark ? .white.opacity(0.12) : Color(red: 0.88, green: 0.90, blue: 0.86)
-        }
-    }
-
-    func ink(on level: Int) -> Color {
-        level == 5 && !isDark ? .white : Color(red: 0.09, green: 0.19, blue: 0.15)
+    var emptyDot: Color {
+        isDark ? .white.opacity(0.12) : Color(red: 0.88, green: 0.90, blue: 0.86)
     }
 }

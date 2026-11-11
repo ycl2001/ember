@@ -52,6 +52,8 @@
 		B7C560000000000000000001 /* MonthlyEnergyGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C560000000000000000011 /* MonthlyEnergyGrid.swift */; };
 		B7C560000000000000000002 /* MonthlyEnergyGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C560000000000000000011 /* MonthlyEnergyGrid.swift */; };
 		B7C560000000000000000003 /* MonthlyEnergyWidgetSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C560000000000000000012 /* MonthlyEnergyWidgetSync.swift */; };
+		B7C560000000000000000006 /* EnergyRatingPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C56000000000000000001A /* EnergyRatingPalette.swift */; };
+		B7C560000000000000000007 /* EnergyRatingPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C56000000000000000001A /* EnergyRatingPalette.swift */; };
 		B7C560000000000000000004 /* MonthlyEnergyWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C560000000000000000013 /* MonthlyEnergyWidget.swift */; };
 		B7C560000000000000000005 /* EmberWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B7C560000000000000000014 /* EmberWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -133,6 +135,7 @@
 		F845D9B8D8888E33518672E5 /* FeaturePlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturePlaceholderView.swift; sourceTree = "<group>"; };
 		FB6E1E0BFF12AA0D280A4B8A /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		B7C560000000000000000011 /* MonthlyEnergyGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyEnergyGrid.swift; sourceTree = "<group>"; };
+		B7C56000000000000000001A /* EnergyRatingPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyRatingPalette.swift; sourceTree = "<group>"; };
 		B7C560000000000000000012 /* MonthlyEnergyWidgetSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyEnergyWidgetSync.swift; sourceTree = "<group>"; };
 		B7C560000000000000000013 /* MonthlyEnergyWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyEnergyWidget.swift; sourceTree = "<group>"; };
 		B7C560000000000000000014 /* EmberWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = EmberWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -473,6 +476,7 @@
 			isa = PBXGroup;
 			children = (
 				B7C560000000000000000011 /* MonthlyEnergyGrid.swift */,
+				B7C56000000000000000001A /* EnergyRatingPalette.swift */,
 			);
 			path = EmberShared;
 			sourceTree = "<group>";
@@ -627,6 +631,7 @@
 				AFA792AD445E288D6023EDFD /* AppRoute.swift in Sources */,
 				2615C766FACA11EB7E0847B0 /* RootView.swift in Sources */,
 				B7C560000000000000000001 /* MonthlyEnergyGrid.swift in Sources */,
+				B7C560000000000000000006 /* EnergyRatingPalette.swift in Sources */,
 				B7C560000000000000000003 /* MonthlyEnergyWidgetSync.swift in Sources */,
 				3A2679DC30A2C24600AA45D8 /* DailyAnalysisView.swift in Sources */,
 				4DB7E088DD026CBACA7E5714 /* DashboardView.swift in Sources */,
@@ -675,6 +680,7 @@
 			files = (
 				B7C560000000000000000004 /* MonthlyEnergyWidget.swift in Sources */,
 				B7C560000000000000000002 /* MonthlyEnergyGrid.swift in Sources */,
+				B7C560000000000000000007 /* EnergyRatingPalette.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
