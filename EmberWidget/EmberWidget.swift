@@ -114,7 +114,7 @@ struct FocusWidgetView: View {
         switch state.status {
         case .running: return state.taskTitle
         case .paused: return "Paused · \(state.taskTitle)"
-        case .idle: return "Start a session in Ember"
+        case .idle: return FocusWidgetStore.debugInfo
         }
     }
 

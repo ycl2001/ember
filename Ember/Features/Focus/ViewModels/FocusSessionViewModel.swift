@@ -180,6 +180,7 @@ final class FocusSessionViewModel {
         phase = .running
         startTicker()
         saveDraft()
+        publishWidget()
         scheduleMilestoneReminder()
     }
 
@@ -193,6 +194,7 @@ final class FocusSessionViewModel {
         phase = .paused
         refresh()
         saveDraft()
+        publishWidget()
         cancelMilestoneReminder()
     }
 
@@ -202,6 +204,7 @@ final class FocusSessionViewModel {
         phase = .running
         startTicker()
         saveDraft()
+        publishWidget()
         scheduleMilestoneReminder()
     }
 
@@ -384,6 +387,9 @@ final class FocusSessionViewModel {
             savedAt: .now
         ))
     }
+
+    /// Tells the Home Screen widget the current state. Called on start, pause and resume only,
+    /// not on the 15-second snapshot, so the widget's refresh budget isn't used up.
     private func publishWidget() {
         var focused = accumulatedSeconds
         if let segmentStartedAt {

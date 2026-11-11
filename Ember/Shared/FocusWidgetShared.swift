@@ -43,6 +43,12 @@ struct FocusWidgetState: Codable, Equatable {
 /// Reads and writes the state in the App Group, so the app and the widget see the same data.
 enum FocusWidgetStore {
     /// Must match the App Group you add under Signing & Capabilities, on BOTH targets.
+    static var debugInfo: String {
+        guard FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupID) != nil else {
+            return "NO GROUP ACCESS"
+        }
+        return defaults?.data(forKey: key) == nil ? "Group OK, no data" : "Group OK, data found"
+    }
     static let appGroupID = "group.com.ycl2001.ember"
 
     private static let key = "focus.widgetState"
@@ -58,6 +64,9 @@ enum FocusWidgetStore {
 
     /// App only: saves the state and asks WidgetKit to redraw.
     static func save(_ state: FocusWidgetState) {
+        let container = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupID)
+        print("WIDGET save:", state.status.rawValue, "| container:", container?.path ?? "NIL")
+
         guard let data = try? JSONEncoder().encode(state) else { return }
         defaults?.set(data, forKey: key)
         WidgetCenter.shared.reloadAllTimelines()
