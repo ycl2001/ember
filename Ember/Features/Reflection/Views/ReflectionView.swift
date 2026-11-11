@@ -469,10 +469,6 @@ private enum EmberEnergyRatingPalette {
     static let text = EmberTheme.primary
     static let secondaryText = EmberTheme.muted
     static let border = EmberTheme.separator
-    static let low = Color(red: 0.15, green: 0.39, blue: 0.92)
-    static let lowMedium = Color(red: 1.0, green: 0.57, blue: 0.16)
-    static let medium = Color(red: 0.54, green: 0.29, blue: 0.05)
-    static let high = Color(red: 0.02, green: 0.12, blue: 0.10)
 }
 
 private struct EmberEnergyRatingPicker: View {
@@ -506,7 +502,7 @@ private struct EmberEnergyRatingPicker: View {
                     .foregroundStyle(EmberEnergyRatingPalette.text)
 
                 Circle()
-                    .fill(dotColor(for: level))
+                    .fill(EmberEnergyScale.color(for: level) ?? EmberEnergyRatingPalette.border)
                     .frame(width: 9, height: 9)
 
                 Text(label(for: level))
@@ -552,12 +548,4 @@ private struct EmberEnergyRatingPicker: View {
         }
     }
 
-    private func dotColor(for level: Int) -> Color {
-        switch level {
-        case 1: EmberEnergyRatingPalette.low
-        case 2: EmberEnergyRatingPalette.lowMedium
-        case 3: EmberEnergyRatingPalette.medium
-        default: EmberEnergyRatingPalette.high
-        }
-    }
 }

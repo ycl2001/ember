@@ -198,7 +198,7 @@ struct EnergyCheckInView: View {
                     .font(.system(.title2, design: .serif, weight: .semibold))
                     .foregroundStyle(FlowPalette.ink)
                 Circle()
-                    .fill(dotColor(for: level))
+                    .fill(EmberEnergyScale.color(for: level) ?? FlowPalette.secondaryInk)
                     .frame(width: 10, height: 10)
                 Text(label)
                     .font(.footnote.weight(isSelected ? .semibold : .regular))
@@ -214,15 +214,6 @@ struct EnergyCheckInView: View {
         .buttonStyle(.plain)
         .accessibilityLabel("Energy \(level), \(label)")
         .accessibilityAddTraits(isSelected ? .isSelected : [])
-    }
-
-    private func dotColor(for level: Int) -> Color {
-        switch level {
-        case 1: return Color(red: 0.15, green: 0.39, blue: 0.92)
-        case 2: return FlowPalette.orange
-        case 3: return FlowPalette.brown
-        default: return FlowPalette.deep
-        }
     }
 
     private var comparisonCard: some View {

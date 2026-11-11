@@ -52,7 +52,7 @@ struct MonthlyAnalysis {
 
     var legend: [LegendItem] {
         let allLevels = weeks.flatMap(\.cells).compactMap(\.level)
-        let names = [(5, "High"), (4, "Good"), (3, "Steady"), (2, "Low")]
+        let names = [(5, "High"), (4, "Good"), (3, "Steady"), (2, "Light"), (1, "Low")]
         return names.map { level, name in
             LegendItem(level: level, name: name, days: allLevels.count { $0 == level })
         }
@@ -196,7 +196,7 @@ extension AnalyticsViewModel {
                 let index = weekIndex * 7 + dayIndex
                 guard let date = calendar.date(byAdding: .day, value: index, to: matrixStart) else { continue }
                 let dateKey = calendar.startOfDay(for: date)
-                let level = energyByDay[dateKey].map { min(5, max(2, Int($0.rounded()))) }
+                let level = EmberEnergyScale.rating(for: energyByDay[dateKey])
                 cells.append(.init(id: index, day: calendar.component(.day, from: date), level: level))
             }
             weeks.append(.init(label: "W\(weekIndex + 1)", cells: cells))

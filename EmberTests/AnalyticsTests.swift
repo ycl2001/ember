@@ -12,6 +12,26 @@ struct AnalyticsIntegrationTests {
     }()
 
     @Test
+    func sharedEnergyScaleMapsRatingsAndAverages() {
+        #expect(EmberEnergyScale.tone(for: 1) == .red)
+        #expect(EmberEnergyScale.tone(for: 2) == .orange)
+        #expect(EmberEnergyScale.tone(for: 3) == .brown)
+        #expect(EmberEnergyScale.tone(for: 4) == .blue)
+        #expect(EmberEnergyScale.tone(for: 5) == .green)
+
+        #expect(EmberEnergyScale.rating(for: 1.49) == 1)
+        #expect(EmberEnergyScale.rating(for: 1.5) == 2)
+        #expect(EmberEnergyScale.rating(for: 3.6) == 4)
+        #expect(EmberEnergyScale.rating(for: 5.0) == 5)
+        #expect(EmberEnergyScale.rating(for: nil) == nil)
+        #expect(EmberEnergyScale.rating(for: 0.9) == nil)
+        #expect(EmberEnergyScale.rating(for: 5.1) == nil)
+        #expect(EmberEnergyScale.rating(for: .nan) == nil)
+        #expect(EmberEnergyScale.tone(for: 0) == nil)
+        #expect(EmberEnergyScale.tone(for: 6) == nil)
+    }
+
+    @Test
     func adaptersUseIntegratedModelProperties() {
         let completedAt = Date(timeIntervalSince1970: 1_500)
         let task = LearningTask(
