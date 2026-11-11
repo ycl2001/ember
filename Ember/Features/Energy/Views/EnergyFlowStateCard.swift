@@ -34,7 +34,13 @@ struct EnergyFlowStateCard: View {
                 Spacer(minLength: 8)
                 Image(systemName: EnergyCheckInViewModel.batterySymbol(for: latest?.level))
                     .font(.system(size: 24))
-                    .foregroundStyle(EmberTheme.amber)
+                    .foregroundStyle(
+                        EmberEnergyScale.color(for: latest?.level) ?? Color.white.opacity(0.65)
+                    )
+                    .accessibilityLabel(
+                        latest.map { "Latest energy rating: \($0.level) of 5" }
+                            ?? "No energy rating recorded"
+                    )
             }
 
             if let onUpdate {

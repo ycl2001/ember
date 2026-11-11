@@ -13,6 +13,7 @@ struct EnergyCheckInView: View {
     @Query(sort: \EnergyCheckIn.createdAt, order: .reverse) private var checkIns: [EnergyCheckIn]
     @Query(sort: \LearningGoal.createdAt, order: .reverse) private var goals: [LearningGoal]
     @State private var viewModel = EnergyCheckInViewModel()
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     /// Each closure runs after the check-in is saved, so the parent can navigate.
     init(
@@ -173,7 +174,7 @@ struct EnergyCheckInView: View {
                 compact: true
             )
 
-            HStack(spacing: 8) {
+            LazyVGrid(columns: energyColumns, spacing: 8) {
                 ForEach(1...5, id: \.self) { level in
                     levelTile(level)
                 }
@@ -198,13 +199,15 @@ struct EnergyCheckInView: View {
                     .font(.system(.title2, design: .serif, weight: .semibold))
                     .foregroundStyle(FlowPalette.ink)
                 Circle()
-                    .fill(dotColor(for: level))
+                    .fill(EmberEnergyScale.color(for: level) ?? FlowPalette.secondaryInk)
                     .frame(width: 10, height: 10)
+                    .overlay {
+                        Circle().stroke(FlowPalette.ink, lineWidth: 1)
+                    }
                 Text(label)
                     .font(.footnote.weight(isSelected ? .semibold : .regular))
                     .foregroundStyle(isSelected ? FlowPalette.ink : FlowPalette.secondaryInk)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.8)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
@@ -216,13 +219,9 @@ struct EnergyCheckInView: View {
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 
-    private func dotColor(for level: Int) -> Color {
-        switch level {
-        case 1: return Color(red: 0.15, green: 0.39, blue: 0.92)
-        case 2: return FlowPalette.orange
-        case 3: return FlowPalette.brown
-        default: return FlowPalette.deep
-        }
+    private var energyColumns: [GridItem] {
+        let count = dynamicTypeSize.isAccessibilitySize ? 2 : 5
+        return Array(repeating: GridItem(.flexible(), spacing: 8), count: count)
     }
 
     private var comparisonCard: some View {

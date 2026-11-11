@@ -533,7 +533,7 @@ final class OnboardingViewModel {
             return false
         }
 
-        let defaults = UserDefaults.standard
+        let defaults = EmberStorage.defaults
         defaults.set(peakWindow.rawValue, forKey: OnboardingStorage.peakWindowKey)
         defaults.set(commitment.rawValue, forKey: OnboardingStorage.commitmentKey)
         defaults.set(drains.map(\.rawValue).sorted(), forKey: OnboardingStorage.drainsKey)

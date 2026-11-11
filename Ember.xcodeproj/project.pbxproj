@@ -21,6 +21,11 @@
 		3A2679E030A2C24700AA45D8 /* WeeklyAnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679DF30A2C24700AA45D8 /* WeeklyAnalysisView.swift */; };
 		3A77CB3430A2B3D300BE31FF /* EnergyFlowStateCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77CB3330A2B3D300BE31FF /* EnergyFlowStateCard.swift */; };
 		3A77CB3630A2B3D300BE31FF /* FeelingPickerCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77CB3530A2B3D300BE31FF /* FeelingPickerCard.swift */; };
+		3AB13DEF30A3EC2400F383EB /* EmberEnergyScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB13DEE30A3EC2400F383EB /* EmberEnergyScale.swift */; };
+		3AB13DF130A3ED0C00F383EB /* WeeklyEnergyEncouragement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB13DF030A3ED0C00F383EB /* WeeklyEnergyEncouragement.swift */; };
+		3AB13DF330A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB13DF230A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift */; };
+		3AB13DF530A3ED0C00F383EB /* DailyInspiration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB13DF430A3ED0C00F383EB /* DailyInspiration.swift */; };
+		3AB13DF730A3ED0C00F383EB /* DailyInspirationCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB13DF630A3ED0C00F383EB /* DailyInspirationCard.swift */; };
 		4390AE37765858854E6B379E /* LearningTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = D894345E65907C8D977A4D28 /* LearningTask.swift */; };
 		4481F7391F8374B087C65363 /* FocusSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BF187814AAB24E8BA4E616 /* FocusSession.swift */; };
 		46A5B6F37818992C3C4BFDF1 /* FeaturePlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F845D9B8D8888E33518672E5 /* FeaturePlaceholderView.swift */; };
@@ -30,6 +35,7 @@
 		5FF0D710460B4A52B237292B /* AnalyticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D308512CBCF54D90A8EFEEB8 /* AnalyticsViewModel.swift */; };
 		64C5F0ACA041FB999FE17FFA /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804CF35177FA68E8561AED47 /* AnalyticsView.swift */; };
 		664540F1C4E24D2D848CB03B /* TaskPlannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E2A8D9E604A79A5CC7357 /* TaskPlannerViewModel.swift */; };
+		9A17AA000000000000000001 /* EmberStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A17AA000000000000000002 /* EmberStorage.swift */; };
 		A6C53055803EE9219DB5DADB /* LearningGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1B132B374277D42A23ACE4 /* LearningGoal.swift */; };
 		A932490930A027420087F57E /* OnboardingSteps.swift in Sources */ = {isa = PBXBuildFile; fileRef = A932490830A027420087F57E /* OnboardingSteps.swift */; };
 		A932490B30A027510087F57E /* OnboardingStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A932490A30A027510087F57E /* OnboardingStyle.swift */; };
@@ -59,6 +65,13 @@
 			remoteGlobalIDString = E1BC4332F1B95F6F821DED73;
 			remoteInfo = Ember;
 		};
+		9A17AA000000000000000003 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE57CBD6DF21BD0D904B24DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E1BC4332F1B95F6F821DED73;
+			remoteInfo = Ember;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +89,11 @@
 		3A77CB3330A2B3D300BE31FF /* EnergyFlowStateCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyFlowStateCard.swift; sourceTree = "<group>"; };
 		3A77CB3530A2B3D300BE31FF /* FeelingPickerCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeelingPickerCard.swift; sourceTree = "<group>"; };
 		3A9626E830A299AD000A62F7 /* EmberTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EmberTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3AB13DEE30A3EC2400F383EB /* EmberEnergyScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberEnergyScale.swift; sourceTree = "<group>"; };
+		3AB13DF030A3ED0C00F383EB /* WeeklyEnergyEncouragement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyEnergyEncouragement.swift; sourceTree = "<group>"; };
+		3AB13DF230A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyEnergyEncouragementCard.swift; sourceTree = "<group>"; };
+		3AB13DF430A3ED0C00F383EB /* DailyInspiration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyInspiration.swift; sourceTree = "<group>"; };
+		3AB13DF630A3ED0C00F383EB /* DailyInspirationCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyInspirationCard.swift; sourceTree = "<group>"; };
 		41DD23F7C1454731400D4555 /* FocusSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionView.swift; sourceTree = "<group>"; };
 		57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyCheckInView.swift; sourceTree = "<group>"; };
 		5E9FABC339815B0B0344B6FB /* TaskPlannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPlannerView.swift; sourceTree = "<group>"; };
@@ -88,6 +106,8 @@
 		8C3E2A8D9E604A79A5CC7357 /* TaskPlannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPlannerViewModel.swift; sourceTree = "<group>"; };
 		8FBA53E3A9A8508DC4E98D6E /* SessionReflection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionReflection.swift; sourceTree = "<group>"; };
 		95BFC77EE7E502B6A98ACFCB /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		9A17AA000000000000000002 /* EmberStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberStorage.swift; sourceTree = "<group>"; };
+		9A17AA000000000000000004 /* EmberUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EmberUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A932490830A027420087F57E /* OnboardingSteps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSteps.swift; sourceTree = "<group>"; };
 		A932490A30A027510087F57E /* OnboardingStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStyle.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000001 /* AppTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTab.swift; sourceTree = "<group>"; };
@@ -110,7 +130,8 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3A9626E930A299AD000A62F7 /* EmberTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = EmberTests; sourceTree = "<group>"; };
-		3AB1361930A3433500F383EB /* LearningResources */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = LearningResources; sourceTree = "<group>"; };
+		3AB7CA1230A40CA40005B7ED /* LearningResources */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = LearningResources; sourceTree = "<group>"; };
+		9A17AA000000000000000005 /* EmberUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = EmberUITests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +143,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		3A9626E530A299AD000A62F7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A17AA000000000000000006 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -163,6 +191,7 @@
 				C0FFEE100000000000000001 /* AppTab.swift */,
 				6CCA203ABC6BBC3552918D79 /* AppRoute.swift */,
 				F5F013C355AC82BBF061604F /* EmberApp.swift */,
+				9A17AA000000000000000002 /* EmberStorage.swift */,
 				FB6E1E0BFF12AA0D280A4B8A /* RootView.swift */,
 			);
 			path = App;
@@ -225,6 +254,7 @@
 				C0FFEE100000000000000003 /* EmberTabBar.swift */,
 				F845D9B8D8888E33518672E5 /* FeaturePlaceholderView.swift */,
 				D8A7312E9DDCE0B1BBF37264 /* EmberTheme.swift */,
+				3AB13DEE30A3EC2400F383EB /* EmberEnergyScale.swift */,
 			);
 			path = DesignSystem;
 			sourceTree = "<group>";
@@ -289,6 +319,8 @@
 				3A2679DB30A2C24600AA45D8 /* DailyAnalysisView.swift */,
 				3A2679DD30A2C24700AA45D8 /* MonthlyAnalysisView.swift */,
 				3A2679DF30A2C24700AA45D8 /* WeeklyAnalysisView.swift */,
+				3AB13DF230A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift */,
+				3AB13DF630A3ED0C00F383EB /* DailyInspirationCard.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -298,6 +330,7 @@
 			children = (
 				729F2DB930EE548BE49C4A6F /* Ember.app */,
 				3A9626E830A299AD000A62F7 /* EmberTests.xctest */,
+				9A17AA000000000000000004 /* EmberUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -351,6 +384,7 @@
 			children = (
 				3C506F5F43401EDEC74B7945 /* Ember */,
 				3A9626E930A299AD000A62F7 /* EmberTests */,
+				9A17AA000000000000000005 /* EmberUITests */,
 				AE7805B56D1DCAFAA071416F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -370,6 +404,8 @@
 				D308512CBCF54D90A8EFEEB8 /* AnalyticsViewModel.swift */,
 				3A2679D330A2C24500AA45D8 /* DailyAnalysis.swift */,
 				3A2679D530A2C24500AA45D8 /* MonthlyAnalysis.swift */,
+				3AB13DF030A3ED0C00F383EB /* WeeklyEnergyEncouragement.swift */,
+				3AB13DF430A3ED0C00F383EB /* DailyInspiration.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -394,6 +430,7 @@
 		E64DA6756D6CF253E6CA6FFA /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				3AB7CA1230A40CA40005B7ED /* LearningResources */,
 				C0FFEE200000000000000001 /* Profile */,
 				29CD8CB236DA4BB4AE341147 /* Dashboard */,
 				B5F8509EFAD5142A3CC518E1 /* Analytics */,
@@ -402,7 +439,6 @@
 				4D56A3BD9D9394EB18412ED2 /* Onboarding */,
 				8B650F1DF9ED13B8D5EAC199 /* Planner */,
 				05D79A0D5E98345658B1255C /* Reflection */,
-				3AB1361930A3433500F383EB /* LearningResources */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -457,6 +493,29 @@
 			productReference = 3A9626E830A299AD000A62F7 /* EmberTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		9A17AA000000000000000007 /* EmberUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9A17AA000000000000000008 /* Build configuration list for PBXNativeTarget "EmberUITests" */;
+			buildPhases = (
+				9A17AA000000000000000009 /* Sources */,
+				9A17AA000000000000000006 /* Frameworks */,
+				9A17AA00000000000000000A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9A17AA00000000000000000B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				9A17AA000000000000000005 /* EmberUITests */,
+			);
+			name = EmberUITests;
+			packageProductDependencies = (
+			);
+			productName = EmberUITests;
+			productReference = 9A17AA000000000000000004 /* EmberUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		E1BC4332F1B95F6F821DED73 /* Ember */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6FA5FFADD6E6A4C127CEE419 /* Build configuration list for PBXNativeTarget "Ember" */;
@@ -470,7 +529,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				3AB1361930A3433500F383EB /* LearningResources */,
+				3AB7CA1230A40CA40005B7ED /* LearningResources */,
 			);
 			name = Ember;
 			productName = Ember;
@@ -489,6 +548,10 @@
 				TargetAttributes = {
 					3A9626E730A299AD000A62F7 = {
 						CreatedOnToolsVersion = 27.2;
+					};
+					9A17AA000000000000000007 = {
+						CreatedOnToolsVersion = 27.2;
+						TestTargetID = E1BC4332F1B95F6F821DED73;
 					};
 					E1BC4332F1B95F6F821DED73 = {
 						CreatedOnToolsVersion = 16.0;
@@ -510,12 +573,20 @@
 			targets = (
 				E1BC4332F1B95F6F821DED73 /* Ember */,
 				3A9626E730A299AD000A62F7 /* EmberTests */,
+				9A17AA000000000000000007 /* EmberUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		3A9626E630A299AD000A62F7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A17AA00000000000000000A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -545,23 +616,28 @@
 			buildActionMask = 2147483647;
 			files = (
 				579165972D487CD3EB8C6D5C /* EmberApp.swift in Sources */,
+				9A17AA000000000000000001 /* EmberStorage.swift in Sources */,
 				AFA792AD445E288D6023EDFD /* AppRoute.swift in Sources */,
 				2615C766FACA11EB7E0847B0 /* RootView.swift in Sources */,
 				3A2679DC30A2C24600AA45D8 /* DailyAnalysisView.swift in Sources */,
+				3AB13DF330A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift in Sources */,
 				4DB7E088DD026CBACA7E5714 /* DashboardView.swift in Sources */,
 				A932490B30A027510087F57E /* OnboardingStyle.swift in Sources */,
 				A6C53055803EE9219DB5DADB /* LearningGoal.swift in Sources */,
 				4390AE37765858854E6B379E /* LearningTask.swift in Sources */,
+				3AB13DF530A3ED0C00F383EB /* DailyInspiration.swift in Sources */,
 				37D2A246680D1D44581171FB /* EnergyCheckIn.swift in Sources */,
 				4481F7391F8374B087C65363 /* FocusSession.swift in Sources */,
 				FF6570AD9396EE23464BDE76 /* SessionReflection.swift in Sources */,
 				D667026D5A4010BBF2C32BF9 /* EmberTheme.swift in Sources */,
 				46A5B6F37818992C3C4BFDF1 /* FeaturePlaceholderView.swift in Sources */,
+				3AB13DF130A3ED0C00F383EB /* WeeklyEnergyEncouragement.swift in Sources */,
 				F0D6FA0EC211A2D98EB1E55E /* OnboardingView.swift in Sources */,
 				3A2679DE30A2C24700AA45D8 /* MonthlyAnalysisView.swift in Sources */,
 				BCD0B6B2C074EE713079B80E /* EnergyCheckInView.swift in Sources */,
 				EC5D369EAA4D9C383152A697 /* TaskPlannerView.swift in Sources */,
 				50468057A090BB81D052F369 /* FocusSessionView.swift in Sources */,
+				3AB13DEF30A3EC2400F383EB /* EmberEnergyScale.swift in Sources */,
 				EE9798606A27751CE15096F1 /* ReflectionView.swift in Sources */,
 				64C5F0ACA041FB999FE17FFA /* AnalyticsView.swift in Sources */,
 				BCCFCE885EDB49F4BAF5EC3A /* OnboardingViewModel.swift in Sources */,
@@ -574,6 +650,7 @@
 				2F27F37ED33D4C5AAEB506F6 /* DashboardViewModel.swift in Sources */,
 				3A2679D830A2C24500AA45D8 /* AnalyticsActions.swift in Sources */,
 				C0FFEE000000000000000006 /* ProfileViewModel.swift in Sources */,
+				3AB13DF730A3ED0C00F383EB /* DailyInspirationCard.swift in Sources */,
 				3A2679D630A2C24500AA45D8 /* MonthlyAnalysis.swift in Sources */,
 				A932490930A027420087F57E /* OnboardingSteps.swift in Sources */,
 				3A2679DA30A2C24600AA45D8 /* BioRhythmReport.swift in Sources */,
@@ -588,6 +665,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9A17AA000000000000000009 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -595,6 +679,11 @@
 			isa = PBXTargetDependency;
 			target = E1BC4332F1B95F6F821DED73 /* Ember */;
 			targetProxy = 3A77CB3730A2B66D00BE31FF /* PBXContainerItemProxy */;
+		};
+		9A17AA00000000000000000B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E1BC4332F1B95F6F821DED73 /* Ember */;
+			targetProxy = 9A17AA000000000000000003 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -778,6 +867,38 @@
 			};
 			name = Release;
 		};
+		9A17AA00000000000000000C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ember.EmberUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = Ember;
+			};
+			name = Debug;
+		};
+		9A17AA00000000000000000D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ember.EmberUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = Ember;
+			};
+			name = Release;
+		};
 		FAE000AE36B4E50C28275D58 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -842,6 +963,15 @@
 			buildConfigurations = (
 				86680E473A81A55C52C0A72D /* Debug */,
 				FAE000AE36B4E50C28275D58 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9A17AA000000000000000008 /* Build configuration list for PBXNativeTarget "EmberUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A17AA00000000000000000C /* Debug */,
+				9A17AA00000000000000000D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

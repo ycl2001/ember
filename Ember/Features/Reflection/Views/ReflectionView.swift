@@ -469,10 +469,6 @@ private enum EmberEnergyRatingPalette {
     static let text = EmberTheme.primary
     static let secondaryText = EmberTheme.muted
     static let border = EmberTheme.separator
-    static let low = Color(red: 0.15, green: 0.39, blue: 0.92)
-    static let lowMedium = Color(red: 1.0, green: 0.57, blue: 0.16)
-    static let medium = Color(red: 0.54, green: 0.29, blue: 0.05)
-    static let high = Color(red: 0.02, green: 0.12, blue: 0.10)
 }
 
 private struct EmberEnergyRatingPicker: View {
@@ -480,13 +476,15 @@ private struct EmberEnergyRatingPicker: View {
     let selectedLevel: Int?
     let onSelect: (Int) -> Void
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(EmberEnergyRatingPalette.text)
 
-            HStack(spacing: 8) {
+            LazyVGrid(columns: columns, spacing: 8) {
                 ForEach(1...5, id: \.self) { level in
                     ratingButton(level)
                 }
@@ -506,8 +504,11 @@ private struct EmberEnergyRatingPicker: View {
                     .foregroundStyle(EmberEnergyRatingPalette.text)
 
                 Circle()
-                    .fill(dotColor(for: level))
+                    .fill(EmberEnergyScale.color(for: level) ?? EmberEnergyRatingPalette.border)
                     .frame(width: 9, height: 9)
+                    .overlay {
+                        Circle().stroke(EmberEnergyRatingPalette.text, lineWidth: 1)
+                    }
 
                 Text(label(for: level))
                     .font(.caption2.weight(isSelected ? .semibold : .regular))
@@ -516,7 +517,7 @@ private struct EmberEnergyRatingPicker: View {
                             ? EmberEnergyRatingPalette.text
                             : EmberEnergyRatingPalette.secondaryText
                     )
-                    .lineLimit(1)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             .frame(maxWidth: .infinity, minHeight: 64)
             .padding(.vertical, 6)
@@ -542,6 +543,11 @@ private struct EmberEnergyRatingPicker: View {
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 
+    private var columns: [GridItem] {
+        let count = dynamicTypeSize.isAccessibilitySize ? 2 : 5
+        return Array(repeating: GridItem(.flexible(), spacing: 8), count: count)
+    }
+
     private func label(for level: Int) -> String {
         switch level {
         case 1: "Low"
@@ -552,12 +558,4 @@ private struct EmberEnergyRatingPicker: View {
         }
     }
 
-    private func dotColor(for level: Int) -> Color {
-        switch level {
-        case 1: EmberEnergyRatingPalette.low
-        case 2: EmberEnergyRatingPalette.lowMedium
-        case 3: EmberEnergyRatingPalette.medium
-        default: EmberEnergyRatingPalette.high
-        }
-    }
 }

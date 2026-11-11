@@ -125,17 +125,20 @@ final class ReflectionViewModel {
         isMissingSession = false
 
         guard let sessionID,
-              let session = sessions.first(where: { $0.id == sessionID }),
-              let task = tasks.first(where: { $0.id == session.taskID }) else {
+              let session = sessions.first(where: { $0.id == sessionID }) else {
             summary = nil
             isMissingSession = true
             return
         }
 
+        let taskTitle = tasks.first(where: { $0.id == session.taskID })?.title
+            ?? session.taskTitle
+            ?? "Deleted task"
+
         summary = ReflectionSessionSummary(
             sessionID: session.id,
             taskID: session.taskID,
-            taskTitle: task.title,
+            taskTitle: taskTitle,
             durationSeconds: session.durationSeconds,
             isComplete: session.endedAt != nil
         )

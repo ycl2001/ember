@@ -51,6 +51,7 @@ final class TaskPlannerViewModel {
     }
 
     func deleteTask(_ task: LearningTask, in context: ModelContext) throws {
+        try preserveTitleForHistoricalSessions(of: task, in: context)
         context.delete(task)
         try persist(in: context)
     }
@@ -101,6 +102,7 @@ final class TaskPlannerViewModel {
     /// Deletes a goal and every task in it. Past focus sessions are kept for insights.
     func deleteGoal(_ goal: LearningGoal, tasks: [LearningTask], in context: ModelContext) throws {
         for task in tasks where task.goalID == goal.id {
+            try preserveTitleForHistoricalSessions(of: task, in: context)
             context.delete(task)
         }
         context.delete(goal)
@@ -141,6 +143,19 @@ final class TaskPlannerViewModel {
         } catch {
             context.rollback()
             throw SaveError.persistenceFailed
+        }
+    }
+
+    private func preserveTitleForHistoricalSessions(
+        of task: LearningTask,
+        in context: ModelContext
+    ) throws {
+        let taskID = task.id
+        let descriptor = FetchDescriptor<FocusSession>(
+            predicate: #Predicate { $0.taskID == taskID }
+        )
+        for session in try context.fetch(descriptor) where session.taskTitle == nil {
+            session.taskTitle = task.title
         }
     }
 

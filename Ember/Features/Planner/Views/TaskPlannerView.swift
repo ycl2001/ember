@@ -6,7 +6,7 @@ import SwiftData
 struct TaskPlannerView: View {
     var onNavigate: (AppRoute) -> Void = { _ in }
 
-    @AppStorage(OnboardingStorage.completedKey) private var hasCompletedOnboarding = false
+    @AppStorage(OnboardingStorage.completedKey, store: EmberStorage.defaults) private var hasCompletedOnboarding = false
     @Environment(AppNavigation.self) private var navigation: AppNavigation?
     @Query(sort: \LearningGoal.createdAt) private var goals: [LearningGoal]
     @Query(sort: \LearningTask.createdAt) private var tasks: [LearningTask]

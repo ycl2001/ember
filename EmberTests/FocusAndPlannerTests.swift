@@ -48,6 +48,7 @@ struct FocusAndPlannerTests {
         let sessions = try container.mainContext.fetch(FetchDescriptor<FocusSession>())
         #expect(sessions.count == 1)
         #expect(sessions.first?.taskID == task.id)
+        #expect(sessions.first?.taskTitle == "Deep research")
         #expect(sessions.first?.durationSeconds == 31)
         #expect(sessions.first?.endedAt == savedAt)
         #expect(viewModel.phase == .finished)
@@ -132,7 +133,9 @@ struct FocusAndPlannerTests {
         let tasks = try context.fetch(FetchDescriptor<LearningTask>())
         #expect(goals.map(\.topic) == ["Leisure"])
         #expect(tasks.map(\.title) == ["Cooking"])
-        #expect(try context.fetch(FetchDescriptor<FocusSession>()).count == 1)
+        let sessions = try context.fetch(FetchDescriptor<FocusSession>())
+        #expect(sessions.count == 1)
+        #expect(sessions.first?.taskTitle == "Mathematics")
     }
 
     @Test

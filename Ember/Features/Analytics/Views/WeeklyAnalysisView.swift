@@ -9,6 +9,7 @@ private enum WeeklyChartStyle {
 private struct WeeklyChartDay: Identifiable {
     let date: Date
     let energy: Double?
+    let rawEnergy: Double?
     let tasks: Double
     let rawTasks: Int
     let isHighlighted: Bool
@@ -21,6 +22,8 @@ struct WeeklyAnalysisView: View {
     let tasks: [LearningTask]
     let sessions: [FocusSession]
     let reflections: [SessionReflection]
+
+    @State private var selectedChartDate: Date?
 
     private var points: [AnalyticsViewModel.ChartPoint] {
         viewModel.chartPoints(
@@ -49,6 +52,12 @@ struct WeeklyAnalysisView: View {
             VStack(alignment: .leading, spacing: 23) {
                 observedSummaryCard
                 chartCard
+                WeeklyEnergyEncouragementCard(
+                    encouragement: viewModel.weeklyEnergyEncouragement(
+                        reflections: reflections,
+                        sessions: sessions
+                    )
+                )
                 patternCard
             }
         } else {
@@ -104,6 +113,7 @@ struct WeeklyAnalysisView: View {
             WeeklyChartDay(
                 date: point.date,
                 energy: point.energy.map { $0 / 5 },
+                rawEnergy: point.energy,
                 tasks: maximumTasks > 0 ? Double(point.tasksCompleted) / maximumTasks : 0,
                 rawTasks: point.tasksCompleted,
                 isHighlighted: rankedEnergyDates.contains(point.date)
@@ -146,7 +156,42 @@ struct WeeklyAnalysisView: View {
                         x: .value("Day", day.date),
                         y: .value("After-session energy", day.energy ?? 0)
                     )
-                    .foregroundStyle(day.isHighlighted ? WeeklyChartStyle.line : WeeklyChartStyle.highlight)
+                    .symbol {
+                        Circle()
+                            .fill(
+                                EmberEnergyScale.color(for: day.rawEnergy)
+                                    ?? WeeklyChartStyle.highlight
+                            )
+                            .overlay {
+                                Circle()
+                                    .stroke(EmberTheme.primary, lineWidth: 2)
+                            }
+                            .frame(width: day.isHighlighted ? 14 : 12, height: day.isHighlighted ? 14 : 12)
+                    }
+                    .accessibilityLabel(day.date.formatted(.dateTime.weekday(.wide)))
+                    .accessibilityValue(
+                        "Average after-session energy \((day.rawEnergy ?? 0).formatted(.number.precision(.fractionLength(1)))) out of 5"
+                    )
+                }
+
+                if let selectedDay = selectedChartDay(in: days),
+                   let rawEnergy = selectedDay.rawEnergy {
+                    RuleMark(x: .value("Selected day", selectedDay.date))
+                        .foregroundStyle(EmberTheme.separator)
+                        .annotation(position: .top, spacing: 8) {
+                            VStack(spacing: 2) {
+                                Text(selectedDay.date, format: .dateTime.weekday(.abbreviated))
+                                    .font(.caption.weight(.semibold))
+                                Text(rawEnergy, format: .number.precision(.fractionLength(1)))
+                                    .font(.footnote.weight(.semibold))
+                                Text("of 5")
+                                    .font(.caption)
+                            }
+                            .foregroundStyle(EmberTheme.primary)
+                            .padding(.vertical, 6)
+                            .padding(.horizontal, 9)
+                            .background(EmberTheme.surface, in: .rect(cornerRadius: 10))
+                        }
                 }
             }
             .frame(height: 240)
@@ -170,6 +215,7 @@ struct WeeklyAnalysisView: View {
                     }
                 }
             }
+            .chartXSelection(value: $selectedChartDate)
 
             HStack(spacing: 20) {
                 Label("After-session energy", systemImage: "circle.fill")
@@ -182,6 +228,16 @@ struct WeeklyAnalysisView: View {
         .padding(20)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(EmberTheme.surface, in: .rect(cornerRadius: 24))
+    }
+
+    private func selectedChartDay(in days: [WeeklyChartDay]) -> WeeklyChartDay? {
+        guard let selectedChartDate else { return nil }
+        return days
+            .filter { $0.rawEnergy != nil }
+            .min {
+                abs($0.date.timeIntervalSince(selectedChartDate))
+                    < abs($1.date.timeIntervalSince(selectedChartDate))
+            }
     }
 
     private var patternCard: some View {
