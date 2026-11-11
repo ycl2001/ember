@@ -250,6 +250,7 @@ final class FocusSessionViewModel {
 
         let session = FocusSession(
             taskID: taskID,
+            taskTitle: activeTaskTitle,
             startedAt: startedAt,
             endedAt: .now,
             durationSeconds: elapsedSeconds
@@ -332,6 +333,7 @@ final class FocusSessionViewModel {
         let duration = max(0, Int(draft.focusedSeconds))
         let session = FocusSession(
             taskID: draft.taskID,
+            taskTitle: draft.taskTitle,
             startedAt: draft.startedAt,
             endedAt: draft.savedAt,
             durationSeconds: duration
