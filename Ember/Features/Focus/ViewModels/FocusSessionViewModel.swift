@@ -21,17 +21,17 @@ enum FocusDraftStore {
     private static let key = "focus.inProgressSession"
 
     static func load() -> FocusSessionDraft? {
-        guard let data = UserDefaults.standard.data(forKey: key) else { return nil }
+        guard let data = EmberStorage.defaults.data(forKey: key) else { return nil }
         return try? JSONDecoder().decode(FocusSessionDraft.self, from: data)
     }
 
     static func save(_ draft: FocusSessionDraft) {
         guard let data = try? JSONEncoder().encode(draft) else { return }
-        UserDefaults.standard.set(data, forKey: key)
+        EmberStorage.defaults.set(data, forKey: key)
     }
 
     static func clear() {
-        UserDefaults.standard.removeObject(forKey: key)
+        EmberStorage.defaults.removeObject(forKey: key)
     }
 }
 
@@ -68,8 +68,8 @@ final class FocusSessionViewModel {
 
     /// Sends a notification at the 20-min milestone if the phone is locked or the app is
     /// in the background. Remembered between launches.
-    private(set) var lockReminderEnabled = UserDefaults.standard.bool(forKey: FocusSessionViewModel.lockReminderKey) {
-        didSet { UserDefaults.standard.set(lockReminderEnabled, forKey: Self.lockReminderKey) }
+    private(set) var lockReminderEnabled = EmberStorage.defaults.bool(forKey: FocusSessionViewModel.lockReminderKey) {
+        didSet { EmberStorage.defaults.set(lockReminderEnabled, forKey: Self.lockReminderKey) }
     }
     /// Shown under the reminder toggle when notifications are turned off for Ember.
     private(set) var reminderNotice: String?

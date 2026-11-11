@@ -3,12 +3,12 @@ import SwiftUI
 /// The actual app shell: four bottom tabs with detail flows pushed above them.
 /// Feature developers own the contents of the destination views, not this router.
 struct RootView: View {
-    @AppStorage(OnboardingStorage.completedKey) private var hasCompletedOnboarding = false
+    @AppStorage(OnboardingStorage.completedKey, store: EmberStorage.defaults) private var hasCompletedOnboarding = false
     @State private var navigation: AppNavigation
 
     init() {
         let navigation = AppNavigation()
-        if !UserDefaults.standard.bool(forKey: OnboardingStorage.completedKey) {
+        if !EmberStorage.defaults.bool(forKey: OnboardingStorage.completedKey) {
             navigation.selectedTab = .sessions
         }
         _navigation = State(initialValue: navigation)
