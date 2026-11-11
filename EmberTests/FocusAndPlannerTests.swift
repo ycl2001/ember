@@ -109,6 +109,32 @@ struct FocusAndPlannerTests {
         #expect(FocusDraftStore.load() == nil)
     }
 
+    @Test
+    func widgetTracksStartPauseResumeDiscardAndRecovery() {
+        FocusDraftStore.clear()
+        defer { FocusDraftStore.clear() }
+        let task = LearningTask(goalID: UUID(), title: "Widget state")
+        let viewModel = FocusSessionViewModel()
+
+        viewModel.start(task: task)
+        #expect(FocusWidgetStore.load().status == .running)
+        #expect(FocusWidgetStore.load().taskTitle == task.title)
+
+        viewModel.pause()
+        #expect(FocusWidgetStore.load().status == .paused)
+
+        viewModel.resume()
+        #expect(FocusWidgetStore.load().status == .running)
+
+        viewModel.discard()
+        #expect(FocusWidgetStore.load() == .idle)
+
+        FocusDraftStore.save(draft(for: task, focusedSeconds: 42, savedAt: .now))
+        viewModel.checkForUnfinishedSession(tasks: [task])
+        #expect(FocusWidgetStore.load().status == .paused)
+        #expect(FocusWidgetStore.load().pausedSeconds == 42)
+    }
+
     // MARK: - Goals and task notes
 
     @Test

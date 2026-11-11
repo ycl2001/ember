@@ -32,6 +32,7 @@ enum FocusDraftStore {
 
     static func clear() {
         EmberStorage.defaults.removeObject(forKey: key)
+        FocusWidgetBridge.clear()
     }
 }
 
@@ -179,6 +180,7 @@ final class FocusSessionViewModel {
         phase = .running
         startTicker()
         saveDraft()
+        publishWidget()
         scheduleMilestoneReminder()
     }
 
@@ -192,6 +194,7 @@ final class FocusSessionViewModel {
         phase = .paused
         refresh()
         saveDraft()
+        publishWidget()
         cancelMilestoneReminder()
     }
 
@@ -201,6 +204,7 @@ final class FocusSessionViewModel {
         phase = .running
         startTicker()
         saveDraft()
+        publishWidget()
         scheduleMilestoneReminder()
     }
 
@@ -302,6 +306,7 @@ final class FocusSessionViewModel {
         cancelMilestoneReminder()
         if tasks.contains(where: { $0.id == draft.taskID }) {
             unfinishedDraft = draft
+            FocusWidgetBridge.publishPaused(taskTitle: draft.taskTitle, focusedSeconds: draft.focusedSeconds)
         } else {
             FocusDraftStore.clear()
             unfinishedDraft = nil
@@ -383,6 +388,20 @@ final class FocusSessionViewModel {
             milestoneReminderEnabled: milestoneReminderEnabled,
             savedAt: .now
         ))
+    }
+
+    /// Tells the Home Screen widget the current state. Called on start, pause and resume only,
+    /// not on the 15-second snapshot, so the widget's refresh budget isn't used up.
+    private func publishWidget() {
+        var focused = accumulatedSeconds
+        if let segmentStartedAt {
+            focused += Date.now.timeIntervalSince(segmentStartedAt)
+        }
+        switch phase {
+        case .running: FocusWidgetBridge.publishRunning(taskTitle: activeTaskTitle, focusedSeconds: focused)
+        case .paused:  FocusWidgetBridge.publishPaused(taskTitle: activeTaskTitle, focusedSeconds: focused)
+        default: break
+        }
     }
 
     // MARK: - Lock-screen milestone reminder

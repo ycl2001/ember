@@ -2,11 +2,22 @@ import SwiftData
 import SwiftUI
 
 struct AnalyticsView: View {
-    @State private var viewModel = AnalyticsViewModel()
+    let initialPeriod: AnalyticsViewModel.Period
+    let onPeriodChange: (AnalyticsViewModel.Period) -> Void
+    @State private var viewModel: AnalyticsViewModel
 
     @Query private var tasks: [LearningTask]
     @Query private var sessions: [FocusSession]
     @Query private var reflections: [SessionReflection]
+
+    init(
+        initialPeriod: AnalyticsViewModel.Period = .weekly,
+        onPeriodChange: @escaping (AnalyticsViewModel.Period) -> Void = { _ in }
+    ) {
+        self.initialPeriod = initialPeriod
+        self.onPeriodChange = onPeriodChange
+        _viewModel = State(initialValue: AnalyticsViewModel(period: initialPeriod))
+    }
 
     var body: some View {
         ScrollView {
@@ -39,6 +50,10 @@ struct AnalyticsView: View {
         }
         .background(EmberTheme.canvas.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
+        .onChange(of: initialPeriod) { _, period in
+            guard viewModel.period != period else { return }
+            viewModel.updatePeriod(period)
+        }
     }
 
     @ViewBuilder
@@ -81,6 +96,7 @@ struct AnalyticsView: View {
                     withAnimation(.easeInOut(duration: 0.15)) {
                         viewModel.updatePeriod(period)
                     }
+                    onPeriodChange(period)
                 } label: {
                     Text(period.rawValue)
                         .font(.callout.weight(isSelected ? .semibold : .regular))

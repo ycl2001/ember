@@ -7,6 +7,7 @@ import Observation
 final class AppNavigation {
     var selectedTab: AppTab = .today
     var path: [AppRoute] = []
+    var analyticsPeriod: AnalyticsViewModel.Period = .weekly
 
     /// The learning goal shown by `AppRoute.goalDetail`.
     var selectedGoalID: UUID?
@@ -44,5 +45,25 @@ final class AppNavigation {
     func openReflection(sessionID: UUID) {
         pendingReflectionSessionID = sessionID
         push(.reflection)
+    }
+
+    /// Routes the two URLs exposed by Ember's widgets. Assigning the complete path keeps
+    /// repeated taps idempotent for cold, background, and already-running launches.
+    @discardableResult
+    func handleWidgetURL(_ url: URL) -> Bool {
+        guard url.scheme?.lowercased() == "ember" else { return false }
+
+        switch (url.host?.lowercased(), url.pathComponents.filter { $0 != "/" }) {
+        case ("focus", []):
+            pendingFocusTaskID = nil
+            path = [.focus]
+            return true
+        case ("analytics", ["monthly"]):
+            analyticsPeriod = .monthly
+            select(.analytics)
+            return true
+        default:
+            return false
+        }
     }
 }

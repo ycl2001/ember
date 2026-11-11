@@ -169,9 +169,7 @@ struct MVPUseCaseTests {
 
         #expect(month.state == .observed)
         let octoberCell = try #require(month.weeks.flatMap(\.cells).first { $0.day == 29 })
-        withKnownIssue("The four-week heatmap currently discards prior-month reflections.") {
-            #expect(octoberCell.level == 4)
-        }
+        #expect(octoberCell.level == 4)
     }
 
     private func date(month: Int = 11, day: Int, hour: Int = 12) throws -> Date {
