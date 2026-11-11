@@ -33,6 +33,12 @@ struct DailyAnalysisView: View {
             case .observed:
                 observedContent
             }
+
+            TimelineView(.periodic(from: .now, by: 3_600)) { context in
+                DailyInspirationCard(
+                    quote: DailyInspiration.quote(for: context.date)
+                )
+            }
         }
     }
 

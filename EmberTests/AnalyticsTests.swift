@@ -31,6 +31,116 @@ struct AnalyticsIntegrationTests {
         #expect(EmberEnergyScale.tone(for: 6) == nil)
     }
 
+    @Test(arguments: [
+        (1.9, "Gentle check-in"),
+        (2.0, "Energising activity"),
+        (2.9, "Energising activity"),
+        (3.0, "Maintain momentum"),
+        (4.0, "Maintain momentum"),
+        (4.1, "Positive affirmation"),
+        (5.0, "Positive affirmation")
+    ])
+    func weeklyEncouragementUsesExclusiveBoundaries(
+        average: Double,
+        expectedTitle: String
+    ) {
+        let result = WeeklyEnergyEncouragement.make(
+            average: average,
+            reflectionCount: 2
+        )
+
+        #expect(result.title == expectedTitle)
+        #expect(result.average == average)
+    }
+
+    @Test
+    func weeklyEncouragementFiltersToTheSelectedWeekAndHandlesEmptyData() {
+        let selectedDay = calendar.date(from: DateComponents(year: 2026, month: 11, day: 10, hour: 12))!
+        let previousWeek = calendar.date(byAdding: .day, value: -8, to: selectedDay)!
+        let selectedSession = FocusSession(
+            taskID: UUID(),
+            endedAt: selectedDay,
+            durationSeconds: 600
+        )
+        let previousSession = FocusSession(
+            taskID: UUID(),
+            endedAt: previousWeek,
+            durationSeconds: 600
+        )
+        let selectedReflection = SessionReflection(
+            taskID: selectedSession.taskID,
+            sessionID: selectedSession.id,
+            energyBefore: 3,
+            energyAfter: 5,
+            createdAt: selectedDay
+        )
+        let previousReflection = SessionReflection(
+            taskID: previousSession.taskID,
+            sessionID: previousSession.id,
+            energyBefore: 3,
+            energyAfter: 1,
+            createdAt: previousWeek
+        )
+        let analytics = AnalyticsViewModel(period: .weekly, calendar: calendar, now: selectedDay)
+
+        let result = analytics.weeklyEnergyEncouragement(
+            reflections: [selectedReflection, previousReflection],
+            sessions: [selectedSession, previousSession]
+        )
+        let empty = analytics.weeklyEnergyEncouragement(reflections: [], sessions: [])
+
+        #expect(result.average == 5)
+        #expect(result.reflectionCount == 1)
+        #expect(result.title == "Positive affirmation")
+        #expect(result.observationNote == "Early observation from one saved reflection.")
+        #expect(empty.average == nil)
+        #expect(empty.reflectionCount == 0)
+    }
+
+    @Test
+    func dailyInspirationIsStableWithinTheLocalCalendarDay() {
+        var localCalendar = Calendar(identifier: .gregorian)
+        localCalendar.timeZone = TimeZone(identifier: "Australia/Sydney")!
+        let morning = localCalendar.date(from: DateComponents(year: 2026, month: 11, day: 11, hour: 8))!
+        let evening = localCalendar.date(from: DateComponents(year: 2026, month: 11, day: 11, hour: 22))!
+        let nextDay = localCalendar.date(from: DateComponents(year: 2026, month: 11, day: 12, hour: 8))!
+
+        let morningQuote = DailyInspiration.quote(for: morning, calendar: localCalendar)
+        let eveningQuote = DailyInspiration.quote(for: evening, calendar: localCalendar)
+        let nextQuote = DailyInspiration.quote(for: nextDay, calendar: localCalendar)
+
+        #expect(morningQuote == eveningQuote)
+        #expect(morningQuote != nextQuote)
+        #expect(!morningQuote.text.isEmpty)
+        #expect(!morningQuote.author.isEmpty)
+    }
+
+    @Test
+    func energyCheckInPreservesValidRatingsAndRejectsInvalidSaves() throws {
+        let container = try ModelContainer(
+            for: EnergyCheckIn.self,
+            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+        )
+        let context = container.mainContext
+        let viewModel = EnergyCheckInViewModel()
+
+        viewModel.select(5)
+        viewModel.save(in: context)
+
+        var saved = try context.fetch(FetchDescriptor<EnergyCheckIn>())
+        #expect(saved.count == 1)
+        #expect(saved.first?.level == 5)
+        #expect(viewModel.didSave)
+
+        viewModel.select(0)
+        viewModel.save(in: context)
+
+        saved = try context.fetch(FetchDescriptor<EnergyCheckIn>())
+        #expect(saved.count == 1)
+        #expect(viewModel.didSave == false)
+        #expect(viewModel.errorMessage == "Choose an energy level from 1 to 5.")
+    }
+
     @Test
     func adaptersUseIntegratedModelProperties() {
         let completedAt = Date(timeIntervalSince1970: 1_500)

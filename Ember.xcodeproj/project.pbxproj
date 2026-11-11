@@ -22,6 +22,10 @@
 		3A77CB3430A2B3D300BE31FF /* EnergyFlowStateCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77CB3330A2B3D300BE31FF /* EnergyFlowStateCard.swift */; };
 		3A77CB3630A2B3D300BE31FF /* FeelingPickerCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77CB3530A2B3D300BE31FF /* FeelingPickerCard.swift */; };
 		3AB13DEF30A3EC2400F383EB /* EmberEnergyScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB13DEE30A3EC2400F383EB /* EmberEnergyScale.swift */; };
+		3AB13DF130A3ED0C00F383EB /* WeeklyEnergyEncouragement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB13DF030A3ED0C00F383EB /* WeeklyEnergyEncouragement.swift */; };
+		3AB13DF330A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB13DF230A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift */; };
+		3AB13DF530A3ED0C00F383EB /* DailyInspiration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB13DF430A3ED0C00F383EB /* DailyInspiration.swift */; };
+		3AB13DF730A3ED0C00F383EB /* DailyInspirationCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB13DF630A3ED0C00F383EB /* DailyInspirationCard.swift */; };
 		4390AE37765858854E6B379E /* LearningTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = D894345E65907C8D977A4D28 /* LearningTask.swift */; };
 		4481F7391F8374B087C65363 /* FocusSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BF187814AAB24E8BA4E616 /* FocusSession.swift */; };
 		46A5B6F37818992C3C4BFDF1 /* FeaturePlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F845D9B8D8888E33518672E5 /* FeaturePlaceholderView.swift */; };
@@ -77,7 +81,11 @@
 		3A77CB3330A2B3D300BE31FF /* EnergyFlowStateCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyFlowStateCard.swift; sourceTree = "<group>"; };
 		3A77CB3530A2B3D300BE31FF /* FeelingPickerCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeelingPickerCard.swift; sourceTree = "<group>"; };
 		3A9626E830A299AD000A62F7 /* EmberTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EmberTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3AB13DEE30A3EC2400F383EB /* EmberEnergyScale.swift */ = {isa = PBXFileReference; path = EmberEnergyScale.swift; sourceTree = "<group>"; };
+		3AB13DEE30A3EC2400F383EB /* EmberEnergyScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberEnergyScale.swift; sourceTree = "<group>"; };
+		3AB13DF030A3ED0C00F383EB /* WeeklyEnergyEncouragement.swift */ = {isa = PBXFileReference; path = WeeklyEnergyEncouragement.swift; sourceTree = "<group>"; };
+		3AB13DF230A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift */ = {isa = PBXFileReference; path = WeeklyEnergyEncouragementCard.swift; sourceTree = "<group>"; };
+		3AB13DF430A3ED0C00F383EB /* DailyInspiration.swift */ = {isa = PBXFileReference; path = DailyInspiration.swift; sourceTree = "<group>"; };
+		3AB13DF630A3ED0C00F383EB /* DailyInspirationCard.swift */ = {isa = PBXFileReference; path = DailyInspirationCard.swift; sourceTree = "<group>"; };
 		41DD23F7C1454731400D4555 /* FocusSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionView.swift; sourceTree = "<group>"; };
 		57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyCheckInView.swift; sourceTree = "<group>"; };
 		5E9FABC339815B0B0344B6FB /* TaskPlannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPlannerView.swift; sourceTree = "<group>"; };
@@ -291,6 +299,8 @@
 				3A2679DB30A2C24600AA45D8 /* DailyAnalysisView.swift */,
 				3A2679DD30A2C24700AA45D8 /* MonthlyAnalysisView.swift */,
 				3A2679DF30A2C24700AA45D8 /* WeeklyAnalysisView.swift */,
+				3AB13DF230A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift */,
+				3AB13DF630A3ED0C00F383EB /* DailyInspirationCard.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -372,6 +382,8 @@
 				D308512CBCF54D90A8EFEEB8 /* AnalyticsViewModel.swift */,
 				3A2679D330A2C24500AA45D8 /* DailyAnalysis.swift */,
 				3A2679D530A2C24500AA45D8 /* MonthlyAnalysis.swift */,
+				3AB13DF030A3ED0C00F383EB /* WeeklyEnergyEncouragement.swift */,
+				3AB13DF430A3ED0C00F383EB /* DailyInspiration.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -546,15 +558,18 @@
 				AFA792AD445E288D6023EDFD /* AppRoute.swift in Sources */,
 				2615C766FACA11EB7E0847B0 /* RootView.swift in Sources */,
 				3A2679DC30A2C24600AA45D8 /* DailyAnalysisView.swift in Sources */,
+				3AB13DF330A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift in Sources */,
 				4DB7E088DD026CBACA7E5714 /* DashboardView.swift in Sources */,
 				A932490B30A027510087F57E /* OnboardingStyle.swift in Sources */,
 				A6C53055803EE9219DB5DADB /* LearningGoal.swift in Sources */,
 				4390AE37765858854E6B379E /* LearningTask.swift in Sources */,
+				3AB13DF530A3ED0C00F383EB /* DailyInspiration.swift in Sources */,
 				37D2A246680D1D44581171FB /* EnergyCheckIn.swift in Sources */,
 				4481F7391F8374B087C65363 /* FocusSession.swift in Sources */,
 				FF6570AD9396EE23464BDE76 /* SessionReflection.swift in Sources */,
 				D667026D5A4010BBF2C32BF9 /* EmberTheme.swift in Sources */,
 				46A5B6F37818992C3C4BFDF1 /* FeaturePlaceholderView.swift in Sources */,
+				3AB13DF130A3ED0C00F383EB /* WeeklyEnergyEncouragement.swift in Sources */,
 				F0D6FA0EC211A2D98EB1E55E /* OnboardingView.swift in Sources */,
 				3A2679DE30A2C24700AA45D8 /* MonthlyAnalysisView.swift in Sources */,
 				BCD0B6B2C074EE713079B80E /* EnergyCheckInView.swift in Sources */,
@@ -573,6 +588,7 @@
 				2F27F37ED33D4C5AAEB506F6 /* DashboardViewModel.swift in Sources */,
 				3A2679D830A2C24500AA45D8 /* AnalyticsActions.swift in Sources */,
 				C0FFEE000000000000000006 /* ProfileViewModel.swift in Sources */,
+				3AB13DF730A3ED0C00F383EB /* DailyInspirationCard.swift in Sources */,
 				3A2679D630A2C24500AA45D8 /* MonthlyAnalysis.swift in Sources */,
 				A932490930A027420087F57E /* OnboardingSteps.swift in Sources */,
 				3A2679DA30A2C24600AA45D8 /* BioRhythmReport.swift in Sources */,
