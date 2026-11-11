@@ -12,6 +12,7 @@ private enum MonthlyPalette {
     static let levelGreen = Color(red: 0.66, green: 0.82, blue: 0.73)
     static let orange = Color(red: 0.93, green: 0.64, blue: 0.34)
     static let peach = Color(red: 0.98, green: 0.87, blue: 0.78)
+    static let terracotta = Color(red: 0.75, green: 0.43, blue: 0.39)
     static let grey = Color(red: 0.91, green: 0.91, blue: 0.89)
     static let panel = Color(red: 0.95, green: 0.95, blue: 0.93)
     static let emptyDot = Color(red: 0.94, green: 0.94, blue: 0.93)
@@ -22,6 +23,7 @@ private enum MonthlyPalette {
         case 4: return levelGreen
         case 3: return orange
         case 2: return peach
+        case 1: return terracotta
         default: return emptyDot
         }
     }
@@ -63,6 +65,10 @@ struct MonthlyAnalysisView: View {
                     Text("Complete a task, finish a focus session, or save a reflection to create an observed result.")
                 }
                 .frame(maxWidth: .infinity)
+
+                if !analysis.weeks.isEmpty {
+                    SpotMatrixCard(analysis: analysis)
+                }
             } else {
                 HStack(alignment: .top, spacing: 12) {
                     MonthlyStatCardView(eyebrow: "Monthly Activity", card: analysis.streak)
@@ -269,6 +275,9 @@ private struct SpotMatrixCard: View {
                                     .foregroundStyle(EmberTheme.muted)
                             }
                             .frame(maxWidth: .infinity)
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel("Day \(cell.day)")
+                            .accessibilityValue(cell.level.map { "\($0) out of 5" } ?? "No reflection")
                         }
                     }
                     .padding(.vertical, 10)

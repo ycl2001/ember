@@ -49,6 +49,11 @@
 		EE9798606A27751CE15096F1 /* ReflectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED48A368233DEDD7B570F421 /* ReflectionView.swift */; };
 		F0D6FA0EC211A2D98EB1E55E /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BFC77EE7E502B6A98ACFCB /* OnboardingView.swift */; };
 		FF6570AD9396EE23464BDE76 /* SessionReflection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA53E3A9A8508DC4E98D6E /* SessionReflection.swift */; };
+		B7C560000000000000000001 /* MonthlyEnergyGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C560000000000000000011 /* MonthlyEnergyGrid.swift */; };
+		B7C560000000000000000002 /* MonthlyEnergyGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C560000000000000000011 /* MonthlyEnergyGrid.swift */; };
+		B7C560000000000000000003 /* MonthlyEnergyWidgetSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C560000000000000000012 /* MonthlyEnergyWidgetSync.swift */; };
+		B7C560000000000000000004 /* MonthlyEnergyWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C560000000000000000013 /* MonthlyEnergyWidget.swift */; };
+		B7C560000000000000000005 /* EmberWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B7C560000000000000000014 /* EmberWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,7 +64,28 @@
 			remoteGlobalIDString = E1BC4332F1B95F6F821DED73;
 			remoteInfo = Ember;
 		};
+		B7C560000000000000000031 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE57CBD6DF21BD0D904B24DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B7C560000000000000000033;
+			remoteInfo = EmberWidget;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B7C560000000000000000024 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B7C560000000000000000005 /* EmberWidget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00E32AC3B38E4048AF2F2FE6 /* ReflectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionViewModel.swift; sourceTree = "<group>"; };
@@ -106,6 +132,14 @@
 		F5F013C355AC82BBF061604F /* EmberApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberApp.swift; sourceTree = "<group>"; };
 		F845D9B8D8888E33518672E5 /* FeaturePlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturePlaceholderView.swift; sourceTree = "<group>"; };
 		FB6E1E0BFF12AA0D280A4B8A /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		B7C560000000000000000011 /* MonthlyEnergyGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyEnergyGrid.swift; sourceTree = "<group>"; };
+		B7C560000000000000000012 /* MonthlyEnergyWidgetSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyEnergyWidgetSync.swift; sourceTree = "<group>"; };
+		B7C560000000000000000013 /* MonthlyEnergyWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyEnergyWidget.swift; sourceTree = "<group>"; };
+		B7C560000000000000000014 /* EmberWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = EmberWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7C560000000000000000015 /* Ember.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Ember.entitlements; sourceTree = "<group>"; };
+		B7C560000000000000000016 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B7C560000000000000000017 /* EmberWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EmberWidget.entitlements; sourceTree = "<group>"; };
+		B7C560000000000000000018 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -162,6 +196,7 @@
 				C0FFEE100000000000000001 /* AppTab.swift */,
 				6CCA203ABC6BBC3552918D79 /* AppRoute.swift */,
 				F5F013C355AC82BBF061604F /* EmberApp.swift */,
+				B7C560000000000000000012 /* MonthlyEnergyWidgetSync.swift */,
 				FB6E1E0BFF12AA0D280A4B8A /* RootView.swift */,
 			);
 			path = App;
@@ -204,6 +239,8 @@
 				534B86DB3CD8DC07892341AB /* DesignSystem */,
 				E64DA6756D6CF253E6CA6FFA /* Features */,
 				05529D7BAF9BE1F1AD75AA78 /* Assets.xcassets */,
+				B7C560000000000000000015 /* Ember.entitlements */,
+				B7C560000000000000000016 /* Info.plist */,
 			);
 			path = Ember;
 			sourceTree = "<group>";
@@ -297,6 +334,7 @@
 			children = (
 				729F2DB930EE548BE49C4A6F /* Ember.app */,
 				3A9626E830A299AD000A62F7 /* EmberTests.xctest */,
+				B7C560000000000000000014 /* EmberWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -349,6 +387,8 @@
 			isa = PBXGroup;
 			children = (
 				3C506F5F43401EDEC74B7945 /* Ember */,
+				B7C560000000000000000021 /* EmberShared */,
+				B7C560000000000000000022 /* EmberWidget */,
 				3A9626E930A299AD000A62F7 /* EmberTests */,
 				AE7805B56D1DCAFAA071416F /* Products */,
 			);
@@ -429,6 +469,24 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		B7C560000000000000000021 /* EmberShared */ = {
+			isa = PBXGroup;
+			children = (
+				B7C560000000000000000011 /* MonthlyEnergyGrid.swift */,
+			);
+			path = EmberShared;
+			sourceTree = "<group>";
+		};
+		B7C560000000000000000022 /* EmberWidget */ = {
+			isa = PBXGroup;
+			children = (
+				B7C560000000000000000013 /* MonthlyEnergyWidget.swift */,
+				B7C560000000000000000017 /* EmberWidget.entitlements */,
+				B7C560000000000000000018 /* Info.plist */,
+			);
+			path = EmberWidget;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -462,15 +520,32 @@
 				9261F04E014268C1FB6C1C5E /* Sources */,
 				0B0EAC1C67A2F2EB9E6EB6F7 /* Frameworks */,
 				B04831CC372489EBF0287850 /* Resources */,
+				B7C560000000000000000024 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B7C560000000000000000032 /* PBXTargetDependency */,
 			);
 			name = Ember;
 			productName = Ember;
 			productReference = 729F2DB930EE548BE49C4A6F /* Ember.app */;
 			productType = "com.apple.product-type.application";
+		};
+		B7C560000000000000000033 /* EmberWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B7C560000000000000000036 /* Build configuration list for PBXNativeTarget "EmberWidget" */;
+			buildPhases = (
+				B7C560000000000000000023 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EmberWidget;
+			productName = EmberWidget;
+			productReference = B7C560000000000000000014 /* EmberWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -487,6 +562,14 @@
 					};
 					E1BC4332F1B95F6F821DED73 = {
 						CreatedOnToolsVersion = 16.0;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {enabled = 1; };
+						};
+					};
+					B7C560000000000000000033 = {
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {enabled = 1; };
+						};
 					};
 				};
 			};
@@ -505,6 +588,7 @@
 			targets = (
 				E1BC4332F1B95F6F821DED73 /* Ember */,
 				3A9626E730A299AD000A62F7 /* EmberTests */,
+				B7C560000000000000000033 /* EmberWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -542,6 +626,8 @@
 				579165972D487CD3EB8C6D5C /* EmberApp.swift in Sources */,
 				AFA792AD445E288D6023EDFD /* AppRoute.swift in Sources */,
 				2615C766FACA11EB7E0847B0 /* RootView.swift in Sources */,
+				B7C560000000000000000001 /* MonthlyEnergyGrid.swift in Sources */,
+				B7C560000000000000000003 /* MonthlyEnergyWidgetSync.swift in Sources */,
 				3A2679DC30A2C24600AA45D8 /* DailyAnalysisView.swift in Sources */,
 				4DB7E088DD026CBACA7E5714 /* DashboardView.swift in Sources */,
 				A932490B30A027510087F57E /* OnboardingStyle.swift in Sources */,
@@ -583,6 +669,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B7C560000000000000000023 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7C560000000000000000004 /* MonthlyEnergyWidget.swift in Sources */,
+				B7C560000000000000000002 /* MonthlyEnergyGrid.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -590,6 +685,11 @@
 			isa = PBXTargetDependency;
 			target = E1BC4332F1B95F6F821DED73 /* Ember */;
 			targetProxy = 3A77CB3730A2B66D00BE31FF /* PBXContainerItemProxy */;
+		};
+		B7C560000000000000000032 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B7C560000000000000000033 /* EmberWidget */;
+			targetProxy = B7C560000000000000000031 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -741,9 +841,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Ember/Ember.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Ember/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Ember;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -779,9 +881,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Ember/Ember.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Ember/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Ember;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -789,6 +893,56 @@
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ycl2001.ember;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		B7C560000000000000000034 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = EmberWidget/EmberWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EmberWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Ember;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ycl2001.ember.MonthlyEnergyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		B7C560000000000000000035 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = EmberWidget/EmberWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EmberWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Ember;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ycl2001.ember.MonthlyEnergyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -837,6 +991,15 @@
 			buildConfigurations = (
 				86680E473A81A55C52C0A72D /* Debug */,
 				FAE000AE36B4E50C28275D58 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B7C560000000000000000036 /* Build configuration list for PBXNativeTarget "EmberWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7C560000000000000000034 /* Debug */,
+				B7C560000000000000000035 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

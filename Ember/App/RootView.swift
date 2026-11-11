@@ -5,6 +5,7 @@ import SwiftUI
 struct RootView: View {
     @AppStorage(OnboardingStorage.completedKey) private var hasCompletedOnboarding = false
     @State private var navigation: AppNavigation
+    @State private var monthlyReportRequest: UUID?
 
     init() {
         let navigation = AppNavigation()
@@ -30,6 +31,8 @@ struct RootView: View {
         }
         .environment(navigation)
         .tint(EmberTheme.primary)
+        .modifier(MonthlyEnergyWidgetSync())
+        .onOpenURL(perform: openWidgetReport)
     }
 
     @ViewBuilder
@@ -43,10 +46,17 @@ struct RootView: View {
         case .sessions:
             TaskPlannerView(onNavigate: { navigation.push($0) })
         case .analytics:
-            AnalyticsView()
+            AnalyticsView(initialPeriod: monthlyReportRequest == nil ? .weekly : .monthly)
+                .id(monthlyReportRequest)
         case .profile:
             ProfileView(onNavigate: { navigation.push($0) })
         }
+    }
+
+    private func openWidgetReport(_ url: URL) {
+        guard url == MonthlyEnergyWidgetData.reportURL else { return }
+        monthlyReportRequest = UUID()
+        navigation.select(.analytics)
     }
 
     @ViewBuilder

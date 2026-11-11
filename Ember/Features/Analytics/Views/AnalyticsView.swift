@@ -2,11 +2,15 @@ import SwiftData
 import SwiftUI
 
 struct AnalyticsView: View {
-    @State private var viewModel = AnalyticsViewModel()
+    @State private var viewModel: AnalyticsViewModel
 
     @Query private var tasks: [LearningTask]
     @Query private var sessions: [FocusSession]
     @Query private var reflections: [SessionReflection]
+
+    init(initialPeriod: AnalyticsViewModel.Period = .weekly) {
+        _viewModel = State(initialValue: AnalyticsViewModel(period: initialPeriod))
+    }
 
     var body: some View {
         ScrollView {
