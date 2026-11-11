@@ -32,6 +32,7 @@ enum FocusDraftStore {
 
     static func clear() {
         UserDefaults.standard.removeObject(forKey: key)
+        FocusWidgetBridge.clear()
     }
 }
 
@@ -301,6 +302,7 @@ final class FocusSessionViewModel {
         cancelMilestoneReminder()
         if tasks.contains(where: { $0.id == draft.taskID }) {
             unfinishedDraft = draft
+            FocusWidgetBridge.publishPaused(taskTitle: draft.taskTitle, focusedSeconds: draft.focusedSeconds)
         } else {
             FocusDraftStore.clear()
             unfinishedDraft = nil
@@ -381,6 +383,17 @@ final class FocusSessionViewModel {
             milestoneReminderEnabled: milestoneReminderEnabled,
             savedAt: .now
         ))
+    }
+    private func publishWidget() {
+        var focused = accumulatedSeconds
+        if let segmentStartedAt {
+            focused += Date.now.timeIntervalSince(segmentStartedAt)
+        }
+        switch phase {
+        case .running: FocusWidgetBridge.publishRunning(taskTitle: activeTaskTitle, focusedSeconds: focused)
+        case .paused:  FocusWidgetBridge.publishPaused(taskTitle: activeTaskTitle, focusedSeconds: focused)
+        default: break
+        }
     }
 
     // MARK: - Lock-screen milestone reminder
