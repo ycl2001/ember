@@ -194,25 +194,40 @@ struct EnergyCheckInView: View {
         return Button {
             viewModel.select(level)
         } label: {
-            VStack(spacing: 8) {
-                Text("\(level)")
-                    .font(.system(.title2, design: .serif, weight: .semibold))
-                    .foregroundStyle(FlowPalette.ink)
-                Circle()
-                    .fill(EmberEnergyScale.color(for: level) ?? FlowPalette.secondaryInk)
-                    .frame(width: 10, height: 10)
-                    .overlay {
-                        Circle().stroke(FlowPalette.ink, lineWidth: 1)
-                    }
-                Text(label)
-                    .font(.footnote.weight(isSelected ? .semibold : .regular))
-                    .foregroundStyle(isSelected ? FlowPalette.ink : FlowPalette.secondaryInk)
-                    .fixedSize(horizontal: false, vertical: true)
+            ZStack(alignment: .topTrailing) {
+                VStack(spacing: 8) {
+                    Text("\(level)")
+                        .font(.system(.title2, design: .serif, weight: .semibold))
+                        .foregroundStyle(FlowPalette.ink)
+                    Circle()
+                        .fill(
+                            isSelected
+                                ? EmberEnergyScale.color(for: level) ?? FlowPalette.secondaryInk
+                                : FlowPalette.secondaryInk.opacity(0.35)
+                        )
+                        .frame(width: 10, height: 10)
+                    Text(label)
+                        .font(.footnote.weight(isSelected ? .semibold : .regular))
+                        .foregroundStyle(isSelected ? FlowPalette.ink : FlowPalette.secondaryInk)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity)
+
+                if isSelected {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.caption)
+                        .foregroundStyle(FlowPalette.forest)
+                        .accessibilityHidden(true)
+                }
             }
-            .frame(maxWidth: .infinity)
+            .padding(.horizontal, 8)
             .padding(.vertical, 14)
             .background(isSelected ? FlowPalette.chip : FlowPalette.card,
                         in: RoundedRectangle(cornerRadius: 12))
+            .overlay {
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(isSelected ? FlowPalette.forest : Color.clear, lineWidth: 2)
+            }
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Energy \(level), \(label)")

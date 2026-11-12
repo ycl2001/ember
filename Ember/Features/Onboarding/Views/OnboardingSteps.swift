@@ -20,14 +20,14 @@ struct OnboardingGoalsStep: View {
                 isGoalNameFocused: $isGoalNameFocused
             )
 
-            GoalInspirationSection(viewModel: viewModel, isGoalNameFocused: $isGoalNameFocused)
-
             if !viewModel.goalDrafts.isEmpty {
                 OnboardingGoalDraftList(
                     viewModel: viewModel,
                     isGoalNameFocused: $isGoalNameFocused
                 )
             }
+
+            GoalInspirationSection(viewModel: viewModel, isGoalNameFocused: $isGoalNameFocused)
 
             commitmentSection
         }
@@ -96,6 +96,31 @@ private struct GoalEntryCard: View {
                 .onSubmit(save)
                 .accessibilityLabel("Learning goal name")
 
+            HStack {
+                if viewModel.editingGoalDraftID != nil {
+                    Button("Cancel") { viewModel.cancelGoalDraftEditing() }
+                        .frame(minHeight: 44)
+                }
+                Spacer()
+                Button(action: save) {
+                    Label(
+                        viewModel.goalEditorActionTitle,
+                        systemImage: viewModel.editingGoalDraftID == nil
+                            ? "plus.circle.fill"
+                            : "checkmark.circle.fill"
+                    )
+                }
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(FlowPalette.forest)
+                .frame(minHeight: 44)
+            }
+
+            if let message = viewModel.goalDraftError {
+                Label(message, systemImage: "exclamationmark.circle")
+                    .font(.caption)
+                    .foregroundStyle(.red)
+            }
+
             Divider()
 
             Text("Optional category")
@@ -113,23 +138,6 @@ private struct GoalEntryCard: View {
                 }
             }
 
-            if let message = viewModel.goalDraftError {
-                Label(message, systemImage: "exclamationmark.circle")
-                    .font(.caption)
-                    .foregroundStyle(.red)
-            }
-
-            HStack {
-                if viewModel.editingGoalDraftID != nil {
-                    Button("Cancel") { viewModel.cancelGoalDraftEditing() }
-                        .frame(minHeight: 44)
-                }
-                Spacer()
-                Button(viewModel.goalEditorActionTitle, action: save)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(FlowPalette.forest)
-                    .frame(minHeight: 44)
-            }
         }
         .padding(14)
         .background(FlowPalette.card, in: RoundedRectangle(cornerRadius: 14))
@@ -185,6 +193,10 @@ private struct OnboardingGoalDraftList: View {
 
             ForEach(viewModel.goalDrafts) { draft in
                 HStack(spacing: 10) {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundStyle(FlowPalette.forest)
+                        .accessibilityHidden(true)
+
                     VStack(alignment: .leading, spacing: 3) {
                         Text(draft.name)
                             .font(.subheadline.weight(.semibold))
