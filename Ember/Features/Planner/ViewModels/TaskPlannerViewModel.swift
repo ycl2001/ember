@@ -1,17 +1,189 @@
 import Foundation
 import Observation
+import SwiftData
 
-/// Member 3: task input validation and checklist progress calculations.
 @MainActor
 @Observable
 final class TaskPlannerViewModel {
     var draftTaskTitle = ""
+    var draftGoalID: UUID?
+    var draftNotes = ""
+    var draftGoalName = ""
+    var draftGoalCategory: LearningCategory?
 
-    var canCreateTask: Bool {
-        !draftTaskTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    var canSaveTask: Bool {
+        !trimmedTitle.isEmpty && draftGoalID != nil
+    }
+
+    private var trimmedTitle: String {
+        draftTaskTitle.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    func prepareEditor(for task: LearningTask?, goals: [LearningGoal]) {
+        draftTaskTitle = task?.title ?? ""
+        draftNotes = task?.notes ?? ""
+        draftGoalID = task?.goalID ?? goals.first?.id
+    }
+
+    func saveTask(_ task: LearningTask?, goals: [LearningGoal], in context: ModelContext) throws {
+        let title = trimmedTitle
+        guard !title.isEmpty else { throw SaveError.emptyTitle }
+        guard let goalID = draftGoalID,
+              goalID == task?.goalID || goals.contains(where: { $0.id == goalID }) else {
+            throw SaveError.unavailableGoal
+        }
+
+        let notes = draftNotes.trimmingCharacters(in: .whitespacesAndNewlines)
+        if let task {
+            task.title = title
+            task.goalID = goalID
+            task.notes = notes
+        } else {
+            context.insert(LearningTask(goalID: goalID, title: title, notes: notes))
+        }
+        try persist(in: context)
+    }
+
+    func toggleCompletion(of task: LearningTask, in context: ModelContext) throws {
+        task.isCompleted.toggle()
+        task.completedAt = task.isCompleted ? .now : nil
+        try persist(in: context)
+    }
+
+    func deleteTask(_ task: LearningTask, in context: ModelContext) throws {
+        try preserveTitleForHistoricalSessions(of: task, in: context)
+        context.delete(task)
+        try persist(in: context)
+    }
+
+    // MARK: - Goals
+
+    func prepareGoalRename(_ goal: LearningGoal) {
+        draftGoalName = goal.topic
+        draftGoalCategory = goal.category.flatMap(LearningCategory.init(rawValue:))
+    }
+
+    func goalNameValidationMessage(for goal: LearningGoal, goals: [LearningGoal]) -> String? {
+        let name = trimmedGoalName
+        if name.isEmpty {
+            return "Enter a learning goal name."
+        }
+        let isDuplicate = goals.contains {
+            $0.id != goal.id && $0.topic.caseInsensitiveCompare(name) == .orderedSame
+        }
+        return isDuplicate ? "A learning goal with that name already exists." : nil
+    }
+
+    func renameGoal(_ goal: LearningGoal, goals: [LearningGoal], in context: ModelContext) throws {
+        guard goalNameValidationMessage(for: goal, goals: goals) == nil else {
+            throw SaveError.invalidGoalName
+        }
+        goal.topic = trimmedGoalName
+        goal.category = draftGoalCategory?.rawValue
+        try persist(in: context)
+    }
+
+    func groupedGoals(_ goals: [LearningGoal]) -> [LearningGoalGroup] {
+        var groups = LearningCategory.allCases.compactMap { category -> LearningGoalGroup? in
+            let matchingGoals = goals.filter { $0.category == category.rawValue }
+            guard !matchingGoals.isEmpty else { return nil }
+            return LearningGoalGroup(category: category, goals: matchingGoals)
+        }
+        let uncategorised = goals.filter { goal in
+            guard let category = goal.category else { return true }
+            return LearningCategory(rawValue: category) == nil
+        }
+        if !uncategorised.isEmpty {
+            groups.append(LearningGoalGroup(category: nil, goals: uncategorised))
+        }
+        return groups
+    }
+
+    /// Deletes a goal and every task in it. Past focus sessions are kept for insights.
+    func deleteGoal(_ goal: LearningGoal, tasks: [LearningTask], in context: ModelContext) throws {
+        for task in tasks where task.goalID == goal.id {
+            try preserveTitleForHistoricalSessions(of: task, in: context)
+            context.delete(task)
+        }
+        context.delete(goal)
+        try persist(in: context)
     }
 
     func completedCount(in tasks: [LearningTask]) -> Int {
         tasks.filter(\.isCompleted).count
     }
+
+    // MARK: - Goal grouping
+
+    /// Tasks that belong to one goal, oldest first so the checklist reads in the order it was planned.
+    func tasks(for goalID: UUID, in tasks: [LearningTask]) -> [LearningTask] {
+        tasks
+            .filter { $0.goalID == goalID }
+            .sorted { $0.createdAt < $1.createdAt }
+    }
+
+    /// The next unfinished task within one goal.
+    func nextTask(for goalID: UUID, in tasks: [LearningTask]) -> LearningTask? {
+        self.tasks(for: goalID, in: tasks).first { !$0.isCompleted }
+    }
+
+    /// The first unfinished task, walking goals in order. Used by the "Up next" card.
+    func nextTask(across goals: [LearningGoal], in tasks: [LearningTask]) -> (goal: LearningGoal, task: LearningTask)? {
+        for goal in goals {
+            if let task = nextTask(for: goal.id, in: tasks) {
+                return (goal, task)
+            }
+        }
+        return nil
+    }
+
+    private func persist(in context: ModelContext) throws {
+        do {
+            try context.save()
+        } catch {
+            context.rollback()
+            throw SaveError.persistenceFailed
+        }
+    }
+
+    private func preserveTitleForHistoricalSessions(
+        of task: LearningTask,
+        in context: ModelContext
+    ) throws {
+        let taskID = task.id
+        let descriptor = FetchDescriptor<FocusSession>(
+            predicate: #Predicate { $0.taskID == taskID }
+        )
+        for session in try context.fetch(descriptor) where session.taskTitle == nil {
+            session.taskTitle = task.title
+        }
+    }
+
+    private var trimmedGoalName: String {
+        draftGoalName.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private enum SaveError: LocalizedError {
+        case emptyTitle
+        case unavailableGoal
+        case invalidGoalName
+        case persistenceFailed
+
+        var errorDescription: String? {
+            switch self {
+            case .emptyTitle: "Enter a task title."
+            case .unavailableGoal: "Choose an available learning goal."
+            case .invalidGoalName: "Enter a unique learning goal name."
+            case .persistenceFailed: "Your changes couldn’t be saved. Please try again."
+            }
+        }
+    }
+}
+
+struct LearningGoalGroup: Identifiable {
+    let category: LearningCategory?
+    let goals: [LearningGoal]
+
+    var id: String { category?.rawValue ?? "uncategorised" }
+    var title: String { category?.title ?? "Uncategorised" }
 }

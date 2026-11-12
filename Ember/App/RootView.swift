@@ -3,7 +3,16 @@ import SwiftUI
 /// The actual app shell: four bottom tabs with detail flows pushed above them.
 /// Feature developers own the contents of the destination views, not this router.
 struct RootView: View {
-    @State private var navigation = AppNavigation()
+    @AppStorage(OnboardingStorage.completedKey, store: EmberStorage.defaults) private var hasCompletedOnboarding = false
+    @State private var navigation: AppNavigation
+
+    init() {
+        let navigation = AppNavigation()
+        if !EmberStorage.defaults.bool(forKey: OnboardingStorage.completedKey) {
+            navigation.selectedTab = .sessions
+        }
+        _navigation = State(initialValue: navigation)
+    }
 
     var body: some View {
         NavigationStack(path: $navigation.path) {
@@ -15,12 +24,16 @@ struct RootView: View {
                 }
                 .navigationDestination(for: AppRoute.self) { route in
                     destination(for: route)
-                        .toolbar(.visible, for: .navigationBar)
+                        .toolbar(route == .onboarding ? .hidden : .visible, for: .navigationBar)
                 }
                 .toolbar(.hidden, for: .navigationBar)
         }
         .environment(navigation)
         .tint(EmberTheme.primary)
+        .modifier(MonthlyEnergyWidgetSync())
+        .onOpenURL { url in
+            navigation.handleWidgetURL(url)
+        }
     }
 
     @ViewBuilder
@@ -34,7 +47,7 @@ struct RootView: View {
         case .sessions:
             TaskPlannerView(onNavigate: { navigation.push($0) })
         case .analytics:
-            AnalyticsView()
+            analyticsView
         case .profile:
             ProfileView(onNavigate: { navigation.push($0) })
         }
@@ -44,17 +57,40 @@ struct RootView: View {
     private func destination(for route: AppRoute) -> some View {
         switch route {
         case .onboarding:
-            OnboardingView()
+            OnboardingView(onFinish: completeOnboarding)
         case .energyCheckIn:
             EnergyCheckInView()
         case .planner:
             TaskPlannerView(onNavigate: { navigation.push($0) })
+        case .goalDetail:
+            LearningGoalDetailView(goalID: navigation.selectedGoalID)
         case .focus:
             FocusSessionView()
         case .reflection:
-            ReflectionView()
+            ReflectionView(
+                sessionID: navigation.pendingReflectionSessionID,
+                onSaveReturn: { finishReflection(on: .today) },
+                onRestorativeBreak: { finishReflection(on: .sessions) },
+                onContinueLearning: { finishReflection(on: .sessions) }
+            )
         case .analytics:
-            AnalyticsView()
+            analyticsView
         }
+    }
+
+    private var analyticsView: some View {
+        AnalyticsView(initialPeriod: navigation.analyticsPeriod) { period in
+            navigation.analyticsPeriod = period
+        }
+    }
+
+    private func completeOnboarding() {
+        hasCompletedOnboarding = true
+        navigation.selectedTab = .sessions
+    }
+
+    private func finishReflection(on tab: AppTab) {
+        navigation.pendingReflectionSessionID = nil
+        navigation.popToTab(tab)
     }
 }

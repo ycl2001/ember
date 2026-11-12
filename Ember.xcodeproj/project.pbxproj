@@ -1,175 +1,680 @@
 // !$*UTF8*$!
 {
 	archiveVersion = 1;
-	classes = {};
-	objectVersion = 56;
+	classes = {
+	};
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		579165972D487CD3EB8C6D5C /* EmberApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5F013C355AC82BBF061604F /* EmberApp.swift */; };
-		AFA792AD445E288D6023EDFD /* AppRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA203ABC6BBC3552918D79 /* AppRoute.swift */; };
-		2615C766FACA11EB7E0847B0 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6E1E0BFF12AA0D280A4B8A /* RootView.swift */; };
-		4DB7E088DD026CBACA7E5714 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF40BEFBD317EDC617F21CE /* DashboardView.swift */; };
-		A6C53055803EE9219DB5DADB /* LearningGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1B132B374277D42A23ACE4 /* LearningGoal.swift */; };
-		4390AE37765858854E6B379E /* LearningTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = D894345E65907C8D977A4D28 /* LearningTask.swift */; };
-		37D2A246680D1D44581171FB /* EnergyCheckIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDADE3350567BA221E093832 /* EnergyCheckIn.swift */; };
-		4481F7391F8374B087C65363 /* FocusSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BF187814AAB24E8BA4E616 /* FocusSession.swift */; };
-		FF6570AD9396EE23464BDE76 /* SessionReflection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA53E3A9A8508DC4E98D6E /* SessionReflection.swift */; };
-		D667026D5A4010BBF2C32BF9 /* EmberTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A7312E9DDCE0B1BBF37264 /* EmberTheme.swift */; };
-		46A5B6F37818992C3C4BFDF1 /* FeaturePlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F845D9B8D8888E33518672E5 /* FeaturePlaceholderView.swift */; };
-		F0D6FA0EC211A2D98EB1E55E /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BFC77EE7E502B6A98ACFCB /* OnboardingView.swift */; };
-		BCD0B6B2C074EE713079B80E /* EnergyCheckInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */; };
-		EC5D369EAA4D9C383152A697 /* TaskPlannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FABC339815B0B0344B6FB /* TaskPlannerView.swift */; };
-		50468057A090BB81D052F369 /* FocusSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41DD23F7C1454731400D4555 /* FocusSessionView.swift */; };
-		EE9798606A27751CE15096F1 /* ReflectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED48A368233DEDD7B570F421 /* ReflectionView.swift */; };
-		64C5F0ACA041FB999FE17FFA /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804CF35177FA68E8561AED47 /* AnalyticsView.swift */; };
-		D0ADC22F3C046CC76298F620 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 05529D7BAF9BE1F1AD75AA78 /* Assets.xcassets */; };
-		BCCFCE885EDB49F4BAF5EC3A /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500AE4AB024436C9835FF54 /* OnboardingViewModel.swift */; };
-		166A566D328B43E888207546 /* EnergyCheckInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBC24BB8F8848ED9C90998B /* EnergyCheckInViewModel.swift */; };
-		664540F1C4E24D2D848CB03B /* TaskPlannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E2A8D9E604A79A5CC7357 /* TaskPlannerViewModel.swift */; };
 		07DAF14BB28D4D6184AAB865 /* FocusSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CD8E04D71E4A5EB15B6FF3 /* FocusSessionViewModel.swift */; };
-		E2763AF6B7A944C1879AAA5A /* ReflectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E32AC3B38E4048AF2F2FE6 /* ReflectionViewModel.swift */; };
-		5FF0D710460B4A52B237292B /* AnalyticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D308512CBCF54D90A8EFEEB8 /* AnalyticsViewModel.swift */; };
+		166A566D328B43E888207546 /* EnergyCheckInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBC24BB8F8848ED9C90998B /* EnergyCheckInViewModel.swift */; };
+		2615C766FACA11EB7E0847B0 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6E1E0BFF12AA0D280A4B8A /* RootView.swift */; };
 		2F27F37ED33D4C5AAEB506F6 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826F757408944AEA99508CE0 /* DashboardViewModel.swift */; };
+		37D2A246680D1D44581171FB /* EnergyCheckIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDADE3350567BA221E093832 /* EnergyCheckIn.swift */; };
+		3A2679D430A2C24500AA45D8 /* DailyAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679D330A2C24500AA45D8 /* DailyAnalysis.swift */; };
+		3A2679D630A2C24500AA45D8 /* MonthlyAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679D530A2C24500AA45D8 /* MonthlyAnalysis.swift */; };
+		3A2679D830A2C24500AA45D8 /* AnalyticsActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679D730A2C24500AA45D8 /* AnalyticsActions.swift */; };
+		3A2679DA30A2C24600AA45D8 /* BioRhythmReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679D930A2C24600AA45D8 /* BioRhythmReport.swift */; };
+		3A2679DC30A2C24600AA45D8 /* DailyAnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679DB30A2C24600AA45D8 /* DailyAnalysisView.swift */; };
+		3A2679DE30A2C24700AA45D8 /* MonthlyAnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679DD30A2C24700AA45D8 /* MonthlyAnalysisView.swift */; };
+		3A2679E030A2C24700AA45D8 /* WeeklyAnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2679DF30A2C24700AA45D8 /* WeeklyAnalysisView.swift */; };
+		3A77CB3430A2B3D300BE31FF /* EnergyFlowStateCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77CB3330A2B3D300BE31FF /* EnergyFlowStateCard.swift */; };
+		3A77CB3630A2B3D300BE31FF /* FeelingPickerCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77CB3530A2B3D300BE31FF /* FeelingPickerCard.swift */; };
+		3AB13DEF30A3EC2400F383EB /* EmberEnergyScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB13DEE30A3EC2400F383EB /* EmberEnergyScale.swift */; };
+		3AB13DF130A3ED0C00F383EB /* WeeklyEnergyEncouragement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB13DF030A3ED0C00F383EB /* WeeklyEnergyEncouragement.swift */; };
+		3AB13DF330A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB13DF230A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift */; };
+		3AB13DF530A3ED0C00F383EB /* DailyInspiration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB13DF430A3ED0C00F383EB /* DailyInspiration.swift */; };
+		3AB13DF730A3ED0C00F383EB /* DailyInspirationCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB13DF630A3ED0C00F383EB /* DailyInspirationCard.swift */; };
+		3AB7CA9530A469200005B7ED /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3AB7CA9430A469200005B7ED /* GoogleService-Info.plist */; };
+		3AB7CA9830A46B3B0005B7ED /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 3AB7CA9730A46B3B0005B7ED /* FirebaseAppCheck */; };
+		3AB7CA9A30A46B3B0005B7ED /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 3AB7CA9930A46B3B0005B7ED /* FirebaseCore */; };
+		3AB7CA9C30A46B3B0005B7ED /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 3AB7CA9B30A46B3B0005B7ED /* FirebaseFunctions */; };
+		3AB7CA9E30A473010005B7ED /* EmberAppCheckProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CA9D30A473010005B7ED /* EmberAppCheckProviderFactory.swift */; };
+		3AB7CB8530A4FF850005B7ED /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB7CB6630A4FF500005B7ED /* WidgetKit.framework */; };
+		3AB7CB8630A4FF850005B7ED /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB7CB6830A4FF500005B7ED /* SwiftUI.framework */; };
+		3AB7CB9330A4FF890005B7ED /* EmberWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3AB7CB8430A4FF850005B7ED /* EmberWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3AB7CBB030A505E20005B7ED /* FocusWidgetShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CBAF30A505E20005B7ED /* FocusWidgetShared.swift */; };
+		3AB7CBB130A505E20005B7ED /* FocusWidgetShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CBAF30A505E20005B7ED /* FocusWidgetShared.swift */; };
+		3AB7CBB430A506050005B7ED /* EnergyRatingPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CBB230A506050005B7ED /* EnergyRatingPalette.swift */; };
+		3AB7CBB530A506050005B7ED /* MonthlyEnergyGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CBB330A506050005B7ED /* MonthlyEnergyGrid.swift */; };
+		3AB7CBB630A506050005B7ED /* EnergyRatingPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CBB230A506050005B7ED /* EnergyRatingPalette.swift */; };
+		3AB7CBB730A506050005B7ED /* MonthlyEnergyGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CBB330A506050005B7ED /* MonthlyEnergyGrid.swift */; };
+		3AB7CBB930A508030005B7ED /* MonthlyEnergyWidgetSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CBB830A508030005B7ED /* MonthlyEnergyWidgetSync.swift */; };
+		3AB7CC5630A534E00005B7ED /* EnergySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CC5530A534E00005B7ED /* EnergySummary.swift */; };
+		3AB7CC5830A534E20005B7ED /* InsightCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CC5730A534E20005B7ED /* InsightCard.swift */; };
+		3AB7CC5A30A534E30005B7ED /* ScopeSuggestionCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CC5930A534E30005B7ED /* ScopeSuggestionCard.swift */; };
+		3AB7CC5D30A535080005B7ED /* EmberAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CC5C30A535080005B7ED /* EmberAI.swift */; };
+		4390AE37765858854E6B379E /* LearningTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = D894345E65907C8D977A4D28 /* LearningTask.swift */; };
+		4481F7391F8374B087C65363 /* FocusSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BF187814AAB24E8BA4E616 /* FocusSession.swift */; };
+		46A5B6F37818992C3C4BFDF1 /* FeaturePlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F845D9B8D8888E33518672E5 /* FeaturePlaceholderView.swift */; };
+		4DB7E088DD026CBACA7E5714 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF40BEFBD317EDC617F21CE /* DashboardView.swift */; };
+		50468057A090BB81D052F369 /* FocusSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41DD23F7C1454731400D4555 /* FocusSessionView.swift */; };
+		579165972D487CD3EB8C6D5C /* EmberApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5F013C355AC82BBF061604F /* EmberApp.swift */; };
+		5FF0D710460B4A52B237292B /* AnalyticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D308512CBCF54D90A8EFEEB8 /* AnalyticsViewModel.swift */; };
+		64C5F0ACA041FB999FE17FFA /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804CF35177FA68E8561AED47 /* AnalyticsView.swift */; };
+		664540F1C4E24D2D848CB03B /* TaskPlannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E2A8D9E604A79A5CC7357 /* TaskPlannerViewModel.swift */; };
+		9A17AA000000000000000001 /* EmberStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A17AA000000000000000002 /* EmberStorage.swift */; };
+		A6C53055803EE9219DB5DADB /* LearningGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1B132B374277D42A23ACE4 /* LearningGoal.swift */; };
+		A932490930A027420087F57E /* OnboardingSteps.swift in Sources */ = {isa = PBXBuildFile; fileRef = A932490830A027420087F57E /* OnboardingSteps.swift */; };
+		A932490B30A027510087F57E /* OnboardingStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A932490A30A027510087F57E /* OnboardingStyle.swift */; };
+		AFA792AD445E288D6023EDFD /* AppRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA203ABC6BBC3552918D79 /* AppRoute.swift */; };
+		BCCFCE885EDB49F4BAF5EC3A /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500AE4AB024436C9835FF54 /* OnboardingViewModel.swift */; };
+		BCD0B6B2C074EE713079B80E /* EnergyCheckInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */; };
 		C0FFEE000000000000000001 /* AppTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFEE100000000000000001 /* AppTab.swift */; };
 		C0FFEE000000000000000002 /* AppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFEE100000000000000002 /* AppNavigation.swift */; };
 		C0FFEE000000000000000003 /* EmberTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFEE100000000000000003 /* EmberTabBar.swift */; };
 		C0FFEE000000000000000004 /* EmberComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFEE100000000000000004 /* EmberComponents.swift */; };
 		C0FFEE000000000000000005 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFEE100000000000000005 /* ProfileView.swift */; };
 		C0FFEE000000000000000006 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFEE100000000000000006 /* ProfileViewModel.swift */; };
+		D0ADC22F3C046CC76298F620 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 05529D7BAF9BE1F1AD75AA78 /* Assets.xcassets */; };
+		D667026D5A4010BBF2C32BF9 /* EmberTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A7312E9DDCE0B1BBF37264 /* EmberTheme.swift */; };
+		E2763AF6B7A944C1879AAA5A /* ReflectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E32AC3B38E4048AF2F2FE6 /* ReflectionViewModel.swift */; };
+		EC5D369EAA4D9C383152A697 /* TaskPlannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FABC339815B0B0344B6FB /* TaskPlannerView.swift */; };
+		EE9798606A27751CE15096F1 /* ReflectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED48A368233DEDD7B570F421 /* ReflectionView.swift */; };
+		F0D6FA0EC211A2D98EB1E55E /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BFC77EE7E502B6A98ACFCB /* OnboardingView.swift */; };
+		FF6570AD9396EE23464BDE76 /* SessionReflection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA53E3A9A8508DC4E98D6E /* SessionReflection.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		3A77CB3730A2B66D00BE31FF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE57CBD6DF21BD0D904B24DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E1BC4332F1B95F6F821DED73;
+			remoteInfo = Ember;
+		};
+		3AB7CB9130A4FF890005B7ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE57CBD6DF21BD0D904B24DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3AB7CB8330A4FF850005B7ED;
+			remoteInfo = EmberWidgetExtensionExtension;
+		};
+		9A17AA000000000000000003 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE57CBD6DF21BD0D904B24DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E1BC4332F1B95F6F821DED73;
+			remoteInfo = Ember;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3AB7CB7B30A4FF530005B7ED /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				3AB7CB9330A4FF890005B7ED /* EmberWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		F5F013C355AC82BBF061604F /* EmberApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberApp.swift; sourceTree = "<group>"; };
-		6CCA203ABC6BBC3552918D79 /* AppRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRoute.swift; sourceTree = "<group>"; };
-		FB6E1E0BFF12AA0D280A4B8A /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
-		6CF40BEFBD317EDC617F21CE /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
-		EA1B132B374277D42A23ACE4 /* LearningGoal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningGoal.swift; sourceTree = "<group>"; };
-		D894345E65907C8D977A4D28 /* LearningTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningTask.swift; sourceTree = "<group>"; };
-		EDADE3350567BA221E093832 /* EnergyCheckIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyCheckIn.swift; sourceTree = "<group>"; };
+		00E32AC3B38E4048AF2F2FE6 /* ReflectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionViewModel.swift; sourceTree = "<group>"; };
+		05529D7BAF9BE1F1AD75AA78 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1500AE4AB024436C9835FF54 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		16BF187814AAB24E8BA4E616 /* FocusSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSession.swift; sourceTree = "<group>"; };
-		8FBA53E3A9A8508DC4E98D6E /* SessionReflection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionReflection.swift; sourceTree = "<group>"; };
-		D8A7312E9DDCE0B1BBF37264 /* EmberTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberTheme.swift; sourceTree = "<group>"; };
-		F845D9B8D8888E33518672E5 /* FeaturePlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturePlaceholderView.swift; sourceTree = "<group>"; };
-		95BFC77EE7E502B6A98ACFCB /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		3A2679D330A2C24500AA45D8 /* DailyAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyAnalysis.swift; sourceTree = "<group>"; };
+		3A2679D530A2C24500AA45D8 /* MonthlyAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyAnalysis.swift; sourceTree = "<group>"; };
+		3A2679D730A2C24500AA45D8 /* AnalyticsActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsActions.swift; sourceTree = "<group>"; };
+		3A2679D930A2C24600AA45D8 /* BioRhythmReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioRhythmReport.swift; sourceTree = "<group>"; };
+		3A2679DB30A2C24600AA45D8 /* DailyAnalysisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyAnalysisView.swift; sourceTree = "<group>"; };
+		3A2679DD30A2C24700AA45D8 /* MonthlyAnalysisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyAnalysisView.swift; sourceTree = "<group>"; };
+		3A2679DF30A2C24700AA45D8 /* WeeklyAnalysisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyAnalysisView.swift; sourceTree = "<group>"; };
+		3A77CB3330A2B3D300BE31FF /* EnergyFlowStateCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyFlowStateCard.swift; sourceTree = "<group>"; };
+		3A77CB3530A2B3D300BE31FF /* FeelingPickerCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeelingPickerCard.swift; sourceTree = "<group>"; };
+		3A9626E830A299AD000A62F7 /* EmberTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EmberTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3AB13DEE30A3EC2400F383EB /* EmberEnergyScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberEnergyScale.swift; sourceTree = "<group>"; };
+		3AB13DF030A3ED0C00F383EB /* WeeklyEnergyEncouragement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyEnergyEncouragement.swift; sourceTree = "<group>"; };
+		3AB13DF230A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyEnergyEncouragementCard.swift; sourceTree = "<group>"; };
+		3AB13DF430A3ED0C00F383EB /* DailyInspiration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyInspiration.swift; sourceTree = "<group>"; };
+		3AB13DF630A3ED0C00F383EB /* DailyInspirationCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyInspirationCard.swift; sourceTree = "<group>"; };
+		3AB7CA9430A469200005B7ED /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3AB7CA9D30A473010005B7ED /* EmberAppCheckProviderFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberAppCheckProviderFactory.swift; sourceTree = "<group>"; };
+		3AB7CA9F30A478450005B7ED /* Ember.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Ember.entitlements; sourceTree = "<group>"; };
+		3AB7CB6630A4FF500005B7ED /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		3AB7CB6830A4FF500005B7ED /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		3AB7CB8430A4FF850005B7ED /* EmberWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = EmberWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3AB7CBAF30A505E20005B7ED /* FocusWidgetShared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FocusWidgetShared.swift; path = Ember/Shared/FocusWidgetShared.swift; sourceTree = "<group>"; };
+		3AB7CBB230A506050005B7ED /* EnergyRatingPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EnergyRatingPalette.swift; path = EmberShared/EnergyRatingPalette.swift; sourceTree = "<group>"; };
+		3AB7CBB330A506050005B7ED /* MonthlyEnergyGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MonthlyEnergyGrid.swift; path = EmberShared/MonthlyEnergyGrid.swift; sourceTree = "<group>"; };
+		3AB7CBB830A508030005B7ED /* MonthlyEnergyWidgetSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MonthlyEnergyWidgetSync.swift; path = Ember/App/MonthlyEnergyWidgetSync.swift; sourceTree = "<group>"; };
+		3AB7CC5530A534E00005B7ED /* EnergySummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergySummary.swift; sourceTree = "<group>"; };
+		3AB7CC5730A534E20005B7ED /* InsightCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightCard.swift; sourceTree = "<group>"; };
+		3AB7CC5930A534E30005B7ED /* ScopeSuggestionCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeSuggestionCard.swift; sourceTree = "<group>"; };
+		3AB7CC5C30A535080005B7ED /* EmberAI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberAI.swift; sourceTree = "<group>"; };
+		41DD23F7C1454731400D4555 /* FocusSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionView.swift; sourceTree = "<group>"; };
 		57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyCheckInView.swift; sourceTree = "<group>"; };
 		5E9FABC339815B0B0344B6FB /* TaskPlannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPlannerView.swift; sourceTree = "<group>"; };
-		41DD23F7C1454731400D4555 /* FocusSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionView.swift; sourceTree = "<group>"; };
-		ED48A368233DEDD7B570F421 /* ReflectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionView.swift; sourceTree = "<group>"; };
-		804CF35177FA68E8561AED47 /* AnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsView.swift; sourceTree = "<group>"; };
-		05529D7BAF9BE1F1AD75AA78 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		729F2DB930EE548BE49C4A6F /* Ember.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ember.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		1500AE4AB024436C9835FF54 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		6CBC24BB8F8848ED9C90998B /* EnergyCheckInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyCheckInViewModel.swift; sourceTree = "<group>"; };
-		8C3E2A8D9E604A79A5CC7357 /* TaskPlannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPlannerViewModel.swift; sourceTree = "<group>"; };
-		D0CD8E04D71E4A5EB15B6FF3 /* FocusSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionViewModel.swift; sourceTree = "<group>"; };
-		00E32AC3B38E4048AF2F2FE6 /* ReflectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionViewModel.swift; sourceTree = "<group>"; };
-		D308512CBCF54D90A8EFEEB8 /* AnalyticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsViewModel.swift; sourceTree = "<group>"; };
+		6CCA203ABC6BBC3552918D79 /* AppRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRoute.swift; sourceTree = "<group>"; };
+		6CF40BEFBD317EDC617F21CE /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		729F2DB930EE548BE49C4A6F /* Ember.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ember.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		804CF35177FA68E8561AED47 /* AnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsView.swift; sourceTree = "<group>"; };
 		826F757408944AEA99508CE0 /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
+		8C3E2A8D9E604A79A5CC7357 /* TaskPlannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPlannerViewModel.swift; sourceTree = "<group>"; };
+		8FBA53E3A9A8508DC4E98D6E /* SessionReflection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionReflection.swift; sourceTree = "<group>"; };
+		95BFC77EE7E502B6A98ACFCB /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		9A17AA000000000000000002 /* EmberStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberStorage.swift; sourceTree = "<group>"; };
+		9A17AA000000000000000004 /* EmberUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EmberUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A932490830A027420087F57E /* OnboardingSteps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSteps.swift; sourceTree = "<group>"; };
+		A932490A30A027510087F57E /* OnboardingStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStyle.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000001 /* AppTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTab.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000002 /* AppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000003 /* EmberTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberTabBar.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000004 /* EmberComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberComponents.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000005 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		C0FFEE100000000000000006 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		D0CD8E04D71E4A5EB15B6FF3 /* FocusSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionViewModel.swift; sourceTree = "<group>"; };
+		D308512CBCF54D90A8EFEEB8 /* AnalyticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsViewModel.swift; sourceTree = "<group>"; };
+		D894345E65907C8D977A4D28 /* LearningTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningTask.swift; sourceTree = "<group>"; };
+		D8A7312E9DDCE0B1BBF37264 /* EmberTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberTheme.swift; sourceTree = "<group>"; };
+		EA1B132B374277D42A23ACE4 /* LearningGoal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningGoal.swift; sourceTree = "<group>"; };
+		ED48A368233DEDD7B570F421 /* ReflectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionView.swift; sourceTree = "<group>"; };
+		EDADE3350567BA221E093832 /* EnergyCheckIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyCheckIn.swift; sourceTree = "<group>"; };
+		F5F013C355AC82BBF061604F /* EmberApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberApp.swift; sourceTree = "<group>"; };
+		F845D9B8D8888E33518672E5 /* FeaturePlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturePlaceholderView.swift; sourceTree = "<group>"; };
+		FB6E1E0BFF12AA0D280A4B8A /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXGroup section */
-		CF1D10CF086BFC87F58F0B85 = {isa = PBXGroup; children = (3C506F5F43401EDEC74B7945 /* Ember */, AE7805B56D1DCAFAA071416F /* Products */,); sourceTree = "<group>"; };
-		3C506F5F43401EDEC74B7945 /* Ember */ = {isa = PBXGroup; children = (
-			13C4608B5138EBE9B3A45A55 /* App */,
-			2BA340BF271E1A0E2D6B10FC /* Core */,
-			534B86DB3CD8DC07892341AB /* DesignSystem */,
-			E64DA6756D6CF253E6CA6FFA /* Features */,
-			05529D7BAF9BE1F1AD75AA78 /* Assets.xcassets */,
-		); path = Ember; sourceTree = "<group>"; };
-		13C4608B5138EBE9B3A45A55 /* App */ = {isa = PBXGroup; children = (
-			C0FFEE100000000000000002 /* AppNavigation.swift */,
-			C0FFEE100000000000000001 /* AppTab.swift */,
-			6CCA203ABC6BBC3552918D79 /* AppRoute.swift */,
-			F5F013C355AC82BBF061604F /* EmberApp.swift */,
-			FB6E1E0BFF12AA0D280A4B8A /* RootView.swift */,
-		); path = App; sourceTree = "<group>"; };
-		2BA340BF271E1A0E2D6B10FC /* Core */ = {isa = PBXGroup; children = (
-			20D83567C1ABE1FD275D4733 /* Models */,
-		); path = Core; sourceTree = "<group>"; };
-		534B86DB3CD8DC07892341AB /* DesignSystem */ = {isa = PBXGroup; children = (
-			C0FFEE100000000000000004 /* EmberComponents.swift */,
-			C0FFEE100000000000000003 /* EmberTabBar.swift */,
-			F845D9B8D8888E33518672E5 /* FeaturePlaceholderView.swift */,
-			D8A7312E9DDCE0B1BBF37264 /* EmberTheme.swift */,
-		); path = DesignSystem; sourceTree = "<group>"; };
-		E64DA6756D6CF253E6CA6FFA /* Features */ = {isa = PBXGroup; children = (
-			C0FFEE200000000000000001 /* Profile */,
-			29CD8CB236DA4BB4AE341147 /* Dashboard */,
-			B5F8509EFAD5142A3CC518E1 /* Analytics */,
-			CF407529A4894651ED16139A /* Energy */,
-			D9D3BF614690E2BB099383F7 /* Focus */,
-			4D56A3BD9D9394EB18412ED2 /* Onboarding */,
-			8B650F1DF9ED13B8D5EAC199 /* Planner */,
-			05D79A0D5E98345658B1255C /* Reflection */,
-		); path = Features; sourceTree = "<group>"; };
-		20D83567C1ABE1FD275D4733 /* Models */ = {isa = PBXGroup; children = (
-			EDADE3350567BA221E093832 /* EnergyCheckIn.swift */,
-			16BF187814AAB24E8BA4E616 /* FocusSession.swift */,
-			EA1B132B374277D42A23ACE4 /* LearningGoal.swift */,
-			D894345E65907C8D977A4D28 /* LearningTask.swift */,
-			8FBA53E3A9A8508DC4E98D6E /* SessionReflection.swift */,
-		); path = Models; sourceTree = "<group>"; };
-		B5F8509EFAD5142A3CC518E1 /* Analytics */ = {isa = PBXGroup; children = (
-			92FD7638F2F245488779A78B /* Views */,
-			D3B827B3E43646AA9A36FBA8 /* ViewModels */,
-		); path = Analytics; sourceTree = "<group>"; };
-		CF407529A4894651ED16139A /* Energy */ = {isa = PBXGroup; children = (
-			CB1719E42CD14EA288D5E380 /* Views */,
-			08BFA2BFE22E4AC6B47767D7 /* ViewModels */,
-		); path = Energy; sourceTree = "<group>"; };
-		D9D3BF614690E2BB099383F7 /* Focus */ = {isa = PBXGroup; children = (
-			F696DBBAEFEE4A20899B8FD3 /* Views */,
-			0BD31234E4C644CD87E494F2 /* ViewModels */,
-		); path = Focus; sourceTree = "<group>"; };
-		4D56A3BD9D9394EB18412ED2 /* Onboarding */ = {isa = PBXGroup; children = (
-			709EA69BC7514B93B03895BF /* Views */,
-			64223CAF3B4346CA8EBCF105 /* ViewModels */,
-		); path = Onboarding; sourceTree = "<group>"; };
-		8B650F1DF9ED13B8D5EAC199 /* Planner */ = {isa = PBXGroup; children = (
-			FA2F3EA9D2CA422CA9474A43 /* Views */,
-			8B9AD4374E984BF08A32CDC1 /* ViewModels */,
-		); path = Planner; sourceTree = "<group>"; };
-		05D79A0D5E98345658B1255C /* Reflection */ = {isa = PBXGroup; children = (
-			E1CD6D921C844FC483519893 /* Views */,
-			7618B94A458143BFB0CDDC18 /* ViewModels */,
-		); path = Reflection; sourceTree = "<group>"; };
-		AE7805B56D1DCAFAA071416F /* Products */ = {isa = PBXGroup; children = (729F2DB930EE548BE49C4A6F /* Ember.app */,); name = Products; sourceTree = "<group>"; };
-		709EA69BC7514B93B03895BF /* Views */ = {isa = PBXGroup; children = (95BFC77EE7E502B6A98ACFCB /* OnboardingView.swift */,); path = Views; sourceTree = "<group>"; };
-		64223CAF3B4346CA8EBCF105 /* ViewModels */ = {isa = PBXGroup; children = (1500AE4AB024436C9835FF54 /* OnboardingViewModel.swift */,); path = ViewModels; sourceTree = "<group>"; };
-		CB1719E42CD14EA288D5E380 /* Views */ = {isa = PBXGroup; children = (57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */,); path = Views; sourceTree = "<group>"; };
-		08BFA2BFE22E4AC6B47767D7 /* ViewModels */ = {isa = PBXGroup; children = (6CBC24BB8F8848ED9C90998B /* EnergyCheckInViewModel.swift */,); path = ViewModels; sourceTree = "<group>"; };
-		FA2F3EA9D2CA422CA9474A43 /* Views */ = {isa = PBXGroup; children = (5E9FABC339815B0B0344B6FB /* TaskPlannerView.swift */,); path = Views; sourceTree = "<group>"; };
-		8B9AD4374E984BF08A32CDC1 /* ViewModels */ = {isa = PBXGroup; children = (8C3E2A8D9E604A79A5CC7357 /* TaskPlannerViewModel.swift */,); path = ViewModels; sourceTree = "<group>"; };
-		F696DBBAEFEE4A20899B8FD3 /* Views */ = {isa = PBXGroup; children = (41DD23F7C1454731400D4555 /* FocusSessionView.swift */,); path = Views; sourceTree = "<group>"; };
-		0BD31234E4C644CD87E494F2 /* ViewModels */ = {isa = PBXGroup; children = (D0CD8E04D71E4A5EB15B6FF3 /* FocusSessionViewModel.swift */,); path = ViewModels; sourceTree = "<group>"; };
-		E1CD6D921C844FC483519893 /* Views */ = {isa = PBXGroup; children = (ED48A368233DEDD7B570F421 /* ReflectionView.swift */,); path = Views; sourceTree = "<group>"; };
-		7618B94A458143BFB0CDDC18 /* ViewModels */ = {isa = PBXGroup; children = (00E32AC3B38E4048AF2F2FE6 /* ReflectionViewModel.swift */,); path = ViewModels; sourceTree = "<group>"; };
-		92FD7638F2F245488779A78B /* Views */ = {isa = PBXGroup; children = (804CF35177FA68E8561AED47 /* AnalyticsView.swift */,); path = Views; sourceTree = "<group>"; };
-		D3B827B3E43646AA9A36FBA8 /* ViewModels */ = {isa = PBXGroup; children = (D308512CBCF54D90A8EFEEB8 /* AnalyticsViewModel.swift */,); path = ViewModels; sourceTree = "<group>"; };
-		29CD8CB236DA4BB4AE341147 /* Dashboard */ = {isa = PBXGroup; children = (66FA33825DB841358013DCD2 /* Views */, EB3418EA75C941A2BBE9DF79 /* ViewModels */,); path = Dashboard; sourceTree = "<group>"; };
-		66FA33825DB841358013DCD2 /* Views */ = {isa = PBXGroup; children = (6CF40BEFBD317EDC617F21CE /* DashboardView.swift */,); path = Views; sourceTree = "<group>"; };
-		EB3418EA75C941A2BBE9DF79 /* ViewModels */ = {isa = PBXGroup; children = (826F757408944AEA99508CE0 /* DashboardViewModel.swift */,); path = ViewModels; sourceTree = "<group>"; };
-		C0FFEE200000000000000001 /* Profile */ = {isa = PBXGroup; children = (
-			C0FFEE200000000000000002 /* Views */,
-			C0FFEE200000000000000003 /* ViewModels */,
-		); path = Profile; sourceTree = "<group>"; };
-		C0FFEE200000000000000002 /* Views */ = {isa = PBXGroup; children = (C0FFEE100000000000000005 /* ProfileView.swift */,); path = Views; sourceTree = "<group>"; };
-		C0FFEE200000000000000003 /* ViewModels */ = {isa = PBXGroup; children = (C0FFEE100000000000000006 /* ProfileViewModel.swift */,); path = ViewModels; sourceTree = "<group>"; };
-/* End PBXGroup section */
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		3AB7CB9430A4FF890005B7ED /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 3AB7CB8330A4FF850005B7ED /* EmberWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		3A9626E930A299AD000A62F7 /* EmberTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = EmberTests; sourceTree = "<group>"; };
+		3AB7CA1230A40CA40005B7ED /* LearningResources */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = LearningResources; sourceTree = "<group>"; };
+		3AB7CB6A30A4FF500005B7ED /* EmberWidgetExtension */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = EmberWidgetExtension; sourceTree = "<group>"; };
+		3AB7CB8730A4FF850005B7ED /* EmberWidgetExtension */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (3AB7CB9430A4FF890005B7ED /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = EmberWidgetExtension; sourceTree = "<group>"; };
+		9A17AA000000000000000005 /* EmberUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = EmberUITests; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		0B0EAC1C67A2F2EB9E6EB6F7 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		0B0EAC1C67A2F2EB9E6EB6F7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3AB7CA9C30A46B3B0005B7ED /* FirebaseFunctions in Frameworks */,
+				3AB7CA9A30A46B3B0005B7ED /* FirebaseCore in Frameworks */,
+				3AB7CA9830A46B3B0005B7ED /* FirebaseAppCheck in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3A9626E530A299AD000A62F7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3AB7CB8130A4FF850005B7ED /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3AB7CB8630A4FF850005B7ED /* SwiftUI.framework in Frameworks */,
+				3AB7CB8530A4FF850005B7ED /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A17AA000000000000000006 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
+/* Begin PBXGroup section */
+		05D79A0D5E98345658B1255C /* Reflection */ = {
+			isa = PBXGroup;
+			children = (
+				E1CD6D921C844FC483519893 /* Views */,
+				7618B94A458143BFB0CDDC18 /* ViewModels */,
+			);
+			path = Reflection;
+			sourceTree = "<group>";
+		};
+		08BFA2BFE22E4AC6B47767D7 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				6CBC24BB8F8848ED9C90998B /* EnergyCheckInViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		0BD31234E4C644CD87E494F2 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				D0CD8E04D71E4A5EB15B6FF3 /* FocusSessionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		13C4608B5138EBE9B3A45A55 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				C0FFEE100000000000000002 /* AppNavigation.swift */,
+				C0FFEE100000000000000001 /* AppTab.swift */,
+				6CCA203ABC6BBC3552918D79 /* AppRoute.swift */,
+				F5F013C355AC82BBF061604F /* EmberApp.swift */,
+				9A17AA000000000000000002 /* EmberStorage.swift */,
+				FB6E1E0BFF12AA0D280A4B8A /* RootView.swift */,
+				3AB7CA9D30A473010005B7ED /* EmberAppCheckProviderFactory.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		20D83567C1ABE1FD275D4733 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EDADE3350567BA221E093832 /* EnergyCheckIn.swift */,
+				16BF187814AAB24E8BA4E616 /* FocusSession.swift */,
+				EA1B132B374277D42A23ACE4 /* LearningGoal.swift */,
+				D894345E65907C8D977A4D28 /* LearningTask.swift */,
+				8FBA53E3A9A8508DC4E98D6E /* SessionReflection.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		29CD8CB236DA4BB4AE341147 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				66FA33825DB841358013DCD2 /* Views */,
+				EB3418EA75C941A2BBE9DF79 /* ViewModels */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		2BA340BF271E1A0E2D6B10FC /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				20D83567C1ABE1FD275D4733 /* Models */,
+				3AB7CC5B30A534FE0005B7ED /* AI */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		3AB7CB6530A4FF500005B7ED /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3AB7CB6630A4FF500005B7ED /* WidgetKit.framework */,
+				3AB7CB6830A4FF500005B7ED /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3AB7CC5B30A534FE0005B7ED /* AI */ = {
+			isa = PBXGroup;
+			children = (
+				3AB7CC5C30A535080005B7ED /* EmberAI.swift */,
+			);
+			path = AI;
+			sourceTree = "<group>";
+		};
+		3C506F5F43401EDEC74B7945 /* Ember */ = {
+			isa = PBXGroup;
+			children = (
+				3AB7CA9F30A478450005B7ED /* Ember.entitlements */,
+				13C4608B5138EBE9B3A45A55 /* App */,
+				2BA340BF271E1A0E2D6B10FC /* Core */,
+				534B86DB3CD8DC07892341AB /* DesignSystem */,
+				E64DA6756D6CF253E6CA6FFA /* Features */,
+				05529D7BAF9BE1F1AD75AA78 /* Assets.xcassets */,
+				3AB7CA9430A469200005B7ED /* GoogleService-Info.plist */,
+			);
+			path = Ember;
+			sourceTree = "<group>";
+		};
+		4D56A3BD9D9394EB18412ED2 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				709EA69BC7514B93B03895BF /* Views */,
+				64223CAF3B4346CA8EBCF105 /* ViewModels */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		534B86DB3CD8DC07892341AB /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				C0FFEE100000000000000004 /* EmberComponents.swift */,
+				C0FFEE100000000000000003 /* EmberTabBar.swift */,
+				F845D9B8D8888E33518672E5 /* FeaturePlaceholderView.swift */,
+				D8A7312E9DDCE0B1BBF37264 /* EmberTheme.swift */,
+				3AB13DEE30A3EC2400F383EB /* EmberEnergyScale.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		64223CAF3B4346CA8EBCF105 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				1500AE4AB024436C9835FF54 /* OnboardingViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		66FA33825DB841358013DCD2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6CF40BEFBD317EDC617F21CE /* DashboardView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		709EA69BC7514B93B03895BF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				95BFC77EE7E502B6A98ACFCB /* OnboardingView.swift */,
+				A932490830A027420087F57E /* OnboardingSteps.swift */,
+				A932490A30A027510087F57E /* OnboardingStyle.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7618B94A458143BFB0CDDC18 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				00E32AC3B38E4048AF2F2FE6 /* ReflectionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		8B650F1DF9ED13B8D5EAC199 /* Planner */ = {
+			isa = PBXGroup;
+			children = (
+				FA2F3EA9D2CA422CA9474A43 /* Views */,
+				8B9AD4374E984BF08A32CDC1 /* ViewModels */,
+			);
+			path = Planner;
+			sourceTree = "<group>";
+		};
+		8B9AD4374E984BF08A32CDC1 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				8C3E2A8D9E604A79A5CC7357 /* TaskPlannerViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		92FD7638F2F245488779A78B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				804CF35177FA68E8561AED47 /* AnalyticsView.swift */,
+				3A2679D730A2C24500AA45D8 /* AnalyticsActions.swift */,
+				3A2679D930A2C24600AA45D8 /* BioRhythmReport.swift */,
+				3A2679DB30A2C24600AA45D8 /* DailyAnalysisView.swift */,
+				3A2679DD30A2C24700AA45D8 /* MonthlyAnalysisView.swift */,
+				3A2679DF30A2C24700AA45D8 /* WeeklyAnalysisView.swift */,
+				3AB13DF230A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift */,
+				3AB13DF630A3ED0C00F383EB /* DailyInspirationCard.swift */,
+				3AB7CC5730A534E20005B7ED /* InsightCard.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		AE7805B56D1DCAFAA071416F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				729F2DB930EE548BE49C4A6F /* Ember.app */,
+				3A9626E830A299AD000A62F7 /* EmberTests.xctest */,
+				9A17AA000000000000000004 /* EmberUITests.xctest */,
+				3AB7CB8430A4FF850005B7ED /* EmberWidgetExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B5F8509EFAD5142A3CC518E1 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				92FD7638F2F245488779A78B /* Views */,
+				D3B827B3E43646AA9A36FBA8 /* ViewModels */,
+			);
+			path = Analytics;
+			sourceTree = "<group>";
+		};
+		C0FFEE200000000000000001 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				C0FFEE200000000000000002 /* Views */,
+				C0FFEE200000000000000003 /* ViewModels */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		C0FFEE200000000000000002 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C0FFEE100000000000000005 /* ProfileView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C0FFEE200000000000000003 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				C0FFEE100000000000000006 /* ProfileViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		CB1719E42CD14EA288D5E380 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */,
+				3A77CB3330A2B3D300BE31FF /* EnergyFlowStateCard.swift */,
+				3A77CB3530A2B3D300BE31FF /* FeelingPickerCard.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CF1D10CF086BFC87F58F0B85 = {
+			isa = PBXGroup;
+			children = (
+				3C506F5F43401EDEC74B7945 /* Ember */,
+				3A9626E930A299AD000A62F7 /* EmberTests */,
+				9A17AA000000000000000005 /* EmberUITests */,
+				3AB7CB6A30A4FF500005B7ED /* EmberWidgetExtension */,
+				3AB7CB8730A4FF850005B7ED /* EmberWidgetExtension */,
+				3AB7CB6530A4FF500005B7ED /* Frameworks */,
+				3AB7CBAF30A505E20005B7ED /* FocusWidgetShared.swift */,
+				3AB7CBB230A506050005B7ED /* EnergyRatingPalette.swift */,
+				3AB7CBB330A506050005B7ED /* MonthlyEnergyGrid.swift */,
+				3AB7CBB830A508030005B7ED /* MonthlyEnergyWidgetSync.swift */,
+				AE7805B56D1DCAFAA071416F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CF407529A4894651ED16139A /* Energy */ = {
+			isa = PBXGroup;
+			children = (
+				CB1719E42CD14EA288D5E380 /* Views */,
+				08BFA2BFE22E4AC6B47767D7 /* ViewModels */,
+			);
+			path = Energy;
+			sourceTree = "<group>";
+		};
+		D3B827B3E43646AA9A36FBA8 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				D308512CBCF54D90A8EFEEB8 /* AnalyticsViewModel.swift */,
+				3A2679D330A2C24500AA45D8 /* DailyAnalysis.swift */,
+				3A2679D530A2C24500AA45D8 /* MonthlyAnalysis.swift */,
+				3AB13DF030A3ED0C00F383EB /* WeeklyEnergyEncouragement.swift */,
+				3AB13DF430A3ED0C00F383EB /* DailyInspiration.swift */,
+				3AB7CC5530A534E00005B7ED /* EnergySummary.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		D9D3BF614690E2BB099383F7 /* Focus */ = {
+			isa = PBXGroup;
+			children = (
+				F696DBBAEFEE4A20899B8FD3 /* Views */,
+				0BD31234E4C644CD87E494F2 /* ViewModels */,
+			);
+			path = Focus;
+			sourceTree = "<group>";
+		};
+		E1CD6D921C844FC483519893 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				ED48A368233DEDD7B570F421 /* ReflectionView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E64DA6756D6CF253E6CA6FFA /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				3AB7CA1230A40CA40005B7ED /* LearningResources */,
+				C0FFEE200000000000000001 /* Profile */,
+				29CD8CB236DA4BB4AE341147 /* Dashboard */,
+				B5F8509EFAD5142A3CC518E1 /* Analytics */,
+				CF407529A4894651ED16139A /* Energy */,
+				D9D3BF614690E2BB099383F7 /* Focus */,
+				4D56A3BD9D9394EB18412ED2 /* Onboarding */,
+				8B650F1DF9ED13B8D5EAC199 /* Planner */,
+				05D79A0D5E98345658B1255C /* Reflection */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		EB3418EA75C941A2BBE9DF79 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				826F757408944AEA99508CE0 /* DashboardViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		F696DBBAEFEE4A20899B8FD3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				41DD23F7C1454731400D4555 /* FocusSessionView.swift */,
+				3AB7CC5930A534E30005B7ED /* ScopeSuggestionCard.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FA2F3EA9D2CA422CA9474A43 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5E9FABC339815B0B0344B6FB /* TaskPlannerView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
 /* Begin PBXNativeTarget section */
-		E1BC4332F1B95F6F821DED73 /* Ember */ = {isa = PBXNativeTarget; buildConfigurationList = 6FA5FFADD6E6A4C127CEE419 /* Build configuration list for PBXNativeTarget "Ember" */; buildPhases = (9261F04E014268C1FB6C1C5E /* Sources */, 0B0EAC1C67A2F2EB9E6EB6F7 /* Frameworks */, B04831CC372489EBF0287850 /* Resources */,); buildRules = (); dependencies = (); name = Ember; productName = Ember; productReference = 729F2DB930EE548BE49C4A6F /* Ember.app */; productType = "com.apple.product-type.application"; };
+		3A9626E730A299AD000A62F7 /* EmberTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3A9626EE30A299AD000A62F7 /* Build configuration list for PBXNativeTarget "EmberTests" */;
+			buildPhases = (
+				3A9626E430A299AD000A62F7 /* Sources */,
+				3A9626E530A299AD000A62F7 /* Frameworks */,
+				3A9626E630A299AD000A62F7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3A77CB3830A2B66D00BE31FF /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				3A9626E930A299AD000A62F7 /* EmberTests */,
+			);
+			name = EmberTests;
+			packageProductDependencies = (
+			);
+			productName = EmberTests;
+			productReference = 3A9626E830A299AD000A62F7 /* EmberTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		3AB7CB8330A4FF850005B7ED /* EmberWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3AB7CB9530A4FF890005B7ED /* Build configuration list for PBXNativeTarget "EmberWidgetExtension" */;
+			buildPhases = (
+				3AB7CB8030A4FF850005B7ED /* Sources */,
+				3AB7CB8130A4FF850005B7ED /* Frameworks */,
+				3AB7CB8230A4FF850005B7ED /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				3AB7CB8730A4FF850005B7ED /* EmberWidgetExtension */,
+			);
+			name = EmberWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = EmberWidgetExtensionExtension;
+			productReference = 3AB7CB8430A4FF850005B7ED /* EmberWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		9A17AA000000000000000007 /* EmberUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9A17AA000000000000000008 /* Build configuration list for PBXNativeTarget "EmberUITests" */;
+			buildPhases = (
+				9A17AA000000000000000009 /* Sources */,
+				9A17AA000000000000000006 /* Frameworks */,
+				9A17AA00000000000000000A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9A17AA00000000000000000B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				9A17AA000000000000000005 /* EmberUITests */,
+			);
+			name = EmberUITests;
+			packageProductDependencies = (
+			);
+			productName = EmberUITests;
+			productReference = 9A17AA000000000000000004 /* EmberUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		E1BC4332F1B95F6F821DED73 /* Ember */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6FA5FFADD6E6A4C127CEE419 /* Build configuration list for PBXNativeTarget "Ember" */;
+			buildPhases = (
+				9261F04E014268C1FB6C1C5E /* Sources */,
+				0B0EAC1C67A2F2EB9E6EB6F7 /* Frameworks */,
+				B04831CC372489EBF0287850 /* Resources */,
+				3AB7CB7B30A4FF530005B7ED /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3AB7CB9230A4FF890005B7ED /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				3AB7CA1230A40CA40005B7ED /* LearningResources */,
+			);
+			name = Ember;
+			packageProductDependencies = (
+				3AB7CA9730A46B3B0005B7ED /* FirebaseAppCheck */,
+				3AB7CA9930A46B3B0005B7ED /* FirebaseCore */,
+				3AB7CA9B30A46B3B0005B7ED /* FirebaseFunctions */,
+			);
+			productName = Ember;
+			productReference = 729F2DB930EE548BE49C4A6F /* Ember.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -177,124 +682,681 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2720;
 				LastUpgradeCheck = 1600;
-				TargetAttributes = { E1BC4332F1B95F6F821DED73 = { CreatedOnToolsVersion = 16.0; }; };
+				TargetAttributes = {
+					3A9626E730A299AD000A62F7 = {
+						CreatedOnToolsVersion = 27.2;
+					};
+					3AB7CB8330A4FF850005B7ED = {
+						CreatedOnToolsVersion = 27.2;
+					};
+					9A17AA000000000000000007 = {
+						CreatedOnToolsVersion = 27.2;
+						TestTargetID = E1BC4332F1B95F6F821DED73;
+					};
+					E1BC4332F1B95F6F821DED73 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
 			};
-			buildConfigurationList = 1922B098E983995960BE56B0 /* Build configuration list for PBXProject */;
+			buildConfigurationList = 1922B098E983995960BE56B0 /* Build configuration list for PBXProject "Ember" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
-			knownRegions = (en, Base,);
+			knownRegions = (
+				en,
+				Base,
+			);
 			mainGroup = CF1D10CF086BFC87F58F0B85;
+			packageReferences = (
+				3AB7CA9630A46B3B0005B7ED /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = AE7805B56D1DCAFAA071416F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
-			targets = (E1BC4332F1B95F6F821DED73 /* Ember */,);
+			targets = (
+				E1BC4332F1B95F6F821DED73 /* Ember */,
+				3A9626E730A299AD000A62F7 /* EmberTests */,
+				9A17AA000000000000000007 /* EmberUITests */,
+				3AB7CB8330A4FF850005B7ED /* EmberWidgetExtension */,
+			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		B04831CC372489EBF0287850 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (D0ADC22F3C046CC76298F620 /* Assets.xcassets in Resources */,); runOnlyForDeploymentPostprocessing = 0; };
+		3A9626E630A299AD000A62F7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3AB7CB8230A4FF850005B7ED /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A17AA00000000000000000A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B04831CC372489EBF0287850 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0ADC22F3C046CC76298F620 /* Assets.xcassets in Resources */,
+				3AB7CA9530A469200005B7ED /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		9261F04E014268C1FB6C1C5E /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (
-			579165972D487CD3EB8C6D5C /* EmberApp.swift in Sources */,
-			AFA792AD445E288D6023EDFD /* AppRoute.swift in Sources */,
-			2615C766FACA11EB7E0847B0 /* RootView.swift in Sources */,
-			4DB7E088DD026CBACA7E5714 /* DashboardView.swift in Sources */,
-			A6C53055803EE9219DB5DADB /* LearningGoal.swift in Sources */,
-			4390AE37765858854E6B379E /* LearningTask.swift in Sources */,
-			37D2A246680D1D44581171FB /* EnergyCheckIn.swift in Sources */,
-			4481F7391F8374B087C65363 /* FocusSession.swift in Sources */,
-			FF6570AD9396EE23464BDE76 /* SessionReflection.swift in Sources */,
-			D667026D5A4010BBF2C32BF9 /* EmberTheme.swift in Sources */,
-			46A5B6F37818992C3C4BFDF1 /* FeaturePlaceholderView.swift in Sources */,
-			F0D6FA0EC211A2D98EB1E55E /* OnboardingView.swift in Sources */,
-			BCD0B6B2C074EE713079B80E /* EnergyCheckInView.swift in Sources */,
-			EC5D369EAA4D9C383152A697 /* TaskPlannerView.swift in Sources */,
-			50468057A090BB81D052F369 /* FocusSessionView.swift in Sources */,
-			EE9798606A27751CE15096F1 /* ReflectionView.swift in Sources */,
-			64C5F0ACA041FB999FE17FFA /* AnalyticsView.swift in Sources */,
-			BCCFCE885EDB49F4BAF5EC3A /* OnboardingViewModel.swift in Sources */,
-			166A566D328B43E888207546 /* EnergyCheckInViewModel.swift in Sources */,
-			664540F1C4E24D2D848CB03B /* TaskPlannerViewModel.swift in Sources */,
-			07DAF14BB28D4D6184AAB865 /* FocusSessionViewModel.swift in Sources */,
-			E2763AF6B7A944C1879AAA5A /* ReflectionViewModel.swift in Sources */,
-			5FF0D710460B4A52B237292B /* AnalyticsViewModel.swift in Sources */,
-			2F27F37ED33D4C5AAEB506F6 /* DashboardViewModel.swift in Sources */,
-			C0FFEE000000000000000006 /* ProfileViewModel.swift in Sources */,
-			C0FFEE000000000000000005 /* ProfileView.swift in Sources */,
-			C0FFEE000000000000000004 /* EmberComponents.swift in Sources */,
-			C0FFEE000000000000000003 /* EmberTabBar.swift in Sources */,
-			C0FFEE000000000000000002 /* AppNavigation.swift in Sources */,
-			C0FFEE000000000000000001 /* AppTab.swift in Sources */,
-		); runOnlyForDeploymentPostprocessing = 0; };
+		3A9626E430A299AD000A62F7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3AB7CB8030A4FF850005B7ED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3AB7CBB130A505E20005B7ED /* FocusWidgetShared.swift in Sources */,
+				3AB7CBB430A506050005B7ED /* EnergyRatingPalette.swift in Sources */,
+				3AB7CBB530A506050005B7ED /* MonthlyEnergyGrid.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9261F04E014268C1FB6C1C5E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				579165972D487CD3EB8C6D5C /* EmberApp.swift in Sources */,
+				9A17AA000000000000000001 /* EmberStorage.swift in Sources */,
+				AFA792AD445E288D6023EDFD /* AppRoute.swift in Sources */,
+				3AB7CBB630A506050005B7ED /* EnergyRatingPalette.swift in Sources */,
+				3AB7CC5830A534E20005B7ED /* InsightCard.swift in Sources */,
+				3AB7CBB730A506050005B7ED /* MonthlyEnergyGrid.swift in Sources */,
+				2615C766FACA11EB7E0847B0 /* RootView.swift in Sources */,
+				3A2679DC30A2C24600AA45D8 /* DailyAnalysisView.swift in Sources */,
+				3AB13DF330A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift in Sources */,
+				4DB7E088DD026CBACA7E5714 /* DashboardView.swift in Sources */,
+				A932490B30A027510087F57E /* OnboardingStyle.swift in Sources */,
+				A6C53055803EE9219DB5DADB /* LearningGoal.swift in Sources */,
+				4390AE37765858854E6B379E /* LearningTask.swift in Sources */,
+				3AB13DF530A3ED0C00F383EB /* DailyInspiration.swift in Sources */,
+				37D2A246680D1D44581171FB /* EnergyCheckIn.swift in Sources */,
+				3AB7CBB930A508030005B7ED /* MonthlyEnergyWidgetSync.swift in Sources */,
+				4481F7391F8374B087C65363 /* FocusSession.swift in Sources */,
+				FF6570AD9396EE23464BDE76 /* SessionReflection.swift in Sources */,
+				D667026D5A4010BBF2C32BF9 /* EmberTheme.swift in Sources */,
+				46A5B6F37818992C3C4BFDF1 /* FeaturePlaceholderView.swift in Sources */,
+				3AB13DF130A3ED0C00F383EB /* WeeklyEnergyEncouragement.swift in Sources */,
+				3AB7CC5D30A535080005B7ED /* EmberAI.swift in Sources */,
+				F0D6FA0EC211A2D98EB1E55E /* OnboardingView.swift in Sources */,
+				3AB7CC5630A534E00005B7ED /* EnergySummary.swift in Sources */,
+				3A2679DE30A2C24700AA45D8 /* MonthlyAnalysisView.swift in Sources */,
+				BCD0B6B2C074EE713079B80E /* EnergyCheckInView.swift in Sources */,
+				EC5D369EAA4D9C383152A697 /* TaskPlannerView.swift in Sources */,
+				50468057A090BB81D052F369 /* FocusSessionView.swift in Sources */,
+				3AB13DEF30A3EC2400F383EB /* EmberEnergyScale.swift in Sources */,
+				EE9798606A27751CE15096F1 /* ReflectionView.swift in Sources */,
+				64C5F0ACA041FB999FE17FFA /* AnalyticsView.swift in Sources */,
+				BCCFCE885EDB49F4BAF5EC3A /* OnboardingViewModel.swift in Sources */,
+				3AB7CA9E30A473010005B7ED /* EmberAppCheckProviderFactory.swift in Sources */,
+				166A566D328B43E888207546 /* EnergyCheckInViewModel.swift in Sources */,
+				3A2679D430A2C24500AA45D8 /* DailyAnalysis.swift in Sources */,
+				664540F1C4E24D2D848CB03B /* TaskPlannerViewModel.swift in Sources */,
+				07DAF14BB28D4D6184AAB865 /* FocusSessionViewModel.swift in Sources */,
+				E2763AF6B7A944C1879AAA5A /* ReflectionViewModel.swift in Sources */,
+				5FF0D710460B4A52B237292B /* AnalyticsViewModel.swift in Sources */,
+				2F27F37ED33D4C5AAEB506F6 /* DashboardViewModel.swift in Sources */,
+				3A2679D830A2C24500AA45D8 /* AnalyticsActions.swift in Sources */,
+				C0FFEE000000000000000006 /* ProfileViewModel.swift in Sources */,
+				3AB13DF730A3ED0C00F383EB /* DailyInspirationCard.swift in Sources */,
+				3A2679D630A2C24500AA45D8 /* MonthlyAnalysis.swift in Sources */,
+				3AB7CBB030A505E20005B7ED /* FocusWidgetShared.swift in Sources */,
+				A932490930A027420087F57E /* OnboardingSteps.swift in Sources */,
+				3A2679DA30A2C24600AA45D8 /* BioRhythmReport.swift in Sources */,
+				3A2679E030A2C24700AA45D8 /* WeeklyAnalysisView.swift in Sources */,
+				3AB7CC5A30A534E30005B7ED /* ScopeSuggestionCard.swift in Sources */,
+				3A77CB3430A2B3D300BE31FF /* EnergyFlowStateCard.swift in Sources */,
+				3A77CB3630A2B3D300BE31FF /* FeelingPickerCard.swift in Sources */,
+				C0FFEE000000000000000005 /* ProfileView.swift in Sources */,
+				C0FFEE000000000000000004 /* EmberComponents.swift in Sources */,
+				C0FFEE000000000000000003 /* EmberTabBar.swift in Sources */,
+				C0FFEE000000000000000002 /* AppNavigation.swift in Sources */,
+				C0FFEE000000000000000001 /* AppTab.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A17AA000000000000000009 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		3A77CB3830A2B66D00BE31FF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E1BC4332F1B95F6F821DED73 /* Ember */;
+			targetProxy = 3A77CB3730A2B66D00BE31FF /* PBXContainerItemProxy */;
+		};
+		3AB7CB9230A4FF890005B7ED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3AB7CB8330A4FF850005B7ED /* EmberWidgetExtension */;
+			targetProxy = 3AB7CB9130A4FF890005B7ED /* PBXContainerItemProxy */;
+		};
+		9A17AA00000000000000000B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E1BC4332F1B95F6F821DED73 /* Ember */;
+			targetProxy = 9A17AA000000000000000003 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
-		FDD3EA28A0B1309668A442B2 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
-			ALWAYS_SEARCH_USER_PATHS = NO;
-			CLANG_ENABLE_MODULES = YES;
-			CLANG_ENABLE_OBJC_ARC = YES;
-			COPY_PHASE_STRIP = NO;
-			DEBUG_INFORMATION_FORMAT = dwarf;
-			ENABLE_TESTABILITY = YES;
-			IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-			SDKROOT = iphoneos;
-			SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-			SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-		}; name = Debug; };
-		86680E473A81A55C52C0A72D /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
-			ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-			CODE_SIGN_STYLE = Automatic;
-			CURRENT_PROJECT_VERSION = 1;
-			GENERATE_INFOPLIST_FILE = YES;
-			INFOPLIST_KEY_CFBundleDisplayName = Ember;
-			INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-			INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-			INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
-			MARKETING_VERSION = 0.1.0;
-			PRODUCT_BUNDLE_IDENTIFIER = com.ycl2001.ember;
-			PRODUCT_NAME = "$(TARGET_NAME)";
-			SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-			SWIFT_VERSION = 5.0;
-			TARGETED_DEVICE_FAMILY = 1;
-		}; name = Debug; };
-		8DB23D5B0AA80A48AA651830 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {
-			ALWAYS_SEARCH_USER_PATHS = NO;
-			CLANG_ENABLE_MODULES = YES;
-			CLANG_ENABLE_OBJC_ARC = YES;
-			COPY_PHASE_STRIP = NO;
-			DEBUG_INFORMATION_FORMAT = dwarf;
-			ENABLE_TESTABILITY = YES;
-			IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-			SDKROOT = iphoneos;
-			SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
-			SWIFT_OPTIMIZATION_LEVEL = "-O";
-		}; name = Release; };
-		FAE000AE36B4E50C28275D58 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {
-			ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-			CODE_SIGN_STYLE = Automatic;
-			CURRENT_PROJECT_VERSION = 1;
-			GENERATE_INFOPLIST_FILE = YES;
-			INFOPLIST_KEY_CFBundleDisplayName = Ember;
-			INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-			INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-			INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
-			MARKETING_VERSION = 0.1.0;
-			PRODUCT_BUNDLE_IDENTIFIER = com.ycl2001.ember;
-			PRODUCT_NAME = "$(TARGET_NAME)";
-			SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-			SWIFT_VERSION = 5.0;
-			TARGETED_DEVICE_FAMILY = 1;
-		}; name = Release; };
+		3A9626EC30A299AD000A62F7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 27.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ember.EmberTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Ember.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Ember";
+				XROS_DEPLOYMENT_TARGET = 27.2;
+			};
+			name = Debug;
+		};
+		3A9626ED30A299AD000A62F7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 27.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ember.EmberTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Ember.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Ember";
+				XROS_DEPLOYMENT_TARGET = 27.2;
+			};
+			name = Release;
+		};
+		3AB7CB9630A4FF890005B7ED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = EmberWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3VJ6XS7472;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EmberWidgetExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = EmberWidgetExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = au.edu.uts.ember.EmberWidgetExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3AB7CB9730A4FF890005B7ED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = EmberWidgetExtension/EmberWidgetExtensionRelease.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 3VJ6XS7472;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EmberWidgetExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = EmberWidgetExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = au.edu.uts.ember.EmberWidgetExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		86680E473A81A55C52C0A72D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Ember/Ember.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3VJ6XS7472;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Ember-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Ember;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
+				MARKETING_VERSION = 0.1.0;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = au.edu.uts.ember;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		8DB23D5B0AA80A48AA651830 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		9A17AA00000000000000000C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ember.EmberUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = Ember;
+			};
+			name = Debug;
+		};
+		9A17AA00000000000000000D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ember.EmberUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = Ember;
+			};
+			name = Release;
+		};
+		FAE000AE36B4E50C28275D58 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Ember/Ember.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3VJ6XS7472;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Ember-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Ember;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
+				MARKETING_VERSION = 0.1.0;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = au.edu.uts.ember;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		FDD3EA28A0B1309668A442B2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1922B098E983995960BE56B0 /* Build configuration list */ = {isa = XCConfigurationList; buildConfigurations = (FDD3EA28A0B1309668A442B2 /* Debug */, 8DB23D5B0AA80A48AA651830 /* Release */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
-		6FA5FFADD6E6A4C127CEE419 /* Build configuration list */ = {isa = XCConfigurationList; buildConfigurations = (86680E473A81A55C52C0A72D /* Debug */, FAE000AE36B4E50C28275D58 /* Release */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		1922B098E983995960BE56B0 /* Build configuration list for PBXProject "Ember" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FDD3EA28A0B1309668A442B2 /* Debug */,
+				8DB23D5B0AA80A48AA651830 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3A9626EE30A299AD000A62F7 /* Build configuration list for PBXNativeTarget "EmberTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A9626EC30A299AD000A62F7 /* Debug */,
+				3A9626ED30A299AD000A62F7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3AB7CB9530A4FF890005B7ED /* Build configuration list for PBXNativeTarget "EmberWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3AB7CB9630A4FF890005B7ED /* Debug */,
+				3AB7CB9730A4FF890005B7ED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6FA5FFADD6E6A4C127CEE419 /* Build configuration list for PBXNativeTarget "Ember" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				86680E473A81A55C52C0A72D /* Debug */,
+				FAE000AE36B4E50C28275D58 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9A17AA000000000000000008 /* Build configuration list for PBXNativeTarget "EmberUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A17AA00000000000000000C /* Debug */,
+				9A17AA00000000000000000D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3AB7CA9630A46B3B0005B7ED /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 13.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3AB7CA9730A46B3B0005B7ED /* FirebaseAppCheck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3AB7CA9630A46B3B0005B7ED /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAppCheck;
+		};
+		3AB7CA9930A46B3B0005B7ED /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3AB7CA9630A46B3B0005B7ED /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		3AB7CA9B30A46B3B0005B7ED /* FirebaseFunctions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3AB7CA9630A46B3B0005B7ED /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFunctions;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DE57CBD6DF21BD0D904B24DC /* Project object */;
 }
