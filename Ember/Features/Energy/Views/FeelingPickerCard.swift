@@ -54,9 +54,11 @@ struct FeelingPickerCard: View {
 
     private func tile(_ option: FeelingOption) -> some View {
         let isSelected = activeOption == option
+        let selectedFill: Color = option == .highFocus ? FlowPalette.orange : FlowPalette.forest
         let titleColor: Color = isSelected ? Color.white : FlowPalette.ink
         let subtitleColor: Color = isSelected ? Color.white.opacity(0.9) : FlowPalette.secondaryInk
-        let fill: Color = isSelected ? FlowPalette.forest : FlowPalette.card
+        let fill: Color = isSelected ? selectedFill : FlowPalette.card
+        let border: Color = isSelected ? FlowPalette.ink : FlowPalette.chip
 
         return Button {
             if viewModel.record(option, latest: checkIns.first, in: modelContext) {
@@ -82,6 +84,19 @@ struct FeelingPickerCard: View {
             .padding(.vertical, 18)
             .padding(.horizontal, 4)
             .background(fill, in: RoundedRectangle(cornerRadius: 14))
+            .overlay {
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(border, lineWidth: isSelected ? 2 : 1)
+            }
+            .overlay(alignment: .topTrailing) {
+                if isSelected {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.caption)
+                        .foregroundStyle(.white)
+                        .padding(8)
+                        .accessibilityHidden(true)
+                }
+            }
         }
         .buttonStyle(.plain)
         .accessibilityLabel("\(option.title), \(option.subtitle)")
@@ -89,10 +104,9 @@ struct FeelingPickerCard: View {
     }
 
     private func tileIcon(_ option: FeelingOption, isSelected: Bool) -> some View {
-        let isSun = option == .highFocus
-        let unselectedIcon = Color(red: 0.27, green: 0.29, blue: 0.28)
-        let foreground: Color = isSun ? FlowPalette.brown : (isSelected ? FlowPalette.forest : unselectedIcon)
-        let background: Color = isSun ? FlowPalette.orange : (isSelected ? Color.white : FlowPalette.chip)
+        let selectedForeground: Color = option == .highFocus ? FlowPalette.brown : FlowPalette.forest
+        let foreground: Color = isSelected ? selectedForeground : FlowPalette.secondaryInk
+        let background: Color = isSelected ? Color.white : FlowPalette.chip
 
         return Image(systemName: option.symbol)
             .font(.title3)
