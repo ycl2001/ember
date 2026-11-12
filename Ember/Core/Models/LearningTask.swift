@@ -12,9 +12,12 @@ final class LearningTask {
     var isCompleted: Bool
     var createdAt: Date
     var completedAt: Date?
+    /// True only for checklist items the learner explicitly accepted from an on-device AI suggestion.
+    var isAIGenerated: Bool = false
 
     init(id: UUID = UUID(), goalID: UUID, title: String, notes: String = "",
-         isCompleted: Bool = false, createdAt: Date = .now, completedAt: Date? = nil) {
+         isCompleted: Bool = false, createdAt: Date = .now, completedAt: Date? = nil,
+         isAIGenerated: Bool = false) {
         self.id = id
         self.goalID = goalID
         self.title = title
@@ -22,5 +25,6 @@ final class LearningTask {
         self.isCompleted = isCompleted
         self.createdAt = createdAt
         self.completedAt = completedAt
+        self.isAIGenerated = isAIGenerated
     }
 }

@@ -299,6 +299,7 @@ struct LearningGoalDetailView: View {
                 eyebrow: "Up next",
                 title: upNext.title,
                 note: upNext.notes,
+                isAIGenerated: upNext.isAIGenerated,
                 videoReference: TaskVideoReference.actionReference(in: upNext.notes),
                 onVideoAction: { openVideoRecommendations(for: upNext) },
                 leading: { checkButton(for: upNext, onDark: true) },
@@ -318,6 +319,8 @@ struct LearningGoalDetailView: View {
                 detail: "Every task here is done. Add a new one when you're ready."
             )
         }
+
+        ScopeSuggestionCard(goalID: goal.id, tasks: tasks)
 
         VStack(alignment: .leading, spacing: 0) {
             if todo.count > 1 {
@@ -396,6 +399,9 @@ struct LearningGoalDetailView: View {
                             .font(.subheadline.weight(.semibold))
                             .foregroundStyle(EmberTheme.primary)
                             .multilineTextAlignment(.leading)
+                        if task.isAIGenerated {
+                            AIBadge()
+                        }
                         if !task.notes.isEmpty {
                             Label(task.notes, systemImage: "note.text")
                                 .font(.caption)
@@ -437,13 +443,18 @@ struct LearningGoalDetailView: View {
             HStack(spacing: 11) {
                 checkButton(for: task, onDark: false)
                 Button { openEditor(for: task) } label: {
-                    Text(task.title)
-                        .font(.subheadline)
-                        .foregroundStyle(EmberTheme.muted)
-                        .strikethrough(true, color: EmberTheme.muted)
-                        .multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
-                        .contentShape(Rectangle())
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(task.title)
+                            .font(.subheadline)
+                            .foregroundStyle(EmberTheme.muted)
+                            .strikethrough(true, color: EmberTheme.muted)
+                            .multilineTextAlignment(.leading)
+                        if task.isAIGenerated {
+                            AIBadge()
+                        }
+                    }
+                    .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                    .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
                 .accessibilityHint("Rename or delete this task")
@@ -863,13 +874,14 @@ private struct UpNextCard<Leading: View>: View {
     let eyebrow: String
     let title: String
     var note: String = ""
+    var isAIGenerated = false
     var videoReference: TaskVideoReference?
     var actionTitle: String = "Start focus"
     var onVideoAction: (() -> Void)?
     let leading: Leading
     let onStart: () -> Void
 
-    init(eyebrow: String, title: String, note: String = "",
+    init(eyebrow: String, title: String, note: String = "", isAIGenerated: Bool = false,
          videoReference: TaskVideoReference? = nil,
          actionTitle: String = "Start focus",
          onVideoAction: (() -> Void)? = nil,
@@ -878,6 +890,7 @@ private struct UpNextCard<Leading: View>: View {
         self.eyebrow = eyebrow
         self.title = title
         self.note = note
+        self.isAIGenerated = isAIGenerated
         self.videoReference = videoReference
         self.actionTitle = actionTitle
         self.onVideoAction = onVideoAction
@@ -900,10 +913,15 @@ private struct UpNextCard<Leading: View>: View {
             }
             HStack(spacing: 8) {
                 leading
-                Text(title)
-                    .font(.system(.title2, design: .serif, weight: .medium))
-                    .foregroundStyle(.white)
-                    .fixedSize(horizontal: false, vertical: true)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(title)
+                        .font(.system(.title2, design: .serif, weight: .medium))
+                        .foregroundStyle(.white)
+                        .fixedSize(horizontal: false, vertical: true)
+                    if isAIGenerated {
+                        AIBadge()
+                    }
+                }
             }
             if !note.isEmpty {
                 Label(note, systemImage: "note.text")
@@ -940,7 +958,7 @@ private struct UpNextCard<Leading: View>: View {
 }
 
 private extension UpNextCard where Leading == EmptyView {
-    init(eyebrow: String, title: String, note: String = "",
+    init(eyebrow: String, title: String, note: String = "", isAIGenerated: Bool = false,
          videoReference: TaskVideoReference? = nil,
          actionTitle: String = "Start focus",
          onVideoAction: (() -> Void)? = nil,
@@ -949,6 +967,7 @@ private extension UpNextCard where Leading == EmptyView {
             eyebrow: eyebrow,
             title: title,
             note: note,
+            isAIGenerated: isAIGenerated,
             videoReference: videoReference,
             actionTitle: actionTitle,
             onVideoAction: onVideoAction,

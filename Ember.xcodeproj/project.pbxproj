@@ -41,6 +41,10 @@
 		3AB7CBB630A506050005B7ED /* EnergyRatingPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CBB230A506050005B7ED /* EnergyRatingPalette.swift */; };
 		3AB7CBB730A506050005B7ED /* MonthlyEnergyGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CBB330A506050005B7ED /* MonthlyEnergyGrid.swift */; };
 		3AB7CBB930A508030005B7ED /* MonthlyEnergyWidgetSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CBB830A508030005B7ED /* MonthlyEnergyWidgetSync.swift */; };
+		3AB7CC5630A534E00005B7ED /* EnergySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CC5530A534E00005B7ED /* EnergySummary.swift */; };
+		3AB7CC5830A534E20005B7ED /* InsightCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CC5730A534E20005B7ED /* InsightCard.swift */; };
+		3AB7CC5A30A534E30005B7ED /* ScopeSuggestionCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CC5930A534E30005B7ED /* ScopeSuggestionCard.swift */; };
+		3AB7CC5D30A535080005B7ED /* EmberAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7CC5C30A535080005B7ED /* EmberAI.swift */; };
 		4390AE37765858854E6B379E /* LearningTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = D894345E65907C8D977A4D28 /* LearningTask.swift */; };
 		4481F7391F8374B087C65363 /* FocusSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BF187814AAB24E8BA4E616 /* FocusSession.swift */; };
 		46A5B6F37818992C3C4BFDF1 /* FeaturePlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F845D9B8D8888E33518672E5 /* FeaturePlaceholderView.swift */; };
@@ -140,6 +144,10 @@
 		3AB7CBB230A506050005B7ED /* EnergyRatingPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EnergyRatingPalette.swift; path = EmberShared/EnergyRatingPalette.swift; sourceTree = "<group>"; };
 		3AB7CBB330A506050005B7ED /* MonthlyEnergyGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MonthlyEnergyGrid.swift; path = EmberShared/MonthlyEnergyGrid.swift; sourceTree = "<group>"; };
 		3AB7CBB830A508030005B7ED /* MonthlyEnergyWidgetSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MonthlyEnergyWidgetSync.swift; path = Ember/App/MonthlyEnergyWidgetSync.swift; sourceTree = "<group>"; };
+		3AB7CC5530A534E00005B7ED /* EnergySummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergySummary.swift; sourceTree = "<group>"; };
+		3AB7CC5730A534E20005B7ED /* InsightCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightCard.swift; sourceTree = "<group>"; };
+		3AB7CC5930A534E30005B7ED /* ScopeSuggestionCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeSuggestionCard.swift; sourceTree = "<group>"; };
+		3AB7CC5C30A535080005B7ED /* EmberAI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberAI.swift; sourceTree = "<group>"; };
 		41DD23F7C1454731400D4555 /* FocusSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionView.swift; sourceTree = "<group>"; };
 		57D982B3483E7F29BCC67207 /* EnergyCheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyCheckInView.swift; sourceTree = "<group>"; };
 		5E9FABC339815B0B0344B6FB /* TaskPlannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPlannerView.swift; sourceTree = "<group>"; };
@@ -293,6 +301,7 @@
 			isa = PBXGroup;
 			children = (
 				20D83567C1ABE1FD275D4733 /* Models */,
+				3AB7CC5B30A534FE0005B7ED /* AI */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -304,6 +313,14 @@
 				3AB7CB6830A4FF500005B7ED /* SwiftUI.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3AB7CC5B30A534FE0005B7ED /* AI */ = {
+			isa = PBXGroup;
+			children = (
+				3AB7CC5C30A535080005B7ED /* EmberAI.swift */,
+			);
+			path = AI;
 			sourceTree = "<group>";
 		};
 		3C506F5F43401EDEC74B7945 /* Ember */ = {
@@ -403,6 +420,7 @@
 				3A2679DF30A2C24700AA45D8 /* WeeklyAnalysisView.swift */,
 				3AB13DF230A3ED0C00F383EB /* WeeklyEnergyEncouragementCard.swift */,
 				3AB13DF630A3ED0C00F383EB /* DailyInspirationCard.swift */,
+				3AB7CC5730A534E20005B7ED /* InsightCard.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -496,6 +514,7 @@
 				3A2679D530A2C24500AA45D8 /* MonthlyAnalysis.swift */,
 				3AB13DF030A3ED0C00F383EB /* WeeklyEnergyEncouragement.swift */,
 				3AB13DF430A3ED0C00F383EB /* DailyInspiration.swift */,
+				3AB7CC5530A534E00005B7ED /* EnergySummary.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -545,6 +564,7 @@
 			isa = PBXGroup;
 			children = (
 				41DD23F7C1454731400D4555 /* FocusSessionView.swift */,
+				3AB7CC5930A534E30005B7ED /* ScopeSuggestionCard.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -763,6 +783,7 @@
 				9A17AA000000000000000001 /* EmberStorage.swift in Sources */,
 				AFA792AD445E288D6023EDFD /* AppRoute.swift in Sources */,
 				3AB7CBB630A506050005B7ED /* EnergyRatingPalette.swift in Sources */,
+				3AB7CC5830A534E20005B7ED /* InsightCard.swift in Sources */,
 				3AB7CBB730A506050005B7ED /* MonthlyEnergyGrid.swift in Sources */,
 				2615C766FACA11EB7E0847B0 /* RootView.swift in Sources */,
 				3A2679DC30A2C24600AA45D8 /* DailyAnalysisView.swift in Sources */,
@@ -779,7 +800,9 @@
 				D667026D5A4010BBF2C32BF9 /* EmberTheme.swift in Sources */,
 				46A5B6F37818992C3C4BFDF1 /* FeaturePlaceholderView.swift in Sources */,
 				3AB13DF130A3ED0C00F383EB /* WeeklyEnergyEncouragement.swift in Sources */,
+				3AB7CC5D30A535080005B7ED /* EmberAI.swift in Sources */,
 				F0D6FA0EC211A2D98EB1E55E /* OnboardingView.swift in Sources */,
+				3AB7CC5630A534E00005B7ED /* EnergySummary.swift in Sources */,
 				3A2679DE30A2C24700AA45D8 /* MonthlyAnalysisView.swift in Sources */,
 				BCD0B6B2C074EE713079B80E /* EnergyCheckInView.swift in Sources */,
 				EC5D369EAA4D9C383152A697 /* TaskPlannerView.swift in Sources */,
@@ -804,6 +827,7 @@
 				A932490930A027420087F57E /* OnboardingSteps.swift in Sources */,
 				3A2679DA30A2C24600AA45D8 /* BioRhythmReport.swift in Sources */,
 				3A2679E030A2C24700AA45D8 /* WeeklyAnalysisView.swift in Sources */,
+				3AB7CC5A30A534E30005B7ED /* ScopeSuggestionCard.swift in Sources */,
 				3A77CB3430A2B3D300BE31FF /* EnergyFlowStateCard.swift in Sources */,
 				3A77CB3630A2B3D300BE31FF /* FeelingPickerCard.swift in Sources */,
 				C0FFEE000000000000000005 /* ProfileView.swift in Sources */,
