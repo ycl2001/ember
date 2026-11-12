@@ -22,6 +22,7 @@ struct WeeklyAnalysisView: View {
     let tasks: [LearningTask]
     let sessions: [FocusSession]
     let reflections: [SessionReflection]
+    let checkIns: [EnergyCheckIn]
 
     @State private var selectedChartDate: Date?
 
@@ -48,8 +49,9 @@ struct WeeklyAnalysisView: View {
     }
 
     var body: some View {
-        if hasObservedActivity {
-            VStack(alignment: .leading, spacing: 23) {
+        VStack(alignment: .leading, spacing: 23) {
+            InsightCard(summary: EnergySummary.make(from: checkIns))
+            if hasObservedActivity {
                 observedSummaryCard
                 chartCard
                 WeeklyEnergyEncouragementCard(
@@ -59,14 +61,14 @@ struct WeeklyAnalysisView: View {
                     )
                 )
                 patternCard
+            } else {
+                ContentUnavailableView {
+                    Label("No analytics for this week", systemImage: "chart.xyaxis.line")
+                } description: {
+                    Text("Complete tasks, finish focus sessions, and save reflections to build an observed weekly chart.")
+                }
+                .frame(maxWidth: .infinity)
             }
-        } else {
-            ContentUnavailableView {
-                Label("No analytics for this week", systemImage: "chart.xyaxis.line")
-            } description: {
-                Text("Complete tasks, finish focus sessions, and save reflections to build an observed weekly chart.")
-            }
-            .frame(maxWidth: .infinity)
         }
     }
 

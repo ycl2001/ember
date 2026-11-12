@@ -9,6 +9,7 @@ struct AnalyticsView: View {
     @Query private var tasks: [LearningTask]
     @Query private var sessions: [FocusSession]
     @Query private var reflections: [SessionReflection]
+    @Query(sort: \EnergyCheckIn.createdAt) private var checkIns: [EnergyCheckIn]
 
     init(
         initialPeriod: AnalyticsViewModel.Period = .weekly,
@@ -74,7 +75,8 @@ struct AnalyticsView: View {
                     viewModel: viewModel,
                     tasks: tasks,
                     sessions: sessions,
-                    reflections: reflections
+                    reflections: reflections,
+                    checkIns: checkIns
                 )
             }
         case .monthly:
